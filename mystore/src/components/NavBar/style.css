@@ -1,7 +1,11 @@
 .myNavBar {
-    height: 99px;
-    background-color: #002138;
+    min-height: 70px;
+    background-color: #232f3e;
     color: white;
+}
+
+.myNavBar .searchgroup {
+    margin: 0 auto;
 }
 
 .myNavBar .dropdownCategorias {
@@ -11,6 +15,13 @@
     color: rgb(56, 56, 56);
     border-bottom-right-radius: 0px !important;
     border-top-right-radius: 0px !important;
+    border: 0px !important;
+}
+
+.myNavBar .dropdownmenuCategorias {
+    font-size: 13px;
+    background-color: rgb(243, 241, 241);
+    color: rgb(56, 56, 56);
     border: 0px !important;
 }
 
@@ -27,4 +38,16 @@
     border-bottom-left-radius: 0px !important;
     border-top-left-radius: 0px !important;
     border: 0px !important;
+}
+
+.myNavBar .nav-link {
+    color: white !important;
+    cursor: pointer;
+    margin-left: 8px;
+}
+
+@media (max-width: 767px) {
+    .myNavBar .searchBar {
+        width: 60vw;
+    }
 }

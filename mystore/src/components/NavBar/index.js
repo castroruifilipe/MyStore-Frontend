@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, Collapse, Col, Row, Container} from 'reactstrap';
+import { Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, Collapse, Col, Row, Container, NavLink } from 'reactstrap';
 import { Link } from 'react-router-dom';
 
 import SearchBar from './components/SearchBar';
@@ -24,20 +24,23 @@ class NavBar extends Component {
     render() {
         return (
             <Navbar className="myNavBar" dark expand="md">
-                <NavbarBrand className="ml-5">
+                <NavbarBrand className="ml-5 mr-5">
                     MyStore
                     {/* <Link /> */}
                 </NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>
-                    <Container>
-                        <Row>
-                            <Col md={{size: 8, offset: 2}}>
-                                <SearchBar />
-                            </Col>
-                            <Col md="2"/>
-                        </Row>
-                    </Container>
+                    <div className="searchgroup">
+                        <SearchBar />
+                    </div>
+                    <Nav className="ml-auto" navbar>
+                        <NavItem>
+                            <NavLink>Login</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>Registar</NavLink>
+                        </NavItem>
+                    </Nav>
                 </Collapse>
             </Navbar>
         );

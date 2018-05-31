@@ -9,7 +9,8 @@ class SearchBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            dropdownOpen: false
+            dropdownOpen: false,
+            categoria: 'Todas',
         };
     }
 
@@ -19,28 +20,29 @@ class SearchBar extends Component {
         });
     }
 
+    mudarCategoria = (categoria) => {
+        this.setState({ categoria })
+    }
+
     render() {
         return (
-            <form className="myNavBar-form pull-left" role="search" method="get" id="searchform" action="http://localhost:8080/test/">
-                <div className="input-group">
-                    <Form className="form-inline my-2 my-lg-0">
-                        <div className="dropdown">
-                            <button className="btn btn-secondary dropdown-toggle dropdownCategorias" type="button" id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-                                Dropdown button
-                            </button>
-                            <div className="dropdown-menu" aria-labelledby="dropdownMenuButton">
-                                <a className="dropdown-item" href="#">Action</a>
-                                <a className="dropdown-item" href="#">Another action</a>
-                                <a className="dropdown-item" href="#">Something else here</a>
-                            </div>
-                        </div>
-                        <Input className="form-control mr-sm-2 searchBar" type="search" placeholder="Search" aria-label="Search" />
-                        <button type="submit" id="searchsubmit" value="Search" className="btn btn-warning searchButton">
-                            <span><MdSearch/></span>
-                        </button>
-                    </Form>
+            <Form className="form-inline my-2 my-lg-0">
+                <div className="dropdown">
+                    <button className="btn btn-secondary dropdown-toggle dropdownCategorias" type="button"
+                        id="dropdownMenuButton" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+                        {this.state.categoria}
+                    </button>
+                    <div className="dropdown-menu dropdownmenuCategorias" aria-labelledby="dropdownMenuButton">
+                        <a className="dropdown-item" onClick={(e) => this.mudarCategoria("Alimentação e bebidas", e)}>Alimentação e bebidas</a>
+                        <a className="dropdown-item" onClick={(e) => this.mudarCategoria("Beleza", e)}>Beleza</a>
+                        <a className="dropdown-item" onClick={(e) => this.mudarCategoria("Livros", e)}>Livros</a>
+                    </div>
                 </div>
-            </form>
+                <Input className="form-control mr-sm-2 searchBar" type="search" placeholder="Search" aria-label="Search" />
+                <button type="submit" id="searchsubmit" value="Search" className="btn btn-warning searchButton">
+                    <span><MdSearch size="25"/></span>
+                </button>
+            </Form>
         );
     }
 }

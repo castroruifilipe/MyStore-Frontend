@@ -1,0 +1,30 @@
+.myNavBar {
+    height: 99px;
+    background-color: #002138;
+    color: white;
+}
+
+.myNavBar .dropdownCategorias {
+    font-size: 13px;
+    height: 35px;
+    background-color: rgb(214, 214, 214);
+    color: rgb(56, 56, 56);
+    border-bottom-right-radius: 0px !important;
+    border-top-right-radius: 0px !important;
+    border: 0px !important;
+}
+
+.myNavBar .searchBar {
+    width: 25vw;
+    height: 35px;
+    border-radius: 0px !important;
+    border: 0px !important;
+    margin-right: 0px !important;
+}
+
+.myNavBar .searchButton {
+    height: 35px;
+    border-bottom-left-radius: 0px !important;
+    border-top-left-radius: 0px !important;
+    border: 0px !important;
+}

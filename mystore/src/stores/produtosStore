@@ -1,0 +1,22 @@
+import { observable, action } from 'mobx';
+
+class ProdutosStore {
+    @observable produtos = new Map();
+
+
+    constructor(rootStore) {
+        this.rootStore = rootStore;
+    }
+
+    @action setProdutos = produtos => {
+        produtos.forEach(produto => {
+            this.produtos.set(produto.codigo, produto);
+        })
+    }
+
+    @action setProduto = produto => {
+        this.produtos.set(produto.codigo, produto);        
+    }
+}
+
+export default ProdutosStore;

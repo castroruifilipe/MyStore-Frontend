@@ -34,6 +34,16 @@ class NavBar extends Component {
                     <div className="searchgroup">
                         <SearchBar />
                     </div>
+                    
+                    <Nav className="ml-auto navLinkHidden" navbar>
+                        <NavItem>
+                            <NavLink>Novidades</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <NavLink>Promoções</NavLink>
+                        </NavItem>
+                    </Nav>
+
                     <Nav className="ml-auto" navbar>
                         <NavItem>
                             <NavLink href={routes.LOGIN}>Login</NavLink>
@@ -42,7 +52,7 @@ class NavBar extends Component {
                             <NavLink href={routes.REGISTAR}>Registar</NavLink>
                         </NavItem>
                         <NavItem>
-                            <IoAndroidCart size="30" className="pt-2"/>
+                            <IoAndroidCart size="30" className="pt-2" />
                         </NavItem>
                     </Nav>
                 </Collapse>

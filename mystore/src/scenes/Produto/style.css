@@ -1,0 +1,17 @@
+.centerLine{
+    min-height: 100%;
+    display: inline-flex;
+    align-items: center;
+}
+
+@media screen and (max-width: 1100px) {
+    .hideComponent {
+        display: none;
+    }
+}
+
+@media screen and (max-width: 940px) {
+    .hideTruck {
+        display: none;
+    }
+}

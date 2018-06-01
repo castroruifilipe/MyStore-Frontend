@@ -26,7 +26,7 @@
 }
 
 .myNavBar .searchBar {
-    width: 25vw;
+    width: 24vw;
     height: 35px;
     border-radius: 0px !important;
     border: 0px !important;
@@ -46,7 +46,13 @@
     margin-left: 8px;
 }
 
-@media (max-width: 767px) {
+@media (min-width: 767px) and (max-width: 943px) {
+    .navLinkHidden {
+        display: none;
+    }
+}
+
+@media (max-width: 766px) {
     .myNavBar .searchBar {
         width: 60vw;
     }

@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
 import { BrowserRouter, Switch, Route } from 'react-router-dom';
 
+import 'font-awesome/css/font-awesome.min.css';
+
 import Home from './scenes/Home';
 import NavBar from './components/NavBar';
 import Login from './scenes/Login';
 import Registar from './scenes/Registar';
 import Produto from './scenes/Produto';
+import Footer from './components/Footer'
 import * as routes from './constants/routes';
 import './App.css';
 
@@ -22,6 +25,7 @@ class App extends Component {
 							<Route exact path={routes.REGISTAR} component={Registar} />
 							<Route path={routes.PRODUTO} component={Produto} />
 						</Switch>
+						<Footer />
 					</div>
 				</BrowserRouter >
 			</div>

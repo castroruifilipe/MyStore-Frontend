@@ -26,8 +26,7 @@ class NavBar extends Component {
         return (
             <Navbar className="myNavBar" dark expand="md">
                 <NavbarBrand className="ml-5 mr-5">
-                    MyStore
-                    {/* <Link /> */}
+                    <NavLink  href={routes.HOME}> MyStore </NavLink>
                 </NavbarBrand>
                 <NavbarToggler onClick={this.toggle} />
                 <Collapse isOpen={this.state.isOpen} navbar>

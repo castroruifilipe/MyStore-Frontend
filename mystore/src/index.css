@@ -23,7 +23,7 @@ html, body {
 
 .form-label-group {
   position: relative;
-  margin-bottom: 9px;
+  margin-bottom: 12px;
 }
 
 .form-label-group>input, .form-label-group>label {

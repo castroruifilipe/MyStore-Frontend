@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col, Container, Alert, Button, Form, Input } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
 
+import * as routes from '../../constants/routes';
 
 class Login extends Component {
 
@@ -14,14 +16,14 @@ class Login extends Component {
 	}
 	
 	onSubmit = (event) => {
-		let credentials = {
-			email: this.state.email,
-			password: this.state.password
-		}
+		// let credentials = {
+		// 	email: this.state.email,
+		// 	password: this.state.password
+		// }
 	}
 
 	criarConta = (event) => {
-		
+		this.props.history.push(routes.REGISTAR);
 	}
 
     render() {
@@ -41,7 +43,7 @@ class Login extends Component {
 					<Col md={{ size: 6, offset: 4 }}>
 						<h3 className="font-weight-normal mt-5 mb-3" style={{ paddingTop: '90px' }}>Login</h3>
 
-						<Form className="form-sign" onSubmit={this.onSubmit}>
+						<Form className="form-sign">
 							<div className="form-label-group">
 								<Input required value={email} placeholder="Email" type="email" className="form-control" id="inputEmail"
 									onChange={event => this.setState({
@@ -68,7 +70,7 @@ class Login extends Component {
 
                             <p className="text-muted text-center">Não tem conta?</p>
 
-                            <Button color="basic" size="lg" type="submit" block={true} onClick={this.criarConta}><small>Criar nova conta</small></Button>
+                            <Button size="lg" type="submit" block={true} onClick={this.criarConta}><small>Criar nova conta</small></Button>
 						</Form >
 					</Col>
 				</Row>
@@ -80,4 +82,4 @@ class Login extends Component {
     }   
 }
 
-export default Login;
+export default withRouter(Login);

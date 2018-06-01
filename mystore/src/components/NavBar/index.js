@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, Collapse, NavLink } from 'reactstrap';
+import IoAndroidCart from 'react-icons/lib/io/android-cart';
 
 import SearchBar from './components/SearchBar';
+import * as routes from '../../constants/routes';
 import './style.css';
 
 
@@ -34,10 +36,13 @@ class NavBar extends Component {
                     </div>
                     <Nav className="ml-auto" navbar>
                         <NavItem>
-                            <NavLink>Login</NavLink>
+                            <NavLink href={routes.LOGIN}>Login</NavLink>
                         </NavItem>
                         <NavItem>
-                            <NavLink>Registar</NavLink>
+                            <NavLink href={routes.REGISTAR}>Registar</NavLink>
+                        </NavItem>
+                        <NavItem>
+                            <IoAndroidCart size="30" className="pt-2"/>
                         </NavItem>
                     </Nav>
                 </Collapse>

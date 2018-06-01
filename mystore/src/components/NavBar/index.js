@@ -1,6 +1,5 @@
 import React, { Component } from 'react';
-import { Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, Collapse, Col, Row, Container, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
+import { Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, Collapse, NavLink } from 'reactstrap';
 
 import SearchBar from './components/SearchBar';
 import './style.css';

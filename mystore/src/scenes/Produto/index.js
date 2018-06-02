@@ -13,13 +13,24 @@ class Produto extends Component {
         this.state = {
             value: 0,
             error: null,
+            produto: {
+                codigo: 1223,
+                nome: 'The Essence of Software Engineering',
+                descricao: 'This book is open access under a CC BY 4.0 license.This book '
+                    + 'includes contributions by leading researchers and industry thought'
+                    + 'leaders on various topics related to the essence of software engineering'
+                    + 'and their application in industrial projects. It offers a broad overview'
+                    + 'of research findings dealing with current practical software engineering'
+                    + 'issues and also pointers to potential future developments.',
+                precoBase: 59.99,
+                stock: 3,
+                iva: 0.06
+            }
         };
     }
 
-
-
-    render() {
-        // let produto = this.props.produtosStore.produtos.get(this.props.match.params.id);
+    getProdutos() {
+        let produtos = [];
         let produto = {
             codigo: 1223,
             nome: 'The Essence of Software Engineering',
@@ -33,6 +44,36 @@ class Produto extends Component {
             stock: 3,
             iva: 0.06
         }
+        //retirar construção produto com +i;
+        for (let i = 0; i < 4; i++) {
+            produtos[i] = { ...produto, codigo: produto.codigo + i };
+        }
+        return produtos;
+    }
+
+    makeProdutosRelacionados = (rows) => {
+        let produtos = this.getProdutos();
+        produtos.forEach(produto => {
+            rows.push(
+                <Card key={produto.codigo}>
+                    <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
+                    <CardBody>
+                        <CardTitle>{produto.nome}</CardTitle>
+                        <CardSubtitle>{produto.precoBase}€</CardSubtitle>
+                        <CardText>{produto.descricao}</CardText>
+                        <Button>Ver produto</Button>
+                    </CardBody>
+                </Card>
+            );
+        });
+    }
+
+
+
+    render() {
+        // let produto = this.props.produtosStore.produtos.get(this.props.match.params.id);
+        let rows = [];
+        this.makeProdutosRelacionados(rows);
         return (
             <Container fluid className="custom-container">
                 <Row className="pt-5">
@@ -42,20 +83,20 @@ class Produto extends Component {
                         </div>
                     </Col>
                     <Col md="8" >
-                        <h3>{produto.nome}</h3>
+                        <h3>{this.state.produto.nome}</h3>
                         <div className="d-inline-block text-justify pt-3">
-                            {produto.descricao}
+                            {this.state.produto.descricao}
                         </div>
                         <Row className="pt-5">
                             <Col md="2" >
-                                <h5 className="centerLine">{produto.precoBase}€</h5>
+                                <h5 className="centerLine">{this.state.produto.precoBase}€</h5>
                             </Col>
                             <Col xs="2">
-                                <NumericInput mobile className="form-control"
-                                    min={0} max={produto.stock} precision={0}
+                                <NumericInput className="form-control"
+                                    min={0} max={this.state.produto.stock} precision={0}
                                     value={this.state.value}
                                     onChange={this.onChange}
-                                    size={6}/>
+                                    size={6} />
                             </Col>
                             <Col md="4">
                                 <Button color="success" className="btn-block">
@@ -64,9 +105,9 @@ class Produto extends Component {
 
                             </Col>
                             <Col md="4">
-                                <FaTruck size="25" className="hideTruck"/>
+                                <FaTruck size="25" className="hideTruck" />
                                 <span className="centerLine pl-2">
-                                    Stock: {produto.stock} unidades
+                                    Stock: {this.state.produto.stock} unidades
                                 </span>
                             </Col>
                         </Row>
@@ -78,50 +119,7 @@ class Produto extends Component {
                 </Row>
                 <Row>
                     <CardDeck>
-                        <Card>
-                            <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle>Card title</CardTitle>
-                                <CardSubtitle>Card subtitle</CardSubtitle>
-                                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                <Button>Button</Button>
-                            </CardBody>
-                        </Card>
-                        <Card>
-                            <CardImg top width="100%" src="https://i.imgur.com/t7DTziH.jpg" alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle>Card title</CardTitle>
-                                <CardSubtitle>Card subtitle</CardSubtitle>
-                                <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-                                <Button>Button</Button>
-                            </CardBody>
-                        </Card>
-                        <Card>
-                            <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle>Card title</CardTitle>
-                                <CardSubtitle>Card subtitle</CardSubtitle>
-                                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                <Button>Button</Button>
-                            </CardBody>
-                        </Card>
-                        <Card>
-                            <CardImg top width="100%" src="https://i.imgur.com/t7DTziH.jpg" alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle>Card title</CardTitle>
-                                <CardSubtitle>Card subtitle</CardSubtitle>
-                                <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-                                <Button>Button</Button>
-                            </CardBody>
-                        </Card><Card>
-                            <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                            <CardBody>
-                                <CardTitle>Card title</CardTitle>
-                                <CardSubtitle>Card subtitle</CardSubtitle>
-                                <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                <Button>Button</Button>
-                            </CardBody>
-                        </Card>
+                        {rows}
                     </CardDeck>
                 </Row>
             </Container>

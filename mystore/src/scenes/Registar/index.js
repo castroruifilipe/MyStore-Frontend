@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Row, Col, Container, Alert, Button, Modal, ModalHeader, ModalBody, ModalFooter, Form, Input } from 'reactstrap';
 import { Link, withRouter } from 'react-router-dom';
 
+import * as services from '../../services/utilizadores';
 import * as routes from '../../constants/routes';
 
 class Registar extends Component {
@@ -29,7 +30,18 @@ class Registar extends Component {
     }
 
     onSubmit = (event) => {
-        this.toggle();
+        const { email, password_one, nome } = this.state;
+
+        services.signup(email, password_one, nome, "CLIENTE")
+            .then(response => this.toggle())
+            .catch(error => {
+				if (error.response) {
+                    console.log(error.response);
+					this.setState({ error: error.response.data.message });
+				} else {
+					console.error(error);
+				}
+			});
         event.preventDefault();
     };
 
@@ -91,16 +103,16 @@ class Registar extends Component {
 
                             <Button color="primary" disabled={isInvalid} type="submit" block={true} size="lg">Registar</Button>
 
-                            {error && <Alert color="danger" className="mt-5">{error.message}</Alert>}
+                            {error && <Alert color="danger" className="mt-5">{error}</Alert>}
 
                             <hr />
 
                             <p className="text-muted text-center">
                                 Já tem conta?
-                                <Link  to={routes.LOGIN}> Login</Link>
+                                <Link to={routes.LOGIN}> Login</Link>
                             </p>
 
-                           
+
 
 
 

@@ -2,48 +2,57 @@ import React, { Component } from 'react';
 import { Row, Col, Container, Alert, Button, Form, Input } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 
+import * as services from '../../services/utilizadores';
 import * as routes from '../../constants/routes';
 
 class Login extends Component {
 
-    constructor(props) {
-        super(props);
-        this.state = {
-            email: '',
-            password: '',
-            error: null,
-        };
+	constructor(props) {
+		super(props);
+		this.state = {
+			email: '',
+			password: '',
+			error: null,
+		};
 	}
-	
+
 	onSubmit = (event) => {
-		// let credentials = {
-		// 	email: this.state.email,
-		// 	password: this.state.password
-		// }
+		const { email, password } = this.state;
+		services.signin(email, password)
+			.then(response => {
+			})
+			.catch(error => {
+				if (error.response) {
+					this.setState({ error: error.response.data.message });
+				} else {
+					console.error(error);
+				}
+			});
+		event.preventDefault();
 	}
 
 	criarConta = (event) => {
 		this.props.history.push(routes.REGISTAR);
 	}
 
-    render() {
-        const {
-            email,
-            password,
-            error,
-        } = this.state;
+	render() {
+		const {
+			email,
+			password,
+			error,
+		} = this.state;
 
-        const isInvalid =
-            password === '' ||
-            email === '';
+		const isInvalid =
+			password === '' ||
+			email === '';
 
-        return (
-            <Container fluid >
+		return (
+			<Container fluid >
 				<Row style={{ minHeight: '90vh' }}>
 					<Col md={{ size: 6, offset: 4 }}>
 						<h3 className="font-weight-normal mt-5 mb-3" style={{ paddingTop: '90px' }}>Login</h3>
 
-						<Form className="form-sign">
+						<Form className="form-sign" onSubmit={this.onSubmit}>
 							<div className="form-label-group">
 								<Input required value={email} placeholder="Email" type="email" className="form-control" id="inputEmail"
 									onChange={event => this.setState({
@@ -63,14 +72,14 @@ class Login extends Component {
 							</div>
 
 							<Button color="primary" disabled={isInvalid} type="submit" block={true} size="lg">Login</Button>
-                            
-                            {error && <Alert color="danger" className="mt-5">{error}</Alert>}
-                            
-                            <hr/>
 
-                            <p className="text-muted text-center">Não tem conta?</p>
+							{error && <Alert color="danger" className="mt-5">{error}</Alert>}
 
-                            <Button size="lg" type="submit" block={true} onClick={this.criarConta}><small>Criar nova conta</small></Button>
+							<hr />
+
+							<p className="text-muted text-center">Não tem conta?</p>
+
+							<Button size="lg" type="submit" block={true} onClick={this.criarConta}><small>Criar nova conta</small></Button>
 						</Form >
 					</Col>
 				</Row>
@@ -78,8 +87,8 @@ class Login extends Component {
 					<Footer />
 				</Row> */}
 			</Container>
-        );
-    }   
+		);
+	}
 }
 
 export default withRouter(Login);

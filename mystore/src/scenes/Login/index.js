@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col, Container, Alert, Button, Form, Input } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
 
 import * as services from '../../services/utilizadores';
 import * as routes from '../../constants/routes';
@@ -20,7 +22,13 @@ class Login extends Component {
 		const { email, password } = this.state;
 		services.signin(email, password)
 			.then(response => {
+				let user = { ...response.data };
+				let accessToken = response.headers['access-token'];
+
+				this.props.sessionStore.setAccessToken(accessToken);
+				this.props.sessionStore.setUser(user);
 			})
+			.then(() => this.props.history.push(routes.HOME))
 			.catch(error => {
 				if (error.response) {
 					this.setState({ error: error.response.data.message });
@@ -55,19 +63,13 @@ class Login extends Component {
 						<Form className="form-sign" onSubmit={this.onSubmit}>
 							<div className="form-label-group">
 								<Input required value={email} placeholder="Email" type="email" className="form-control" id="inputEmail"
-									onChange={event => this.setState({
-										'email': event.target.value
-									})}
-								/>
+									onChange={event => this.setState({ 'email': event.target.value })} />
 								<label htmlFor="inputEmail">Email</label>
 							</div>
 
 							<div className="form-label-group">
 								<Input required value={password} placeholder="Password" type="password" className="form-control" id="inputPassword"
-									onChange={event => this.setState({
-										'password': event.target.value
-									})}
-								/>
+									onChange={event => this.setState({ 'password': event.target.value })} />
 								<label htmlFor="inputPassword">Password</label>
 							</div>
 
@@ -79,16 +81,19 @@ class Login extends Component {
 
 							<p className="text-muted text-center">Não tem conta?</p>
 
-							<Button size="lg" type="submit" block={true} onClick={this.criarConta}><small>Criar nova conta</small></Button>
+							<Button size="lg" type="submit" block={true} onClick={this.criarConta}>
+								<small>Criar nova conta</small>
+							</Button>
 						</Form >
 					</Col>
 				</Row>
-				{/* <Row>
-					<Footer />
-				</Row> */}
 			</Container>
 		);
 	}
 }
 
-export default withRouter(Login);
+export default compose(
+	withRouter,
+	inject('sessionStore'),
+	observer
+)(Login);

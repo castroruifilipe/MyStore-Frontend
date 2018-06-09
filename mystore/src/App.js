@@ -13,6 +13,7 @@ import * as routes from './constants/routes';
 import './App.css';
 
 class App extends Component {
+
 	render() {
 		return (
 			<div className="App">
@@ -20,7 +21,7 @@ class App extends Component {
 					<div>
 						<NavBar />
 						<Switch>
-							<Route exact path={routes.HOME} component={Home}/>
+							<Route exact path={routes.HOME} component={Home} />
 							<Route exact path={routes.LOGIN} component={Login} />
 							<Route exact path={routes.REGISTAR} component={Registar} />
 							<Route path={routes.PRODUTO} component={Produto} />
@@ -31,6 +32,7 @@ class App extends Component {
 			</div>
 		);
 	}
+
 }
 
 export default withAuthentication(App);

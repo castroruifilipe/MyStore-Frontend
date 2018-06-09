@@ -4,7 +4,6 @@ import {
     Container, Row, Card, Button, CardImg, CardTitle, CardText,
     CardSubtitle, CardBody, CardDeck
 } from 'reactstrap';
- // eslint-disable-next-line
 import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 class Home extends Component {
@@ -12,7 +11,7 @@ class Home extends Component {
     render() {
         return (
             <div>
-                <Carousel transitionTime={1000} emulateTouch useKeyboardArrows infiniteLoop autoPlay showThumbs={false} showStatus={false}>
+                <Carousel transitionTime={1000} emulateTouch useKeyboardArrows infiniteLoop autoPlay showThumbs={false} showStatus={false} dynamicHeight>
                     <img src="https://images-na.ssl-images-amazon.com/images/G/32/kindle/email/2018w22/RecomendadoLeitores/desktophero3000x600._CB478047443_.jpg" alt="Imagem" />
                     <img src="https://images-na.ssl-images-amazon.com/images/G/32/HomeandKitchen/2018/esp_decoracao/desktophero3000x600._CB495950061_.jpg" alt="Imagem" />
                     <img src="https://images-na.ssl-images-amazon.com/images/G/32/br-events/2018/diadosnamorados/gw/desktophero3000x600._CB477519975_.jpg" alt="Imagem" />

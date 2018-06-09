@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
 import {
     Navbar, Nav, NavbarBrand, NavbarToggler, NavItem, Collapse, NavLink,
-    UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem
+    UncontrolledDropdown, DropdownToggle, DropdownMenu, DropdownItem, Popover, PopoverHeader, PopoverBody, Card, Button, Badge
 } from 'reactstrap';
+import Image from 'react-image-resizer';
 import IoAndroidCart from 'react-icons/lib/io/android-cart';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
@@ -17,13 +18,20 @@ class NavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            isOpen: false
+            isOpenNavBar: false,
+            popoverOpen: false,
         }
     }
 
-    toggle = () => {
+    toggleNavBar = () => {
         this.setState({
-            isOpen: !this.state.isOpen
+            isOpenNavBar: !this.state.isOpenNavBar
+        });
+    }
+
+    togglePopOver = () => {
+        this.setState({
+            popoverOpen: !this.state.popoverOpen
         });
     }
 
@@ -32,7 +40,31 @@ class NavBar extends Component {
         this.props.history.push(routes.HOME);
     }
 
+    makeRowsShoppingCart = (rows) => {
+        for (let i = 0; i < 3; i++) {
+            rows.push(
+                <Card className="mb-2">
+                    <div class="d-flex align-items-center bg-light">
+                        <div>
+                            <Image src="https://i.imgur.com/IpEsYSH.jpg" height={60} width={60} />
+                        </div>
+                        <div className="col p-2 d-flex justify-content-between" style={{ minWidth: '190px' }}>
+                            <div>
+                                <span className="d-block">Descrição do produto</span>
+                                <span className="text-success">20€</span>
+                            </div>
+                            <Button size="sm" color="danger" style={{ height: '30px' }} className="ml-1">X</Button>
+                        </div>
+                    </div>
+                </Card>
+            );
+        }
+    }
+
     render() {
+        let rowsShoppingCart = [];
+        this.makeRowsShoppingCart(rowsShoppingCart);
+
         let navItemConta = (
             <Nav className="ml-auto" navbar>
                 <NavItem>
@@ -68,34 +100,47 @@ class NavBar extends Component {
         }
 
         return (
-            <Navbar className="myNavBar" dark expand="md">
-                <NavbarBrand className="ml-5 mr-5" href={routes.HOME}>
-                    MyStore
+            <div>
+                <Navbar className="myNavBar" dark expand="md">
+                    <NavbarBrand className="ml-5 mr-5" href={routes.HOME}>
+                        MyStore
                 </NavbarBrand>
-                <NavbarToggler onClick={this.toggle} />
-                <Collapse isOpen={this.state.isOpen} navbar>
-                    <div className="searchgroup">
-                        <SearchBar />
-                    </div>
+                    <Collapse isOpen={this.state.isOpenNavBar} navbar>
+                        <div className="searchgroup">
+                            <SearchBar />
+                        </div>
 
-                    <Nav className="ml-auto navLinkHidden" navbar>
-                        <NavItem>
-                            <NavLink>Novidades</NavLink>
-                        </NavItem>
-                        <NavItem>
-                            <NavLink>Promoções</NavLink>
-                        </NavItem>
-                    </Nav>
+                        <Nav className="ml-auto navLinkHidden" navbar>
+                            <NavItem>
+                                <NavLink>Novidades</NavLink>
+                            </NavItem>
+                            <NavItem>
+                                <NavLink>Promoções</NavLink>
+                            </NavItem>
+                        </Nav>
 
-                    {navItemConta}
-
-                    <Nav className="ml-auto navLinkHidden" navbar>
-                        <NavItem>
+                        {navItemConta}
+                    </Collapse>
+                    <Nav className="ml-3 mr-2" navbar>
+                        <NavItem id="shoppingCart" onClick={this.togglePopOver}>
                             <IoAndroidCart size="30" className="pt-2" />
+                            <Badge color="success" pill style={{marginLeft: '-9px'}}>{rowsShoppingCart.length}</Badge>
                         </NavItem>
                     </Nav>
-                </Collapse>
-            </Navbar>
+                    <NavbarToggler onClick={this.toggleNavBar} />
+                </Navbar>
+                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="shoppingCart" toggle={this.togglePopOver}>
+                    <PopoverHeader className="d-flex justify-content-between">
+                        <span>Carrinho</span>
+                        <span className="text-success">20€00</span>
+                    </PopoverHeader>
+                    <PopoverBody>
+                        {rowsShoppingCart}
+                        <Button size="sm" color="success" block className="mt-4">Checkout</Button>
+                    </PopoverBody>
+                </Popover>
+            </div>
+
         );
     }
 }

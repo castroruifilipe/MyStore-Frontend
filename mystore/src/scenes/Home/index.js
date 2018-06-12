@@ -5,14 +5,79 @@ import {
     CardSubtitle, CardBody, CardDeck
 } from 'reactstrap';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
+
+import * as services from '../../services/produtos';
 
 class Home extends Component {
 
     componentWillMount() {
+        services.getNovidades(5)
+            .then(response => {
+                this.props.produtosStore.setNovidades(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+        // services.getMaisVendidos()
+        //     .then(response => {
+        //         console.log("\n\n" + response);
+        //         this.props.produtosStore.setMaisVendidos(response);
+        //     })
+        //     .catch(error => {
+        //         if (error.response) {
+        //             console.log(error.response);
+        //             this.setState({ error: error.response.data.message });
+        //         } else {
+        //             console.error(error);
+        //         }
+        //     });
+    }
 
+    makeNovidades = (rows) => {
+        this.props.produtosStore.novidades
+            .forEach(produto => {
+                rows.push(
+                    <Card key={produto.codigo}>
+                        <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
+                        <CardBody>
+                            <CardTitle>{produto.nome}</CardTitle>
+                            <CardSubtitle>{produto.precoBase}€</CardSubtitle>
+                            <CardText>{produto.descricao}</CardText>
+                            <Button>Ver produto</Button>
+                        </CardBody>
+                    </Card>
+                );
+            });
+    }
+
+    makeMaisVendidos = (rows) => {
+        this.props.produtosStore.maisVendidos
+            .forEach(produto => {
+                rows.push(
+                    <Card key={produto.codigo}>
+                        <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
+                        <CardBody>
+                            <CardTitle>{produto.nome}</CardTitle>
+                            <CardSubtitle>{produto.precoBase}€</CardSubtitle>
+                            <CardText>{produto.descricao}</CardText>
+                            <Button>Ver produto</Button>
+                        </CardBody>
+                    </Card>
+                );
+            });
     }
 
     render() {
+        let novidades = [], maisVendidos = [];
+        this.makeNovidades(novidades);
+        //this.makeMaisVendidos(maisVendidos);
         return (
             <div>
                 <Carousel transitionTime={1000} emulateTouch useKeyboardArrows infiniteLoop autoPlay showThumbs={false} showStatus={false} dynamicHeight>
@@ -26,102 +91,15 @@ class Home extends Component {
                     </Row>
                     <Row>
                         <CardDeck>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/t7DTziH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/t7DTziH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card><Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
+                            {novidades}
                         </CardDeck>
                     </Row>
-
                     <Row className="mt-5">
                         <h4>Mais vendidos</h4>
                     </Row>
                     <Row>
                         <CardDeck>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/t7DTziH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
-                            <Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/t7DTziH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card><Card>
-                                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                                <CardBody>
-                                    <CardTitle>Card title</CardTitle>
-                                    <CardSubtitle>Card subtitle</CardSubtitle>
-                                    <CardText>This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</CardText>
-                                    <Button>Button</Button>
-                                </CardBody>
-                            </Card>
+                            {maisVendidos}
                         </CardDeck>
                     </Row>
                 </Container>
@@ -130,4 +108,7 @@ class Home extends Component {
     }
 }
 
-export default (Home);
+export default compose(
+    inject('produtosStore'),
+    observer
+)(Home);

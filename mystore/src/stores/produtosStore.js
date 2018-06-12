@@ -3,6 +3,7 @@ import { observable, action } from 'mobx';
 class ProdutosStore {
 
     @observable novidades = new Map();
+    @observable maisVendidos = new Map();
 
 
     constructor(rootStore) {
@@ -12,6 +13,12 @@ class ProdutosStore {
     @action setNovidades = produtos => {
         produtos.forEach(produto => {
             this.novidades.set(produto.codigo, produto);
+        })
+    }
+
+    @action setMaisVendidos = produtos => {
+        produtos.forEach(produto => {
+            this.maisVendidos.set(produto.codigo, produto);
         })
     }
 

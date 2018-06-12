@@ -2,7 +2,8 @@ import axios from 'axios';
 
 import { urlProdutos } from '../../services';
 
-export const getNovidades = (accessToken) =>
-    axios.get(`${urlProdutos}/novidades`, {
-        headers: { 'Authorization': 'Bearer ' + accessToken }
-    });
+export const getNovidades = (quantidade) =>
+    axios.get(`${urlProdutos}/novidades/${quantidade}`);
+
+export const getMaisVendidos = () =>
+    axios.get(`${urlProdutos}/maisVendidos`);

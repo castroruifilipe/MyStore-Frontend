@@ -43,7 +43,7 @@ class NavBar extends Component {
     makeRowsShoppingCart = (rows) => {
         for (let i = 0; i < 3; i++) {
             rows.push(
-                <Card className="mb-2">
+                <Card key={i} className="mb-2">
                     <div class="d-flex align-items-center bg-light">
                         <div>
                             <Image src="https://i.imgur.com/IpEsYSH.jpg" height={60} width={60} />

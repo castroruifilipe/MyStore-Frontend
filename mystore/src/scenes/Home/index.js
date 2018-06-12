@@ -4,9 +4,13 @@ import {
     Container, Row, Card, Button, CardImg, CardTitle, CardText,
     CardSubtitle, CardBody, CardDeck
 } from 'reactstrap';
-import styles from 'react-responsive-carousel/lib/styles/carousel.min.css';
+import 'react-responsive-carousel/lib/styles/carousel.min.css';
 
 class Home extends Component {
+
+    componentWillMount() {
+
+    }
 
     render() {
         return (

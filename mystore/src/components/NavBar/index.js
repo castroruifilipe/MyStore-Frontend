@@ -111,6 +111,19 @@ class NavBar extends Component {
                         </div>
 
                         <Nav className="ml-auto navLinkHidden" navbar>
+                            <UncontrolledDropdown nav inNavbar>
+                                <DropdownToggle nav caret>
+                                    Produtos p/ Categoria
+                                </DropdownToggle>
+                                <DropdownMenu right>
+                                    <DropdownItem href={routes.LISTA_PRODUTOS}>
+                                        Bebidas
+                                    </DropdownItem>
+                                    <DropdownItem href={routes.LISTA_PRODUTOS}>
+                                        Roupa
+                                    </DropdownItem>
+                                </DropdownMenu>
+                            </UncontrolledDropdown>
                             <NavItem>
                                 <NavLink>Novidades</NavLink>
                             </NavItem>
@@ -124,7 +137,7 @@ class NavBar extends Component {
                     <Nav className="ml-3 mr-2" navbar>
                         <NavItem id="shoppingCart" onClick={this.togglePopOver}>
                             <IoAndroidCart size="30" className="pt-2" />
-                            <Badge color="success" pill style={{marginLeft: '-9px'}}>{rowsShoppingCart.length}</Badge>
+                            <Badge color="success" pill style={{ marginLeft: '-9px' }}>{rowsShoppingCart.length}</Badge>
                         </NavItem>
                     </Nav>
                     <NavbarToggler onClick={this.toggleNavBar} />

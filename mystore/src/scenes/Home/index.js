@@ -61,7 +61,8 @@ class Home extends Component {
                                     <CardText>This card has supporting text below as a natural lead-in to additional content.</CardText>
                                     <Button>Button</Button>
                                 </CardBody>
-                            </Card><Card>
+                            </Card>
+                            <Card>
                                 <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
                                 <CardBody>
                                     <CardTitle>Card title</CardTitle>

@@ -12,7 +12,7 @@ import Conta from './scenes/Conta';
 import Footer from './components/Footer'
 import * as routes from './constants/routes';
 import './App.css';
-// import ListaProdutos from './scenes/ListaProdutos';
+import ListaProdutos from './scenes/ListaProdutos';
 
 class App extends Component {
 
@@ -31,7 +31,7 @@ class App extends Component {
 							<Route exact path={routes.LOGIN} component={Login} />
 							<Route exact path={routes.REGISTAR} component={Registar} />
 							<Route path={routes.PRODUTO} component={Produto} />
-							{/* <Route path={routes.LISTA_PRODUTOS} component={ListaProdutos} /> */}
+							<Route path={routes.LISTA_PRODUTOS} component={ListaProdutos} />
 							<Route path={routes.CONTA} component={Conta}/>
 						</Switch>
 						<Footer />

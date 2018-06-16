@@ -68,10 +68,10 @@ class NavBar extends Component {
         let navItemConta = (
             <Nav className="ml-auto" navbar>
                 <NavItem>
-                    <NavLink href={routes.LOGIN}>Login</NavLink>
+                    <NavLink onClick={() => this.props.history.push(routes.LOGIN)}>Login</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink href={routes.REGISTAR}>Registar</NavLink>
+                    <NavLink onClick={() => this.props.history.push(routes.REGISTAR)}>Registar</NavLink>
                 </NavItem>
             </Nav>
         );
@@ -83,10 +83,10 @@ class NavBar extends Component {
                             Minha conta
                         </DropdownToggle>
                         <DropdownMenu right>
-                            <DropdownItem href={routes.ENCOMENDAS}>
+                            <DropdownItem onClick={() => this.props.history.push(routes.ENCOMENDAS)}>
                                 Encomendas
                             </DropdownItem>
-                            <DropdownItem href={routes.CONTA}>
+                            <DropdownItem onClick={ () => {this.props.history.push(routes.CONTA)}}>
                                 Meus dados
                             </DropdownItem>
                             <DropdownItem divider />
@@ -102,7 +102,7 @@ class NavBar extends Component {
         return (
             <div>
                 <Navbar className="myNavBar" dark expand="md">
-                    <NavbarBrand className="ml-5 mr-5" href={routes.HOME}>
+                    <NavbarBrand className="ml-5 mr-5" onClick={() => this.props.history.push(routes.HOME)} style={{cursor:"pointer"}}>
                         MyStore
                 </NavbarBrand>
                     <Collapse isOpen={this.state.isOpenNavBar} navbar>
@@ -116,10 +116,10 @@ class NavBar extends Component {
                                     Produtos p/ Categoria
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem href={routes.LISTA_PRODUTOS}>
+                                    <DropdownItem onClick={() => {this.props.history.push(routes.LISTA_PRODUTOS)}}>
                                         Bebidas
                                     </DropdownItem>
-                                    <DropdownItem href={routes.LISTA_PRODUTOS}>
+                                    <DropdownItem onClick={() => this.props.history.push(routes.LISTA_PRODUTOS)}>
                                         Roupa
                                     </DropdownItem>
                                 </DropdownMenu>

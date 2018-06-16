@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
-import { Row, Col, Container, Input } from 'reactstrap';
+import { Row, Col, Container, Input, Alert } from 'reactstrap';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 import PencilIcon from 'react-icons/lib/fa/edit';
 
-// import EditarDados from './components/EditarDados';
-// import ApagarConta from './components/ApagarConta';
-// import AlterarPassword from './components/AlterarPassword';
-
+import * as services from '../../services/utilizadores';
+import AlterarPassword from './components/AlterarPassword';
 
 class Conta extends Component {
 
@@ -21,22 +19,38 @@ class Conta extends Component {
             rua: this.props.sessionStore.user.rua,
             localidade: this.props.sessionStore.user.localidade,
             codigoPostal: this.props.sessionStore.user.codigoPostal,
-            modalEditarDados: false,
+            editarDados: false,
             modalPass: false,
         };
     }
 
-    // toggleEditarDados = () => {
-    //     this.setState({
-    //         modalEditarDados: !this.state.modalEditarDados,
-    //     });
-    // }
+    guardar = () => {
+        const { nome, email, telemovel, contribuinte, rua, localidade, codigoPostal } = this.state;
 
-    // togglePass = () => {
-    //     this.setState({
-    //         modalPass: !this.state.modalPass,
-    //     });
-    // }
+        services.editarDados(nome, email, telemovel, contribuinte, rua, localidade, codigoPostal, this.props.sessionStore.accessToken)
+            .then(response => this.toggle())
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+        this.setState({
+            editarDados: !this.state.editarDados,
+        });
+    }
+
+    toggleAlert = () => {
+        this.setState({ editarDados: !this.state.editarDados });
+    }
+
+    togglePass = () => {
+        this.setState({
+            modalPass: !this.state.modalPass,
+        });
+    }
 
     render() {
 
@@ -51,13 +65,18 @@ class Conta extends Component {
         } = this.state;
 
         return (
-            <Container style={{minHeight:"90vh"}}>
-                <Row className="mt-5">
+
+            <Container>
+                <Alert color="success" isOpen={this.state.editarDados} toggle={this.toggleAlert} className="mt-2" style={{marginBottom:"-60px"}}>
+                    Dados alterados com sucesso
+                </Alert>
+
+                <Row style={{marginTop:"75px"}}>
                     <Col md="3">
                         <h3>A minha conta</h3>
                     </Col>
                     <Col md="9">
-                        <button type="button" className="btn btn-primary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.toggleEditarDados}>
+                        <button type="button" className="btn btn-primary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.guardar}>
                             Guardar
                 		</button>
                         <button type="button" className="btn btn-primary block inline-md" style={{ width: '180px' }} onClick={this.togglePass}>
@@ -86,7 +105,7 @@ class Conta extends Component {
                             <label htmlFor="inputEmail">Email</label>
                         </div>
                         <div className="form-label-group">
-                            <Input value={telemovel} placeholder="Telemóvel" type="phone" className="form-control" id="inputTelemovel"
+                            <Input value={telemovel} placeholder="Telemóvel" type="text" className="form-control" id="inputTelemovel"
                                 onChange={event => this.setState({
                                     'telemovel': event.target.value
                                 })}
@@ -131,11 +150,7 @@ class Conta extends Component {
                     </Col>
                 </Row>
 
-
-
-                {/* <EditarDados modal={this.state.modalEditarDados} toggle={this.toggleEditarDados} />
-                <ApagarConta modal={this.state.modalApagarConta} toggle={this.toggleApagarConta} />
-                <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} /> */}
+                <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} />
             </Container >
         );
     }

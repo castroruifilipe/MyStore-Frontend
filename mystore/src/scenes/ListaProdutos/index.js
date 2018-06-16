@@ -18,105 +18,105 @@ const api = {
 };
 
 class ListaProdutos extends Component {
-  constructor(props) {
-    super(props);
+    constructor(props) {
+        super(props);
 
-    this.state = {
-        produtos: [],
-        existemProdutos: true,
-        nrProdutos: 0,
-        tamanhoPagina: 10,
-        paginaAtual: 1,
-        nextHref: null
-    };
-}
-
-loadItems() {
-  var self = this;
-  services.getProdutosPorCategoria(this.props.sessionStore.accessToken, this.props.categoria, this.state.paginaAtual, this.state.tamanhoPagina)
-    .then(resp => {
-          if(resp) {
-              var produtos = self.state.produtos;
-              resp.collection.map((track) => {
-                  if(track.artwork_url == null) {
-                      track.artwork_url = track.user.avatar_url;
-                  }
-                  produtos.push(track);
-              });
-
-              if(resp.next_href) {
-                  self.setState({
-                      produtos: produtos,
-                      nextHref: resp.next_href
-                  });
-              } else {
-                  self.setState({
-                    existemProdutos: false
-                  });
-              }
-          }
-      }).catch((e, xhr, resp) => {
-        alert(e)
-      });
-}
-
-loadItemsTest() {
-    var self = this;
-
-    var url = api.baseUrl + '/users/8665091/favorites';
-    if(this.state.nextHref) {
-        url = this.state.nextHref;
+        this.state = {
+            produtos: [],
+            existemProdutos: true,
+            nrProdutos: 0,
+            tamanhoPagina: 10,
+            paginaAtual: 1,
+            nextHref: null
+        };
     }
 
-    qwest.get(url, {
+    loadItems() {
+        var self = this;
+        // services.getProdutosPorCategoria(this.props.sessionStore.accessToken, this.props.categoria, this.state.paginaAtual, this.state.tamanhoPagina)
+        //     .then(resp => {
+        //         if (resp) {
+        //             var produtos = self.state.produtos;
+        //             resp.collection.map((track) => {
+        //                 if (track.artwork_url == null) {
+        //                     track.artwork_url = track.user.avatar_url;
+        //                 }
+        //                 produtos.push(track);
+        //             });
+
+        //             if (resp.next_href) {
+        //                 self.setState({
+        //                     produtos: produtos,
+        //                     nextHref: resp.next_href
+        //                 });
+        //             } else {
+        //                 self.setState({
+        //                     existemProdutos: false
+        //                 });
+        //             }
+        //         }
+        //     }).catch((e, xhr, resp) => {
+        //         alert(e)
+        //     });
+    }
+
+    loadItemsTest() {
+        var self = this;
+
+        var url = api.baseUrl + '/users/8665091/favorites';
+        if (this.state.nextHref) {
+            url = this.state.nextHref;
+        }
+
+        qwest.get(url, {
             client_id: api.client_id,
             linked_partitioning: 1,
             page_size: 10
         }, {
-            cache: true
-        }).then(function(xhr, resp) {
-            if(resp) {
-                var produtos = self.state.produtos;
-                resp.collection.map((track) => {
-                    if(track.artwork_url == null) {
-                        track.artwork_url = track.user.avatar_url;
-                    }
-                    produtos.push(track);
-                });
+                cache: true
+            }).then(function (xhr, resp) {
+                if (resp) {
+                    var produtos = self.state.produtos;
+                    resp.collection.map((track) => {
+                        if (track.artwork_url == null) {
+                            track.artwork_url = track.user.avatar_url;
+                        }
+                        produtos.push(track);
+                    });
 
-                if(resp.next_href) {
-                    self.setState({
-                        produtos: produtos,
-                        nextHref: resp.next_href
-                    });
-                } else {
-                    self.setState({
-                      existemProdutos: false
-                    });
+                    if (resp.next_href) {
+                        self.setState({
+                            produtos: produtos,
+                            nextHref: resp.next_href
+                        });
+                    } else {
+                        self.setState({
+                            existemProdutos: false
+                        });
+                    }
                 }
-            }
-        }).catch((e, xhr, resp) => {
-          alert(e)
-        });
-}
+            }).catch((e, xhr, resp) => {
+                alert(e)
+            });
+    }
     componentWillMount() {
     }
 
     render() {
-      const loader = <div className="loader">Loading ...</div>;
+        const loader = <div className="loader">Loading ...</div>;
 
         var items = [];
         this.state.produtos.map((produto, i) => {
             items.push(
-              <Card>
-                <CardImg top width="100%" src={produto.artwork_url} alt="Card image cap" />
-                <CardBody>
-                    <CardTitle>{produto.title}</CardTitle>
-                    <CardSubtitle>Card subtitle</CardSubtitle>
-                    <CardText>This is a wider card with supporting text below.</CardText>
-                    <Button>Button</Button>
-                </CardBody>
-              </Card>
+                <Card key={i}>
+                    <CardImg top width="100%" src={produto.artwork_url} alt="Card image cap" />
+                    <CardBody>
+                        <CardTitle>{produto.title}</CardTitle>
+                        <CardSubtitle>Card subtitle</CardSubtitle>
+                        <CardText>This is a wider card with supporting text below.</CardText>
+                        <Button>Button</Button>
+                    </CardBody>
+                </Card>
             );
         });
         return (
@@ -126,16 +126,14 @@ loadItemsTest() {
                         <h4>Lista de Produtos</h4>
                     </Row>
                     <Row>
-                          <InfiniteScroll
+                        <InfiniteScroll
                             pageStart={0}
                             loadMore={this.loadItemsTest.bind(this)}
                             hasMore={this.state.existemProdutos}
                             loader={loader}>
-                            <div>
-                              <CardColumns>
-                                {items}
-                              </CardColumns>
-                            </div>
+                                <CardColumns>
+                                    {items}
+                                </CardColumns>
                         </InfiniteScroll>
                     </Row>
                 </Container>
@@ -145,7 +143,7 @@ loadItemsTest() {
 }
 
 export default compose(
-	withRouter,
-	inject('sessionStore'),
-  observer
+    withRouter,
+    inject('produtosStore'),
+    observer
 )(ListaProdutos);

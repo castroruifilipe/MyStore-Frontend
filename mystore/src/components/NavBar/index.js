@@ -86,7 +86,7 @@ class NavBar extends Component {
                             <DropdownItem href={routes.ENCOMENDAS}>
                                 Encomendas
                             </DropdownItem>
-                            <DropdownItem>
+                            <DropdownItem href={routes.CONTA}>
                                 Meus dados
                             </DropdownItem>
                             <DropdownItem divider />

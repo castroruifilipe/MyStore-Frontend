@@ -1,5 +1,4 @@
 import axios from 'axios';
-import qs from 'querystring'
 
 import { urlProdutos } from '../../services';
 
@@ -8,3 +7,6 @@ export const getNovidades = (quantidade) =>
 
 export const getMaisVendidos = () =>
     axios.get(`${urlProdutos}/maisVendidos`);
+
+export const getProdutos = (categoria, pagina, size) =>
+    axios.get(`${urlProdutos}/categoria/${categoria}`, { params: { pagina, size } });

@@ -46,7 +46,7 @@
     margin-left: 8px;
 }
 
-@media (min-width: 767px) and (max-width: 943px) {
+@media (min-width: 767px) and (max-width: 1126px) {
     .navLinkHidden {
         display: none;
     }

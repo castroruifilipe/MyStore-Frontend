@@ -30,8 +30,8 @@ class App extends Component {
 							<Route exact path={routes.HOME} component={Home} />
 							<Route exact path={routes.LOGIN} component={Login} />
 							<Route exact path={routes.REGISTAR} component={Registar} />
-							<Route path={routes.PRODUTO} component={Produto} />
-							<Route path={routes.LISTA_PRODUTOS} component={ListaProdutos} />
+							<Route path={routes.PRODUTO + ':id'} component={Produto} />
+							<Route path={routes.LISTA_PRODUTOS + ':categoria'} component={ListaProdutos} />
 							<Route path={routes.CONTA} component={Conta}/>
 						</Switch>
 						<Footer />

@@ -1,13 +1,11 @@
 import React, { Component } from 'react';
 import { Carousel } from 'react-responsive-carousel';
-import {
-    Container, Row, Card, Button, CardImg, CardTitle, CardText,
-    CardSubtitle, CardBody, CardDeck
-} from 'reactstrap';
+import { Container, Row, CardDeck } from 'reactstrap';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 
+import Produto from '../../components/Produto';
 import * as services from '../../services/produtos';
 
 class Home extends Component {
@@ -44,15 +42,7 @@ class Home extends Component {
         this.props.produtosStore.novidades
             .forEach(produto => {
                 rows.push(
-                    <Card key={produto.codigo}>
-                        <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                        <CardBody>
-                            <CardTitle>{produto.nome}</CardTitle>
-                            <CardSubtitle>{produto.precoBase}€</CardSubtitle>
-                            <CardText>{produto.descricao}</CardText>
-                            <Button>Ver produto</Button>
-                        </CardBody>
-                    </Card>
+                    <Produto produto={produto} />
                 );
             });
     }
@@ -61,15 +51,7 @@ class Home extends Component {
         this.props.produtosStore.maisVendidos
             .forEach(produto => {
                 rows.push(
-                    <Card key={produto.codigo}>
-                        <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                        <CardBody>
-                            <CardTitle>{produto.nome}</CardTitle>
-                            <CardSubtitle>{produto.precoBase}€</CardSubtitle>
-                            <CardText>{produto.descricao}</CardText>
-                            <Button>Ver produto</Button>
-                        </CardBody>
-                    </Card>
+                    <Produto produto={produto} />
                 );
             });
     }

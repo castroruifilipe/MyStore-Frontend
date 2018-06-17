@@ -8,6 +8,7 @@ import IoAndroidCart from 'react-icons/lib/io/android-cart';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import SearchBar from './components/SearchBar';
 import * as routes from '../../constants/routes';
@@ -68,10 +69,10 @@ class NavBar extends Component {
         let navItemConta = (
             <Nav className="ml-auto" navbar>
                 <NavItem>
-                    <NavLink onClick={() => this.props.history.push(routes.LOGIN)}>Login</NavLink>
+                    <NavLink tag={Link} to={routes.LOGIN}>Login</NavLink>
                 </NavItem>
                 <NavItem>
-                    <NavLink onClick={() => this.props.history.push(routes.REGISTAR)}>Registar</NavLink>
+                    <NavLink tag={Link} to={routes.REGISTAR}>Registar</NavLink>
                 </NavItem>
             </Nav>
         );
@@ -83,10 +84,10 @@ class NavBar extends Component {
                             Minha conta
                         </DropdownToggle>
                         <DropdownMenu right>
-                            <DropdownItem onClick={() => this.props.history.push(routes.ENCOMENDAS)}>
+                            <DropdownItem tag={Link} to={routes.ENCOMENDAS} >
                                 Encomendas
                             </DropdownItem>
-                            <DropdownItem onClick={ () => {this.props.history.push(routes.CONTA)}}>
+                            <DropdownItem tag={Link} to={routes.CONTA}>
                                 Meus dados
                             </DropdownItem>
                             <DropdownItem divider />
@@ -102,7 +103,7 @@ class NavBar extends Component {
         return (
             <div>
                 <Navbar className="myNavBar" dark expand="md">
-                    <NavbarBrand className="ml-5 mr-5" onClick={() => this.props.history.push(routes.HOME)} style={{cursor:"pointer"}}>
+                    <NavbarBrand className="ml-5 mr-5" tag={Link} to={routes.HOME} style={{ cursor: "pointer" }}>
                         MyStore
                 </NavbarBrand>
                     <Collapse isOpen={this.state.isOpenNavBar} navbar>
@@ -113,10 +114,10 @@ class NavBar extends Component {
                         <Nav className="ml-auto navLinkHidden" navbar>
                             <UncontrolledDropdown nav inNavbar>
                                 <DropdownToggle nav caret>
-                                    Produtos p/ Categoria
+                                    Categorias
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem onClick={() => {this.props.history.push(routes.LISTA_PRODUTOS)}}>
+                                    <DropdownItem tag={Link} to={routes.LISTA_PRODUTOS + 'Movies'}>
                                         Bebidas
                                     </DropdownItem>
                                     <DropdownItem onClick={() => this.props.history.push(routes.LISTA_PRODUTOS)}>

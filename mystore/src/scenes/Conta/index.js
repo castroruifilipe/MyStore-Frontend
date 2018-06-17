@@ -6,29 +6,64 @@ import PencilIcon from 'react-icons/lib/fa/edit';
 
 import * as services from '../../services/utilizadores';
 import AlterarPassword from './components/AlterarPassword';
+import EditarDados from './components/EditarDados';
 
 class Conta extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            nome: this.props.sessionStore.user.nome,
-            email: this.props.sessionStore.user.email,
-            telemovel: this.props.sessionStore.user.telemovel,
-            contribuinte: this.props.sessionStore.user.contribuinte,
-            rua: this.props.sessionStore.user.rua,
-            localidade: this.props.sessionStore.user.localidade,
-            codigoPostal: this.props.sessionStore.user.codigoPostal,
-            editarDados: false,
+            modoEdicao: false,
+            showAlert: false,
             modalPass: false,
+            nome: undefined,
+            email: undefined,
+            telemovel: undefined,
+            contribuinte: undefined,
+            rua: undefined,
+            localidade: undefined,
+            codigoPostal: undefined,
         };
     }
 
-    guardar = () => {
-        const { nome, email, telemovel, contribuinte, rua, localidade, codigoPostal } = this.state;
+    editar = () => {
+        this.setState({ modoEdicao: true })
+    }
 
-        services.editarDados(nome, email, telemovel, contribuinte, rua, localidade, codigoPostal, this.props.sessionStore.accessToken)
-            .then(response => this.toggle())
+    cancelar = () => {
+        this.setState({ modoEdicao: false })
+    }
+
+    onChange = (event) => {
+        this.setState({ [event.target.id]: event.target.value })
+    }
+
+    guardar = () => {
+        const dados = {};
+        if (this.state.nome) {
+            dados['nome'] = this.state.nome;
+        }
+        if (this.state.telemovel !== undefined) {
+            dados['telemovel'] = this.state.telemovel;
+        }
+        if (this.state.contribuinte !== undefined) {
+            dados['contribuinte'] = this.state.contribuinte;
+        }
+        if (this.state.rua !== undefined) {
+            dados['rua'] = this.state.rua;
+        }
+        if (this.state.localidade !== undefined) {
+            dados['localidade'] = this.state.localidade;
+        }
+        if (this.state.codigoPostal !== undefined) {
+            dados['codigoPostal'] = this.state.codigoPostal;
+        }
+        services.editarDados(dados, this.props.sessionStore.accessToken)
+            .then(response => {
+                this.props.sessionStore.setUser(response.data);
+                this.setState({ modoEdicao: false });
+                this.toggleAlert();
+            })
             .catch(error => {
                 if (error.response) {
                     console.log(error.response);
@@ -37,13 +72,10 @@ class Conta extends Component {
                     console.error(error);
                 }
             });
-        this.setState({
-            editarDados: !this.state.editarDados,
-        });
     }
 
     toggleAlert = () => {
-        this.setState({ editarDados: !this.state.editarDados });
+        this.setState({ showAlert: !this.state.showAlert });
     }
 
     togglePass = () => {
@@ -53,8 +85,7 @@ class Conta extends Component {
     }
 
     render() {
-
-        const {
+        let {
             nome,
             email,
             telemovel,
@@ -62,93 +93,85 @@ class Conta extends Component {
             rua,
             localidade,
             codigoPostal,
-        } = this.state;
+        } = this.props.sessionStore.user;
 
         return (
-
             <Container>
-                <Alert color="success" isOpen={this.state.editarDados} toggle={this.toggleAlert} className="mt-2" style={{marginBottom:"-60px"}}>
+                <Alert color="success" isOpen={this.state.showAlert} toggle={this.toggleAlert} className="mt-2" style={{ marginBottom: "-60px" }}>
                     Dados alterados com sucesso
                 </Alert>
 
-                <Row style={{marginTop:"75px"}}>
+                <Row style={{ marginTop: "75px" }}>
                     <Col md="3">
                         <h3>A minha conta</h3>
                     </Col>
                     <Col md="9">
-                        <button type="button" className="btn btn-primary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.guardar}>
-                            Guardar
-                		</button>
-                        <button type="button" className="btn btn-primary block inline-md" style={{ width: '180px' }} onClick={this.togglePass}>
-                            <PencilIcon className="mr-1" />
-                            Alterar Password
-                		</button>
+                        {
+                            this.state.modoEdicao ?
+                                <div>
+                                    <button type="button" className="btn btn-success mr-2 block inline-md" style={{ width: '180px' }} onClick={this.guardar}>
+                                        <PencilIcon className="mr-1" />
+                                        Guardar
+                                    </button>
+                                    <button type="button" className="btn btn-secondary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.cancelar}>
+                                        Cancelar
+                                    </button>
+                                </div>
+                                :
+                                <div>
+                                    <button type="button" className="btn btn-primary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.editar}>
+                                        <PencilIcon className="mr-1" />
+                                        Editar dados
+                                    </button>
+                                    <button type="button" className="btn btn-primary block inline-md" style={{ width: '180px' }} onClick={this.togglePass}>
+                                        <PencilIcon className="mr-1" />
+                                        Alterar Password
+                                    </button>
+                                </div>
+                        }
                     </Col>
                 </Row>
-                <Row>
-                    <Col md="6" className="mt-4">
-                        <h5>Dados pessoais</h5>
-                        <div className="form-label-group">
-                            <Input value={nome} placeholder="Nome" type="text" className="form-control" id="inputNome"
-                                onChange={event => this.setState({
-                                    'nome': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputNome">Nome</label>
-                        </div>
-                        <div className="form-label-group">
-                            <Input value={email} placeholder="Email" type="email" className="form-control" id="inputEmail"
-                                onChange={event => this.setState({
-                                    'email': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputEmail">Email</label>
-                        </div>
-                        <div className="form-label-group">
-                            <Input value={telemovel} placeholder="Telemóvel" type="text" className="form-control" id="inputTelemovel"
-                                onChange={event => this.setState({
-                                    'telemovel': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputTelemovel">Telemóvel</label>
-                        </div>
-                        <div className="form-label-group">
-                            <Input value={contribuinte} placeholder="Contribuinte" type="text" className="form-control" id="inputNIF"
-                                onChange={event => this.setState({
-                                    'contribuinte': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputNIF">Contribuinte</label>
-                        </div>
-                    </Col>
-                    <Col md="6" className="mt-4">
-                        <h5>Endereço</h5>
-                        <div className="form-label-group">
-                            <Input value={rua} placeholder="Rua" type="text" className="form-control" id="inputRua"
-                                onChange={event => this.setState({
-                                    'rua': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputRua">Rua</label>
-                        </div>
-                        <div className="form-label-group">
-                            <Input value={localidade} placeholder="Rua" type="text" className="form-control" id="inputLocalidade"
-                                onChange={event => this.setState({
-                                    'localidade': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputLocalidade">Localidade</label>
-                        </div>
-                        <div className="form-label-group">
-                            <Input value={codigoPostal} placeholder="Código Postal" type="text" className="form-control" id="inputCP"
-                                onChange={event => this.setState({
-                                    'Código Postal': event.target.value
-                                })}
-                            />
-                            <label htmlFor="inputCP">Código Postal</label>
-                        </div>
-                    </Col>
-                </Row>
+                {
+                    this.state.modoEdicao ?
+                        <EditarDados user={this.props.sessionStore.user} onChange={this.onChange} />
+                        :
+                        <Row>
+                            <Col md="6" className="mt-4">
+                                <h5>Dados pessoais</h5>
+                                <div className="form-label-group">
+                                    <Input value={nome || ''} placeholder="Nome" disabled type="text" className="form-control" id="inputNome" />
+                                    <label htmlFor="inputNome">Nome</label>
+                                </div>
+                                <div className="form-label-group">
+                                    <Input value={email} placeholder="Email" disabled type="email" className="form-control" id="inputEmail" />
+                                    <label htmlFor="inputEmail">Email</label>
+                                </div>
+                                <div className="form-label-group">
+                                    <Input value={telemovel} disabled placeholder="Telemóvel" type="text" className="form-control" id="inputTelemovel" />
+                                    <label htmlFor="inputTelemovel">Telemóvel</label>
+                                </div>
+                                <div className="form-label-group">
+                                    <Input value={contribuinte} disabled placeholder="Contribuinte" type="text" className="form-control" id="inputNIF" />
+                                    <label htmlFor="inputNIF">Contribuinte</label>
+                                </div>
+                            </Col>
+                            <Col md="6" className="mt-4">
+                                <h5>Endereço</h5>
+                                <div className="form-label-group">
+                                    <Input value={rua} disabled placeholder="Rua" type="text" className="form-control" id="inputRua" />
+                                    <label htmlFor="inputRua">Rua</label>
+                                </div>
+                                <div className="form-label-group">
+                                    <Input value={localidade} disabled placeholder="Rua" type="text" className="form-control" id="inputLocalidade" />
+                                    <label htmlFor="inputLocalidade">Localidade</label>
+                                </div>
+                                <div className="form-label-group">
+                                    <Input value={codigoPostal} disabled placeholder="Código Postal" type="text" className="form-control" id="inputCP" />
+                                    <label htmlFor="inputCP">Código Postal</label>
+                                </div>
+                            </Col>
+                        </Row>
+                }
 
                 <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} />
             </Container >

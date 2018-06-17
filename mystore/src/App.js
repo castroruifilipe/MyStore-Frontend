@@ -16,10 +16,6 @@ import ListaProdutos from './scenes/ListaProdutos';
 
 class App extends Component {
 
-	componentWillMount() {
-		
-	}
-
 	render() {
 		return (
 			<div className="App">

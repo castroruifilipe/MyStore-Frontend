@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, CardColumns, CardDeck } from 'reactstrap';
+import { Container, Row, CardDeck } from 'reactstrap';
 import withRouter from 'react-router-dom/withRouter';
 import InfiniteScroll from 'react-infinite-scroller';
 
@@ -38,14 +38,14 @@ class ListaProdutos extends Component {
 
 
 
-            if ((i + 1) % 2 == 0) {
+            if ((i + 1) % 2 === 0) {
                 rows.push(<div class="w-100 d-none d-md-block d-lg-none"></div>)
                 rows.push(<div class="w-100 d-none d-sm-block d-md-none"></div>)
             }
-            if ((i + 1) % 3 == 0) {
+            if ((i + 1) % 3 === 0) {
                 rows.push(<div class="w-100 d-none d-lg-block d-xl-none"></div>)
             }
-            if ((i + 1) % 4 == 0) {
+            if ((i + 1) % 4 === 0) {
                 rows.push(<div class="w-100 d-none d-xl-block"></div>)
             }
         }

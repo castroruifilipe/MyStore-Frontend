@@ -1,6 +1,8 @@
 import React from 'react';
 import { inject } from 'mobx-react';
 
+import * as services from '../services/utilizadores';
+
 const withAuthentication = (Component) => {
     class WithAuthentication extends React.Component {
 
@@ -9,6 +11,13 @@ const withAuthentication = (Component) => {
             let accessToken = sessionStorage.getItem('accessToken');
             if (accessToken) {
                 sessionStore.setAccessToken(accessToken);
+                services.getUser(accessToken)
+                    .then(response => {
+                        sessionStore.setUser(response.data)
+                    })
+                    .catch(error => {
+                        console.error(error);
+                    });
             }
         }
 

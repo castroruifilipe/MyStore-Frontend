@@ -22,11 +22,10 @@ class Login extends Component {
 		const { email, password } = this.state;
 		services.signin(email, password)
 			.then(response => {
-				let user = { ...response.data };
 				let accessToken = response.headers['access-token'];
 
 				this.props.sessionStore.setAccessToken(accessToken);
-				this.props.sessionStore.setUser(user);
+				this.props.sessionStore.setUser(response.data);
 			})
 			.then(() => this.props.history.push(routes.HOME))
 			.catch(error => {

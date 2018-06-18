@@ -1,33 +1,55 @@
 import React, { Component } from 'react';
-import { withRouter } from 'react-router-dom';
 import { Row, Col, Container, Button } from 'reactstrap';
 import NumericInput from 'react-numeric-input';
-import { Card, CardImg, CardTitle, CardText, CardSubtitle, CardBody, CardDeck } from 'reactstrap';
+import { CardDeck } from 'reactstrap';
 import FaTruck from 'react-icons/lib/fa/truck';
-import './style.css';
+import Produto from '../../components/Produto';
 
-class Produto extends Component {
+import './style.css';
+import * as services from '../../services/produtos';
+
+class DetalhesProduto extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
             value: 0,
             error: null,
-            produto: {
-                codigo: 1223,
-                nome: 'The Essence of Software Engineering',
-                descricao: 'This book is open access under a CC BY 4.0 license.This book '
-                    + 'includes contributions by leading researchers and industry thought'
-                    + 'leaders on various topics related to the essence of software engineering'
-                    + 'and their application in industrial projects. It offers a broad overview'
-                    + 'of research findings dealing with current practical software engineering'
-                    + 'issues and also pointers to potential future developments.',
-                precoBase: 59.99,
-                stock: 3,
-                iva: 0.06
-            }
+            produto: {},
         };
     }
+
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
+    componentWillMount() {
+        this.getProduto(this.props.match.params.id);
+    }
+
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.id !== prevProps.match.params.id) {
+            this.getProduto(this.props.match.params.id)
+            window.scrollTo(0, 0);
+        }
+
+    }
+
+    getProduto = (id) => {
+        services.getProduto(id)
+            .then(response => {
+                this.setState({ produto: response.data });
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+    }
+
 
     getProdutos() {
         let produtos = [];
@@ -55,15 +77,7 @@ class Produto extends Component {
         let produtos = this.getProdutos();
         produtos.forEach(produto => {
             rows.push(
-                <Card key={produto.codigo}>
-                    <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                    <CardBody>
-                        <CardTitle>{produto.nome}</CardTitle>
-                        <CardSubtitle>{produto.precoBase}€</CardSubtitle>
-                        <CardText>{produto.descricao}</CardText>
-                        <Button>Ver produto</Button>
-                    </CardBody>
-                </Card>
+                <Produto produto={produto} />
             );
         });
     }
@@ -71,7 +85,6 @@ class Produto extends Component {
 
 
     render() {
-        // let produto = this.props.produtosStore.produtos.get(this.props.match.params.id);
         let rows = [];
         this.makeProdutosRelacionados(rows);
         return (
@@ -127,4 +140,4 @@ class Produto extends Component {
     }
 }
 
-export default withRouter(Produto);
+export default DetalhesProduto;

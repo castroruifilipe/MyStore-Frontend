@@ -42,7 +42,7 @@ class Home extends Component {
         this.props.produtosStore.novidades
             .forEach(produto => {
                 rows.push(
-                    <Produto produto={produto} />
+                    <Produto key={produto.codigo} produto={produto} />
                 );
             });
     }
@@ -51,7 +51,7 @@ class Home extends Component {
         this.props.produtosStore.maisVendidos
             .forEach(produto => {
                 rows.push(
-                    <Produto produto={produto} />
+                    <Produto key={produto.codigo} produto={produto} />
                 );
             });
     }

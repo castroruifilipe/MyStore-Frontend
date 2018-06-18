@@ -1,5 +1,8 @@
 import React, { Component } from 'react';
 import { Card, Button, CardImg, CardTitle, CardText, CardBody, Badge, CardFooter, } from 'reactstrap';
+import { withRouter } from 'react-router-dom';
+
+import * as routes from '../../constants/routes';
 
 class Produto extends Component {
 
@@ -22,7 +25,7 @@ class Produto extends Component {
                     <CardText>{produto.descricao}</CardText>
                 </CardBody>
                 <CardFooter className="d-flex justify-content-between">
-                    <Button size="sm">Ver produto</Button>
+                    <Button size="sm" onClick={() => {this.props.history.push(routes.PRODUTO+produto.codigo)}} >Ver produto</Button>
                     <Button size="sm" color="success">Comprar</Button>
                 </CardFooter>
             </Card>
@@ -31,4 +34,4 @@ class Produto extends Component {
 
 }
 
-export default Produto;
+export default withRouter(Produto);

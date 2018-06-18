@@ -23,7 +23,18 @@ class SearchBar extends Component {
         this.setState({ categoria })
     }
 
+    makeCategorias = (rows) => {
+        rows.push(<a key={0} className="dropdown-item" onClick={(e) => this.mudarCategoria('Todas', e)}>Todas</a>);
+        this.props.categorias.forEach(categoria => {
+            rows.push(
+                <a key={categoria.id} className="dropdown-item" onClick={(e) => this.mudarCategoria(categoria.descricao, e)}>{categoria.descricao}</a>
+            );
+        })
+    }
+
     render() {
+        let rows = [];
+        this.makeCategorias(rows);
         return (
             <Form className="form-inline my-2 my-lg-0">
                 <div className="dropdown">
@@ -32,14 +43,12 @@ class SearchBar extends Component {
                         {this.state.categoria}
                     </button>
                     <div className="dropdown-menu dropdownmenuCategorias" aria-labelledby="dropdownMenuButton">
-                        <a className="dropdown-item" onClick={(e) => this.mudarCategoria("Alimentação e bebidas", e)}>Alimentação e bebidas</a>
-                        <a className="dropdown-item" onClick={(e) => this.mudarCategoria("Beleza", e)}>Beleza</a>
-                        <a className="dropdown-item" onClick={(e) => this.mudarCategoria("Livros", e)}>Livros</a>
+                        {rows}
                     </div>
                 </div>
                 <Input className="form-control mr-sm-2 searchBar" type="search" placeholder="Search" aria-label="Search" />
                 <button type="submit" id="searchsubmit" value="Search" className="btn btn-warning searchButton">
-                    <span><MdSearch size="25"/></span>
+                    <span><MdSearch size="25" /></span>
                 </button>
             </Form>
         );

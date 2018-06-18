@@ -12,6 +12,7 @@ import { Link } from 'react-router-dom';
 
 import SearchBar from './components/SearchBar';
 import * as routes from '../../constants/routes';
+import * as services from '../../services/categorias';
 import './style.css';
 
 class NavBar extends Component {
@@ -19,9 +20,25 @@ class NavBar extends Component {
     constructor(props) {
         super(props);
         this.state = {
+            categorias: [],
             isOpenNavBar: false,
             popoverOpen: false,
         }
+    }
+
+    componentWillMount() {
+        services.getCategorias()
+            .then(response => {
+                this.setState({ categorias: response.data });
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
     }
 
     toggleNavBar = () => {
@@ -62,9 +79,21 @@ class NavBar extends Component {
         }
     }
 
+    makeCategoriasRows = (rows) => {
+        this.state.categorias.forEach(categoria => {
+            rows.push(
+                <DropdownItem key={categoria.id} tag={Link} to={routes.LISTA_PRODUTOS + categoria.descricao}>
+                    {categoria.descricao}
+                </DropdownItem>
+            );
+        })
+    }
+
     render() {
         let rowsShoppingCart = [];
+        let categoriasRows = [];
         this.makeRowsShoppingCart(rowsShoppingCart);
+        this.makeCategoriasRows(categoriasRows);
 
         let navItemConta = (
             <Nav className="ml-auto" navbar>
@@ -108,7 +137,7 @@ class NavBar extends Component {
                 </NavbarBrand>
                     <Collapse isOpen={this.state.isOpenNavBar} navbar>
                         <div className="searchgroup">
-                            <SearchBar />
+                            <SearchBar categorias={this.state.categorias} />
                         </div>
 
                         <Nav className="ml-auto navLinkHidden" navbar>
@@ -117,12 +146,7 @@ class NavBar extends Component {
                                     Categorias
                                 </DropdownToggle>
                                 <DropdownMenu right>
-                                    <DropdownItem tag={Link} to={routes.LISTA_PRODUTOS + 'Movies'}>
-                                        Bebidas
-                                    </DropdownItem>
-                                    <DropdownItem onClick={() => this.props.history.push(routes.LISTA_PRODUTOS)}>
-                                        Roupa
-                                    </DropdownItem>
+                                    {categoriasRows}
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                             <NavItem>

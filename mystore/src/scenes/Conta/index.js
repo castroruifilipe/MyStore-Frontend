@@ -23,6 +23,7 @@ class Conta extends Component {
             rua: undefined,
             localidade: undefined,
             codigoPostal: undefined,
+            mensagem: "",
         };
     }
 
@@ -62,7 +63,7 @@ class Conta extends Component {
             .then(response => {
                 this.props.sessionStore.setUser(response.data);
                 this.setState({ modoEdicao: false });
-                this.toggleAlert();
+                this.showMensagem("Dados alterados com sucesso!");
             })
             .catch(error => {
                 if (error.response) {
@@ -75,7 +76,12 @@ class Conta extends Component {
     }
 
     toggleAlert = () => {
-        this.setState({ showAlert: !this.state.showAlert });
+        this.setState({showAlert: !this.state.showAlert });
+    }
+
+    showMensagem = (mensagem) => {
+        this.setState({mensagem: mensagem});
+        this.toggleAlert();
     }
 
     togglePass = () => {
@@ -98,7 +104,7 @@ class Conta extends Component {
         return (
             <Container>
                 <Alert color="success" isOpen={this.state.showAlert} toggle={this.toggleAlert} className="mt-2" style={{ marginBottom: "-60px" }}>
-                    Dados alterados com sucesso
+                    {this.state.mensagem}
                 </Alert>
 
                 <Row style={{ marginTop: "75px" }}>
@@ -173,7 +179,7 @@ class Conta extends Component {
                         </Row>
                 }
 
-                <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} />
+                <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} change={this.showMensagem}/>
             </Container >
         );
     }

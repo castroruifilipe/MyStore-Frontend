@@ -19,22 +19,31 @@ class AlterarPassword extends Component {
 
 	onSubmit = () => {
 
-        const { oldPassword, pass1 } = this.state;
+		const { passOld, pass1 } = this.state;
+		console.log("Password");
+		console.log(passOld);
+		services.alterarPassword(passOld, pass1, this.props.sessionStore.accessToken)
+			.then(response => {
+				this.props.change("Password alterada com sucesso! ");
+				this.props.toggle();
+				this.setState({
+					passOld: "",
+					pass1: "",
+					pass2: "",
+				});
+			})
+			.catch(error => {
+				if (error.response) {
+					console.log(error.response);
+					this.setState({ error: error.response.data.message });
+				} else {
+					console.error(error);
+				}
+			});
 
-        services.alterarPassword(oldPassword, pass1, this.props.sessionStore.accessToken)
-            .then(response => this.toggle())
-            .catch(error => {
-                if (error.response) {
-                    console.log(error.response);
-                    this.setState({ error: error.response.data.message });
-                } else {
-                    console.error(error);
-                }
-            });
-		
-    }
-    
-    render() {
+	}
+
+	render() {
 		const {
 			pass1,
 			pass2,
@@ -47,7 +56,7 @@ class AlterarPassword extends Component {
 			passOld === '';
 
 		return (
-			<Modal isOpen={this.props.modal} toggle={this.props.toggle} style={{marginTop:"120px"}}>
+			<Modal isOpen={this.props.modal} toggle={this.props.toggle} style={{ marginTop: "120px" }}>
 				<ModalHeader toggle={this.props.toggle}>Alterar password</ModalHeader>
 				<ModalBody className="center-block">
 					<Row className="ml-4 mr-4">

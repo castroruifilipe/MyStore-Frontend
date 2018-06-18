@@ -4,7 +4,6 @@ import InfiniteScroll from 'react-infinite-scroller';
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
-import './style.css';
 
 class ListaProdutos extends Component {
 
@@ -85,7 +84,6 @@ class ListaProdutos extends Component {
                     <Row className="mt-5">
                         <h4>Lista de Produtos</h4>
                     </Row>
-
                     <InfiniteScroll
                         pageStart={0}
                         loadMore={this.loadMoreProdutos}
@@ -95,10 +93,6 @@ class ListaProdutos extends Component {
                             {rows}
                         </CardDeck>
                     </InfiniteScroll>
-
-
-
-
                 </Container>
             </div>
         );

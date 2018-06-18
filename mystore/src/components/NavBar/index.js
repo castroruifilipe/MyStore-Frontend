@@ -150,7 +150,7 @@ class NavBar extends Component {
                                 </DropdownMenu>
                             </UncontrolledDropdown>
                             <NavItem>
-                                <NavLink>Novidades</NavLink>
+                                <NavLink tag={Link} to={routes.NOVIDADES} >Novidades</NavLink>
                             </NavItem>
                             <NavItem>
                                 <NavLink>Promoções</NavLink>

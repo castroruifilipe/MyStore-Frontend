@@ -8,8 +8,8 @@ export const getProduto = (id) =>
 export const getNovidades = (quantidade) =>
     axios.get(`${urlProdutos}/novidades/${quantidade}`);
 
-export const getMaisVendidos = () =>
-    axios.get(`${urlProdutos}/maisVendidos`);
+export const getMaisVendidos = (quantidade) =>
+    axios.get(`${urlProdutos}/maisVendidos/${quantidade}`);
 
 export const getProdutos = (categoria, pagina, size) =>
     axios.get(`${urlProdutos}/categoria/${categoria}`, { params: { pagina, size } });

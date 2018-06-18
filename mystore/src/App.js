@@ -9,6 +9,7 @@ import Login from './scenes/Login';
 import Registar from './scenes/Registar';
 import DetalhesProduto from './scenes/DetalhesProduto';
 import Conta from './scenes/Conta';
+import Novidades from './scenes/ListaNovidades';
 import Footer from './components/Footer'
 import * as routes from './constants/routes';
 import './App.css';
@@ -29,6 +30,7 @@ class App extends Component {
 							<Route path={routes.PRODUTO + ':id'} component={DetalhesProduto} />
 							<Route path={routes.LISTA_PRODUTOS + ':categoria'} component={ListaProdutos} />
 							<Route path={routes.CONTA} component={Conta}/>
+							<Route path={routes.NOVIDADES} component={Novidades}/>
 						</Switch>
 						<Footer />
 					</div>

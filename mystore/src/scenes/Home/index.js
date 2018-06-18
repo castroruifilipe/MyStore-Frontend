@@ -23,19 +23,18 @@ class Home extends Component {
                     console.error(error);
                 }
             });
-        // services.getMaisVendidos()
-        //     .then(response => {
-        //         console.log("\n\n" + response);
-        //         this.props.produtosStore.setMaisVendidos(response);
-        //     })
-        //     .catch(error => {
-        //         if (error.response) {
-        //             console.log(error.response);
-        //             this.setState({ error: error.response.data.message });
-        //         } else {
-        //             console.error(error);
-        //         }
-        //     });
+        services.getMaisVendidos(5)
+            .then(response => {
+                this.props.produtosStore.setMaisVendidos(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
     }
 
     makeNovidades = (rows) => {
@@ -59,7 +58,7 @@ class Home extends Component {
     render() {
         let novidades = [], maisVendidos = [];
         this.makeNovidades(novidades);
-        //this.makeMaisVendidos(maisVendidos);
+        this.makeMaisVendidos(maisVendidos);
         return (
             <div>
                 <Carousel transitionTime={1000} emulateTouch useKeyboardArrows infiniteLoop autoPlay showThumbs={false} showStatus={false} dynamicHeight>

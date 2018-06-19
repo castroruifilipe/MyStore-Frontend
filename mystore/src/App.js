@@ -10,10 +10,12 @@ import Registar from './scenes/Registar';
 import DetalhesProduto from './scenes/DetalhesProduto';
 import Conta from './scenes/Conta';
 import Novidades from './scenes/ListaNovidades';
+import Encomendas from './scenes/Encomendas';
 import Footer from './components/Footer'
 import * as routes from './constants/routes';
 import './App.css';
 import ListaProdutos from './scenes/ListaProdutos';
+import DetalhesEncomenda from './scenes/DetalhesEncomenda';
 
 class App extends Component {
 
@@ -29,8 +31,10 @@ class App extends Component {
 							<Route exact path={routes.REGISTAR} component={Registar} />
 							<Route path={routes.PRODUTO + ':id'} component={DetalhesProduto} />
 							<Route path={routes.LISTA_PRODUTOS + ':categoria'} component={ListaProdutos} />
-							<Route path={routes.CONTA} component={Conta}/>
-							<Route path={routes.NOVIDADES} component={Novidades}/>
+							<Route exact path={routes.CONTA} component={Conta}/>
+							<Route exact path={routes.NOVIDADES} component={Novidades}/>
+							<Route exact path={routes.ENCOMENDAS} component={Encomendas}/>
+							<Route exact path={routes.ENCOMENDA+ ':numero'} component={DetalhesEncomenda}/>
 						</Switch>
 						<Footer />
 					</div>

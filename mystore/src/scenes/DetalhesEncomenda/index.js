@@ -12,7 +12,7 @@ class DetalhesEncomenda extends Component {
         super(props);
         this.state = {
             encomenda: {
-                linhasEncomenda: [],
+                linhasEncomenda:[],
             },
         }
     }
@@ -20,9 +20,23 @@ class DetalhesEncomenda extends Component {
     componentWillMount() {
         services.getEncomenda(this.props.match.params.numero, this.props.sessionStore.accessToken)
             .then(response => {
-                console.log("encomendas");
-                console.log(response.data);
-                this.setState({ encomenda: response.data });
+                let data = response.data;
+                console.log(data);
+                this.setState({
+                    encomenda: {
+                        numero: data.id,
+                        trackingID: data.trackingID,
+                        data: data.data,
+                        enderecoEnvio: data.enderecoEnvio,
+                        enderecoFaturacao: data.enderecoFaturacao,
+                        subTotal: data.total,
+                        portes: data.portes,
+                        total: data.total + data.portes,
+                        metodo: data.metodoPagamento,
+                        estado: data.estado,
+                        dataPagamento: (data.dataPagamento || "")
+                    }
+                });
             })
             .catch(error => {
                 if (error.response) {
@@ -35,18 +49,20 @@ class DetalhesEncomenda extends Component {
     }
 
     makeProdutos = (produtos) => {
-        this.state.encomenda.linhasEncomenda.forEach(element => {
-            produtos.push(
-                <tr>
-                    <td>{element.produto.codigo}</td>
-                    <td>{element.produto.designacao}</td>
-                    <td>{element.quantidade}</td>
-                    <td>{element.preco}</td>
-                    <td>{element.valorDesconto}</td>
-                    <td>{element.valorDesconto+element.preco}</td>
-                </tr>
-            );
-        });
+        if (this.state.encomenda.linhasEncomenda !== undefined) {
+            this.state.encomenda.linhasEncomenda.forEach(element => {
+                produtos.push(
+                    <tr>
+                        <td>{element.produto.codigo}</td>
+                        <td>{element.produto.designacao}</td>
+                        <td>{element.quantidade}</td>
+                        <td>{element.preco}</td>
+                        <td>{element.valorDesconto}</td>
+                        <td>{element.valorDesconto + element.preco}</td>
+                    </tr>
+                );
+            });
+        }
     }
 
     render() {
@@ -62,25 +78,25 @@ class DetalhesEncomenda extends Component {
                         <h6>Encomenda nº {this.state.encomenda.numero}</h6>
                     </Col>
                     <Col md="4">
-                        <span>Tracking ID:{this.state.encomenda.trackingID}</span>
+                        <span>Tracking ID: {this.state.encomenda.trackingID}</span>
                     </Col>
                     <Col md="4">
-                        <span>Data:{this.state.encomenda.data}</span>
+                        <span>Data: {this.state.encomenda.data}</span>
                     </Col>
                 </Row>
 
                 <Row className="pt-4">
                     <Col md="4">
-                        <p className="colorHeader"><strong>Morada de Entrega</strong></p>
-                        <span>{this.state.encomenda.moradaEntrega}</span>
+                        <p className="colorHeader"><strong>Endereço de Envio</strong></p>
+                        <span>{this.state.encomenda.enderecoEnvio}</span>
                     </Col>
                     <Col md="4">
-                        <p className="colorHeader"><strong>Morada de Faturação</strong></p>
-                        <span>{this.state.encomenda.moradaFaturacao}</span>
+                        <p className="colorHeader"><strong>Endereço de Faturação</strong></p>
+                        <span>{this.state.encomenda.enderecoFaturacao}</span>
                     </Col>
                     <Col md="4">
                         <p className="colorHeader"><strong>Resumo</strong></p>
-                        <span><strong>Sub-Total:</strong>{this.state.encomenda.moradaFaturacao}</span><br />
+                        <span><strong>Sub-Total:</strong>{this.state.encomenda.subTotal}</span><br />
                         <span><strong>Portes:</strong>{this.state.encomenda.portes}</span><br />
                         <span><strong>Total:</strong>{this.state.encomenda.total}</span>
                     </Col>

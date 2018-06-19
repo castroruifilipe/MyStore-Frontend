@@ -23,8 +23,19 @@ class Encomendas extends Component {
     componentWillMount() {
         services.getEncomendasCliente(this.props.sessionStore.accessToken)
             .then(response => {
-                console.log(response.data);
-                this.setState({ encomendas: response.data });
+                let data = [];
+                response.data.forEach( v =>{
+                    console.log(v);
+                    data.push({
+                        numero: v.id,
+                        data: v.data,
+                        total: v.total,
+                        estado: v.estado,
+                        metodo: v.metodoPagamento,
+                    })
+                }
+                );
+                this.setState({ encomendas: data });
             })
             .catch(error => {
                 if (error.response) {
@@ -34,19 +45,6 @@ class Encomendas extends Component {
                     console.error(error);
                 }
             });
-    }
-
-    makeRows = (produtos) => {
-        let produto = {
-            numero: "",
-            data: "20/12/2001",
-            envio: "1",
-            total: "20",
-            estado: "envio",
-            metodo: "ctt",
-        }
-        for (let i = 0; i < 100; i++)
-            produtos.push({ ...produto, data: produto.data, numero: i });
     }
 
     getCaret = (direction) => {
@@ -68,21 +66,18 @@ class Encomendas extends Component {
     }
 
     render() {
-        const products = [];
-        this.makeRows(products);
         let html;
 
         if (this.state.encomendas.length === 0) {
             html = <h2>Ainda não realizou nenhuma encomenda!</h2>
         } else {
             html =
-                <BootstrapTable version='4' data={products} pagination >
+                <BootstrapTable version='4' data={this.state.encomendas} pagination >
                     <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader'>Nº Encomenda</TableHeaderColumn>
-                    <TableHeaderColumn dataField='data' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>
-                    <TableHeaderColumn dataField='envio' className="customHeader">Envio para</TableHeaderColumn>
-                    <TableHeaderColumn dataField='total' className="customHeader">Total</TableHeaderColumn>
+                    <TableHeaderColumn dataField='data' width='10%' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>
+                    <TableHeaderColumn dataField='total' width='10%' className="customHeader">Total</TableHeaderColumn>
+                    <TableHeaderColumn dataField='metodo' className="customHeader">Método pagamento</TableHeaderColumn>
                     <TableHeaderColumn dataField='estado' className="customHeader">Estado</TableHeaderColumn>
-                    <TableHeaderColumn dataField='metodo' className="customHeader">Método envio</TableHeaderColumn>
                     <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
                 </BootstrapTable>
         }

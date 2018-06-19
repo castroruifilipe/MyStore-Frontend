@@ -20,6 +20,8 @@ class DetalhesEncomenda extends Component {
     componentWillMount() {
         services.getEncomenda(this.props.match.params.numero, this.props.sessionStore.accessToken)
             .then(response => {
+                console.log("encomendas");
+                console.log(response.data);
                 this.setState({ encomenda: response.data });
             })
             .catch(error => {

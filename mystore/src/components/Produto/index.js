@@ -2,6 +2,7 @@ import React, { Component } from 'react';
 import { Card, Button, CardImg, CardTitle, CardText, CardBody, Badge, CardFooter, } from 'reactstrap';
 import { withRouter } from 'react-router-dom';
 
+import './styles.css'
 import * as routes from '../../constants/routes';
 
 class Produto extends Component {
@@ -22,7 +23,7 @@ class Produto extends Component {
                 <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
                 <CardBody>
                     <CardTitle>{produto.nome}</CardTitle>
-                    <CardText>{produto.descricao}</CardText>
+                    <CardText className="text-flow">{produto.descricao}</CardText>
                 </CardBody>
                 <CardFooter className="d-flex justify-content-between">
                     <Button size="sm" onClick={() => {this.props.history.push(routes.PRODUTO+produto.codigo)}} >Ver produto</Button>

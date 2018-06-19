@@ -113,8 +113,11 @@ class NavBar extends Component {
                             Minha conta
                         </DropdownToggle>
                         <DropdownMenu right>
-                            <DropdownItem tag={Link} to={routes.ENCOMENDAS} >
+                        <DropdownItem tag={Link} to={routes.ENCOMENDAS} >
                                 Encomendas
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to={routes.GESTOR_HOME} >
+                                Página de gestor
                             </DropdownItem>
                             <DropdownItem tag={Link} to={routes.CONTA}>
                                 Meus dados

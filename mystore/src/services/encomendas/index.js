@@ -9,3 +9,8 @@ export const getEncomenda = (id, token) =>
 export const getEncomendasCliente = (token) =>
     axios.get(`${urlEncomendas}/cliente`,
     { headers: { 'Authorization': 'Bearer ' + token } });
+
+export const getAllEncomendas = (token, limit) =>
+    axios.get(`${urlEncomendas}/all`,
+    { params: { limit } },
+    { headers: { 'Authorization': 'Bearer ' + token } });

@@ -16,6 +16,7 @@ import * as routes from './constants/routes';
 import './App.css';
 import ListaProdutos from './scenes/ListaProdutos';
 import DetalhesEncomenda from './scenes/DetalhesEncomenda';
+import GestorHome from './scenes/GestorHome';
 
 class App extends Component {
 
@@ -35,6 +36,7 @@ class App extends Component {
 							<Route exact path={routes.NOVIDADES} component={Novidades}/>
 							<Route exact path={routes.ENCOMENDAS} component={Encomendas}/>
 							<Route exact path={routes.ENCOMENDA+ ':numero'} component={DetalhesEncomenda}/>
+							<Route exact path={routes.GESTOR_HOME} component={GestorHome}/>
 						</Switch>
 						<Footer />
 					</div>

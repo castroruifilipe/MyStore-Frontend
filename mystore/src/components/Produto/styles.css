@@ -1,0 +1,7 @@
+.text-flow {
+  max-width: 200px;
+  max-height: 70px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+

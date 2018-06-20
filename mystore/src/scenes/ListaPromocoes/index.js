@@ -44,9 +44,9 @@ class ListaPromocoes extends Component {
 
     render() {
         let rows = [];
-        this.makeNovidades(rows);
         let text = <h6>Não existem promoções a mostrar.</h6>
-        if (rows.length !== 0) {
+        if (this.state.produtos.length !== 0) {
+            this.makeNovidades(rows);
             text =
                 <CardDeck>
                     {rows}

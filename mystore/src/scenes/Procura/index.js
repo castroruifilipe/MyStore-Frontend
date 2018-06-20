@@ -1,21 +1,20 @@
 import React, { Component } from 'react';
 import { Container, Row, CardDeck } from 'reactstrap';
-import ReactLoading from 'react-loading';
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
 
-class ListaNovidades extends Component {
+class Procura extends Component {
 
     constructor(props) {
         super(props);
         this.state = {
-            produtos: undefined,
+            produtos: [],
         };
     }
 
     componentWillMount() {
-        services.getNovidades(20)
+        services.getProdutosProcura(this.props.stringProcura)
             .then(response => {
                 this.setState({ produtos: response.data });
             })
@@ -24,7 +23,7 @@ class ListaNovidades extends Component {
             })
     }
 
-    makeNovidades = (rows) => {
+    makeProdutos = (rows) => {
         for (let i = 0; i < this.state.produtos.length; i++) {
             rows.push(
                 <Produto key={this.state.produtos[i].codigo} produto={this.state.produtos[i]} />
@@ -45,22 +44,19 @@ class ListaNovidades extends Component {
 
     render() {
         let rows = [];
-        let text = <h6>Não existem novidades a mostrar.</h6>
-        if (this.state.produtos === undefined) {
-            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={"5"}/>
-        } else if (this.state.produtos.length !== 0) {
-            this.makeNovidades(rows);
+        let text = <h6>Não foram encontrados resultados para a procura que efetuou.</h6>
+        if (this.state.produtos.length !== 0) {
+            this.makeProdutos(rows);
             text =
                 <CardDeck>
                     {rows}
                 </CardDeck>
         }
-
         return (
             <div>
-                <Container style={{ minHeight: "60vh" }} >
+                <Container style={{ minHeight: "60vh" }}>
                     <Row className="mt-5">
-                        <h4>Novidades</h4>
+                        <h4>Pesquisa por "{this.props.stringProcura}":</h4>
                     </Row>
                     <Row className="mt-4">
                         {text}
@@ -71,4 +67,4 @@ class ListaNovidades extends Component {
     }
 }
 
-export default ListaNovidades;
+export default ListaPromocoes;

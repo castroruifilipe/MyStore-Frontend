@@ -8,6 +8,9 @@ import { Link } from 'react-router-dom';
 
 import * as services from '../../services/encomendas';
 import * as routes from '../../constants/routes';
+import metodoPagEnum from '../../constants/metodoPagEnum';
+import estadoEnum from '../../constants/estadoEnum';
+import {formatterPrice} from '../../constants/formatters';
 
 import './style.css';
 
@@ -20,11 +23,19 @@ class Encomendas extends Component {
         }
     }
 
+    enumFormatter = (cell, row, enumObject) => {
+        return enumObject[cell];
+    }
+
+    priceFormatter = (cell, row) =>{
+        return formatterPrice.format(cell);
+    }
+
     componentWillMount() {
         services.getEncomendasCliente(this.props.sessionStore.accessToken)
             .then(response => {
                 let data = [];
-                response.data.forEach( v =>{
+                response.data.forEach(v => {
                     console.log(v);
                     data.push({
                         numero: v.id,
@@ -75,9 +86,9 @@ class Encomendas extends Component {
                 <BootstrapTable version='4' data={this.state.encomendas} pagination >
                     <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader'>Nº Encomenda</TableHeaderColumn>
                     <TableHeaderColumn dataField='data' width='10%' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>
-                    <TableHeaderColumn dataField='total' width='10%' className="customHeader">Total</TableHeaderColumn>
-                    <TableHeaderColumn dataField='metodo' className="customHeader">Método pagamento</TableHeaderColumn>
-                    <TableHeaderColumn dataField='estado' className="customHeader">Estado</TableHeaderColumn>
+                    <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader">Total</TableHeaderColumn>
+                    <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} formatExtraData={metodoPagEnum} className="customHeader">Método pagamento</TableHeaderColumn>
+                    <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} formatExtraData={estadoEnum} className="customHeader">Estado</TableHeaderColumn>
                     <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
                 </BootstrapTable>
         }

@@ -153,7 +153,7 @@ class NavBar extends Component {
                                 <NavLink tag={Link} to={routes.NOVIDADES} >Novidades</NavLink>
                             </NavItem>
                             <NavItem>
-                                <NavLink>Promoções</NavLink>
+                                <NavLink tag={Link} to={routes.PROMOCOES}>Promoções</NavLink>
                             </NavItem>
                         </Nav>
 

@@ -7,3 +7,4 @@ export const ENCOMENDAS = '/utilizador/encomendas';
 export const ENCOMENDA = '/utilizador/encomendas/';
 export const CONTA = '/utilizador';
 export const NOVIDADES = '/novidades';
+export const PROMOCOES = '/promocoes';

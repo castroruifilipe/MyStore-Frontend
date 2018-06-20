@@ -2,6 +2,10 @@ import React, { Component } from 'react';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 import { Container, Row, Col, Table } from 'reactstrap';
+
+import { formatterPrice } from '../../constants/formatters';
+import estadoEnum from '../../constants/estadoEnum';
+import metodoPagEnum from '../../constants/metodoPagEnum';
 import * as services from '../../services/encomendas';
 
 import './style.css';
@@ -11,9 +15,7 @@ class DetalhesEncomenda extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            encomenda: {
-                linhasEncomenda:[],
-            },
+            encomenda: undefined,
         }
     }
 
@@ -21,20 +23,20 @@ class DetalhesEncomenda extends Component {
         services.getEncomenda(this.props.match.params.numero, this.props.sessionStore.accessToken)
             .then(response => {
                 let data = response.data;
-                console.log(data);
                 this.setState({
                     encomenda: {
                         numero: data.id,
                         trackingID: data.trackingID,
                         data: data.data,
-                        enderecoEnvio: data.enderecoEnvio,
-                        enderecoFaturacao: data.enderecoFaturacao,
+                        moradaEnvio: data.moradaEnvio,
+                        moradaFaturacao: data.moradaFaturacao,
                         subTotal: data.total,
                         portes: data.portes,
                         total: data.total + data.portes,
-                        metodo: data.metodoPagamento,
-                        estado: data.estado,
-                        dataPagamento: (data.dataPagamento || "")
+                        metodo: metodoPagEnum[data.metodoPagamento],
+                        estado: estadoEnum[data.estado],
+                        dataPagamento: (data.dataPagamento || ""),
+                        linhasEncomenda: data.linhasEncomenda,
                     }
                 });
             })
@@ -52,13 +54,13 @@ class DetalhesEncomenda extends Component {
         if (this.state.encomenda.linhasEncomenda !== undefined) {
             this.state.encomenda.linhasEncomenda.forEach(element => {
                 produtos.push(
-                    <tr>
+                    <tr key={element.id}>
                         <td>{element.produto.codigo}</td>
-                        <td>{element.produto.designacao}</td>
+                        <td>{element.produto.nome}</td>
                         <td>{element.quantidade}</td>
-                        <td>{element.preco}</td>
-                        <td>{element.valorDesconto}</td>
-                        <td>{element.valorDesconto + element.preco}</td>
+                        <td>{formatterPrice.format(element.precoUnitario)}</td>
+                        <td>{formatterPrice.format(element.valorDesconto)}</td>
+                        <td>{formatterPrice.format(element.valorDesconto + element.precoUnitario)}</td>
                     </tr>
                 );
             });
@@ -66,6 +68,11 @@ class DetalhesEncomenda extends Component {
     }
 
     render() {
+        let encomenda = this.state.encomenda;
+        if (!encomenda) {
+            return null;
+        }
+
         let produtos = [];
         this.makeProdutos(produtos);
         return (
@@ -75,30 +82,34 @@ class DetalhesEncomenda extends Component {
                 </Row>
                 <Row>
                     <Col md="4">
-                        <h6>Encomenda nº {this.state.encomenda.numero}</h6>
+                        <h6>Encomenda nº {encomenda.numero}</h6>
                     </Col>
                     <Col md="4">
-                        <span>Tracking ID: {this.state.encomenda.trackingID}</span>
+                        <span>Tracking ID: {encomenda.trackingID}</span>
                     </Col>
                     <Col md="4">
-                        <span>Data: {this.state.encomenda.data}</span>
+                        <span>Data: {encomenda.data}</span>
                     </Col>
                 </Row>
 
                 <Row className="pt-4">
                     <Col md="4">
-                        <p className="colorHeader"><strong>Endereço de Envio</strong></p>
-                        <span>{this.state.encomenda.enderecoEnvio}</span>
+                        <p className="colorHeader"><strong>Morada de Envio</strong></p>
+                        <span>{encomenda.moradaEnvio.rua}</span><br />
+                        <span>{encomenda.moradaEnvio.localidade}</span><br />
+                        <span>{encomenda.moradaEnvio.codigoPostal}</span>
                     </Col>
                     <Col md="4">
-                        <p className="colorHeader"><strong>Endereço de Faturação</strong></p>
-                        <span>{this.state.encomenda.enderecoFaturacao}</span>
+                        <p className="colorHeader"><strong>Morada de Faturação</strong></p>
+                        <span>{encomenda.moradaFaturacao.rua}</span><br />
+                        <span>{encomenda.moradaFaturacao.localidade}</span><br />
+                        <span>{encomenda.moradaFaturacao.codigoPostal}</span>
                     </Col>
                     <Col md="4">
                         <p className="colorHeader"><strong>Resumo</strong></p>
-                        <span><strong>Sub-Total:</strong>{this.state.encomenda.subTotal}</span><br />
-                        <span><strong>Portes:</strong>{this.state.encomenda.portes}</span><br />
-                        <span><strong>Total:</strong>{this.state.encomenda.total}</span>
+                        <span><strong>Sub-Total: </strong>{formatterPrice.format(encomenda.subTotal)}</span><br />
+                        <span><strong>Portes: </strong>{formatterPrice.format(encomenda.portes)}</span><br />
+                        <span><strong>Total: </strong>{formatterPrice.format(encomenda.total)}</span>
                     </Col>
                 </Row>
 
@@ -118,7 +129,7 @@ class DetalhesEncomenda extends Component {
                 </Row>
 
                 <Row className="pt-5">
-                    <Table hover className="ml-2">
+                    <Table className="ml-2">
                         <thead style={{ backgroundColor: "#efefef" }}>
                             <tr>
                                 <th>Código</th>

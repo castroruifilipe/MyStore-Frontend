@@ -23,7 +23,6 @@ class Login extends Component {
 		services.signin(email, password)
 			.then(response => {
 				let accessToken = response.headers['access-token'];
-
 				this.props.sessionStore.setAccessToken(accessToken);
 				this.props.sessionStore.setUser(response.data);
 			})

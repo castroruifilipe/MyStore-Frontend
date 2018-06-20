@@ -5,14 +5,22 @@ class EditarDados extends Component {
 
     constructor(props) {
         super(props);
+        let morada = this.props.user.morada;
+        if (!morada) {
+            morada = {
+                rua: '',
+                localidade: '',
+                codigoPostal: ''
+            };
+        }
         this.state = {
             nome: this.props.user.nome,
             email: this.props.user.email,
             telemovel: (this.props.user.telemovel || ""),
             contribuinte: (this.props.user.contribuinte || ""),
-            rua: (this.props.user.rua || ""),
-            localidade: (this.props.user.localidade || ""),
-            codigoPostal: (this.props.user.codigoPostal || ""),
+            rua: morada.rua,
+            localidade: morada.localidade,
+            codigoPostal: morada.codigoPostal,
             editarDados: false,
         };
     }

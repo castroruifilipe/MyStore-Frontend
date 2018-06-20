@@ -76,11 +76,11 @@ class Conta extends Component {
     }
 
     toggleAlert = () => {
-        this.setState({showAlert: !this.state.showAlert });
+        this.setState({ showAlert: !this.state.showAlert });
     }
 
     showMensagem = (mensagem) => {
-        this.setState({mensagem: mensagem});
+        this.setState({ mensagem: mensagem });
         this.toggleAlert();
     }
 
@@ -96,10 +96,20 @@ class Conta extends Component {
             email,
             telemovel,
             contribuinte,
+            morada,
+        } = this.props.sessionStore.user;
+
+        let {
             rua,
             localidade,
             codigoPostal,
-        } = this.props.sessionStore.user;
+        } = "";
+
+        if (morada !== undefined && morada!== null ) {
+            rua = morada.rua;
+            localidade = morada.localidade;
+            codigoPostal = morada.codigoPostal;
+        }
 
         return (
             <Container>
@@ -145,7 +155,7 @@ class Conta extends Component {
                             <Col md="6" className="mt-4">
                                 <h5>Dados pessoais</h5>
                                 <div className="form-label-group">
-                                    <Input value={nome || ''} placeholder="Nome" disabled type="text" className="form-control" id="inputNome" />
+                                    <Input value={nome} placeholder="Nome" disabled type="text" className="form-control" id="inputNome" />
                                     <label htmlFor="inputNome">Nome</label>
                                 </div>
                                 <div className="form-label-group">
@@ -179,7 +189,7 @@ class Conta extends Component {
                         </Row>
                 }
 
-                <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} change={this.showMensagem}/>
+                <AlterarPassword modal={this.state.modalPass} toggle={this.togglePass} change={this.showMensagem} />
             </Container >
         );
     }

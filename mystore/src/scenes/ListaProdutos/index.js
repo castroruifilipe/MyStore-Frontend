@@ -10,7 +10,7 @@ class ListaProdutos extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            categoria : this.props.match.params.categoria,
+            categoria: this.props.match.params.categoria,
             produtos: [],
             nPaginas: 0,
             paginaAtual: 1,
@@ -18,8 +18,8 @@ class ListaProdutos extends Component {
         };
     }
 
-    componentDidUpdate(prevProps){
-        if(this.props.match.params.categoria !== prevProps.match.params.categoria) {
+    componentDidUpdate(prevProps) {
+        if (this.props.match.params.categoria !== prevProps.match.params.categoria) {
             this.setState({
                 categoria: this.props.match.params.categoria,
                 produtos: [],
@@ -84,15 +84,17 @@ class ListaProdutos extends Component {
                     <Row className="mt-5">
                         <h4>Lista de Produtos</h4>
                     </Row>
-                    <InfiniteScroll
-                        pageStart={0}
-                        loadMore={this.loadMoreProdutos}
-                        hasMore={this.state.moreProdutos}
-                        loader={loader}>
-                        <CardDeck>
-                            {rows}
-                        </CardDeck>
-                    </InfiniteScroll>
+                    <Row>
+                        <InfiniteScroll
+                            pageStart={0}
+                            loadMore={this.loadMoreProdutos}
+                            hasMore={this.state.moreProdutos}
+                            loader={loader}>
+                            <CardDeck>
+                                {rows}
+                            </CardDeck>
+                        </InfiniteScroll>
+                    </Row>
                 </Container>
             </div>
         );

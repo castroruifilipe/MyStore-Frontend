@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Container, Row, CardDeck } from 'reactstrap';
+import ReactLoading from 'react-loading';
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
@@ -9,7 +10,7 @@ class ListaPromocoes extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            produtos: [],
+            produtos: undefined,
         };
     }
 
@@ -45,7 +46,9 @@ class ListaPromocoes extends Component {
     render() {
         let rows = [];
         let text = <h6>Não existem promoções a mostrar.</h6>
-        if (this.state.produtos.length !== 0) {
+        if (this.state.produtos === undefined) {
+            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={"5"} />
+        } else if (this.state.produtos.length !== 0) {
             this.makeNovidades(rows);
             text =
                 <CardDeck>

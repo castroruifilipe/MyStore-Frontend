@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, CardDeck } from 'reactstrap';
+import { Container, Row, Col, CardDeck } from 'reactstrap';
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
@@ -14,7 +14,15 @@ class Procura extends Component {
     }
 
     componentWillMount() {
-        services.getProdutosProcura(this.props.stringProcura)
+        let servico;
+        let string = this.props.match.params.string;
+        let categoria = this.props.match.params.categoria;
+        if ( categoria !== undefined) {
+            servico = services.getProdutosProcuraCategoria(categoria, string)
+        } else {
+            servico = services.getProdutosProcura(string)
+        }
+        servico
             .then(response => {
                 this.setState({ produtos: response.data });
             })
@@ -56,10 +64,15 @@ class Procura extends Component {
             <div>
                 <Container style={{ minHeight: "60vh" }}>
                     <Row className="mt-5">
-                        <h4>Pesquisa por "{this.props.stringProcura}":</h4>
+                        <Col>
+                            <h4>Pesquisa por "{this.props.match.params.string}":</h4>
+                            <h6>{this.props.match.params.categoria !== undefined ? "Categoria: " + this.props.match.params.categoria : ""}</h6>
+                        </Col>
                     </Row>
                     <Row className="mt-4">
-                        {text}
+                        <Col>
+                            {text}
+                        </Col>
                     </Row>
                 </Container>
             </div>
@@ -67,4 +80,4 @@ class Procura extends Component {
     }
 }
 
-export default ListaPromocoes;
+export default Procura;

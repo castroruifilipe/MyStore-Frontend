@@ -16,6 +16,7 @@ import Footer from './components/Footer'
 import * as routes from './constants/routes';
 import './App.css';
 import ListaProdutos from './scenes/ListaProdutos';
+import Procura from './scenes/Procura';
 import DetalhesEncomenda from './scenes/DetalhesEncomenda';
 
 class App extends Component {
@@ -37,6 +38,8 @@ class App extends Component {
 							<Route exact path={routes.PROMOCOES} component={Promocoes}/>
 							<Route exact path={routes.ENCOMENDAS} component={Encomendas}/>
 							<Route exact path={routes.ENCOMENDA+ ':numero'} component={DetalhesEncomenda}/>
+							<Route path={routes.PROCURA + ':categoria/:string'} component={Procura}/>
+							<Route path={routes.PROCURA + ':string'} component={Procura}/>
 						</Switch>
 						<Footer />
 					</div>

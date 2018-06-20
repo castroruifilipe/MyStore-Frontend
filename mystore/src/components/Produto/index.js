@@ -1,10 +1,28 @@
 import React, { Component } from 'react';
 import { Card, Button, CardImg, CardTitle, CardText, CardBody, Badge, CardFooter, } from 'reactstrap';
-import { withRouter } from 'react-router-dom';
+import { Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
 
+import * as services from '../../services/carrinho';
 import * as routes from '../../constants/routes';
 
 class Produto extends Component {
+
+    comprar = () => {
+        services.addCarrinho(this.props.produto.codigo, 1)
+            .then(response => {
+                this.props.carrinhoStore.setCarrinho(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+    }
 
     render() {
         let produto = this.props.produto;
@@ -25,8 +43,8 @@ class Produto extends Component {
                     <CardText>{produto.descricao}</CardText>
                 </CardBody>
                 <CardFooter className="d-flex justify-content-between">
-                    <Button size="sm" onClick={() => {this.props.history.push(routes.PRODUTO+produto.codigo)}} >Ver produto</Button>
-                    <Button size="sm" color="success">Comprar</Button>
+                    <Button size="sm" tag={Link} to={routes.PRODUTO + produto.codigo}>Ver produto</Button>
+                    <Button size="sm" color="success" onClick={this.comprar}>Comprar</Button>
                 </CardFooter>
             </Card>
         );
@@ -34,4 +52,7 @@ class Produto extends Component {
 
 }
 
-export default withRouter(Produto);
+export default compose(
+    inject('carrinhoStore'),
+    observer
+)(Produto);

@@ -20,8 +20,6 @@ class AlterarPassword extends Component {
 	onSubmit = () => {
 
 		const { passOld, pass1 } = this.state;
-		console.log("Password");
-		console.log(passOld);
 		services.alterarPassword(passOld, pass1, this.props.sessionStore.accessToken)
 			.then(response => {
 				this.props.change("Password alterada com sucesso! ");

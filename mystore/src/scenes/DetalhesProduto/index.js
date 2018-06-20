@@ -3,10 +3,14 @@ import { Row, Col, Container, Button } from 'reactstrap';
 import NumericInput from 'react-numeric-input';
 import { CardDeck } from 'reactstrap';
 import FaTruck from 'react-icons/lib/fa/truck';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
+
 import Produto from '../../components/Produto';
+import * as servicesProduto from '../../services/produtos';
+import * as servicesCarrinho from '../../services/carrinho';
 
 import './style.css';
-import * as services from '../../services/produtos';
 
 class DetalhesProduto extends Component {
 
@@ -16,6 +20,7 @@ class DetalhesProduto extends Component {
             value: 0,
             error: null,
             produto: {},
+            relacionados: [],
         };
     }
 
@@ -36,7 +41,7 @@ class DetalhesProduto extends Component {
     }
 
     getProduto = (id) => {
-        services.getProduto(id)
+        servicesProduto.getProduto(id)
             .then(response => {
                 this.setState({ produto: response.data });
             })
@@ -48,41 +53,42 @@ class DetalhesProduto extends Component {
                     console.error(error);
                 }
             });
-    }
-
-
-    getProdutos() {
-        let produtos = [];
-        let produto = {
-            codigo: 1223,
-            nome: 'The Essence of Software Engineering',
-            descricao: 'This book is open access under a CC BY 4.0 license.This book '
-                + 'includes contributions by leading researchers and industry thought'
-                + 'leaders on various topics related to the essence of software engineering'
-                + 'and their application in industrial projects. It offers a broad overview'
-                + 'of research findings dealing with current practical software engineering'
-                + 'issues and also pointers to potential future developments.',
-            precoBase: 59.99,
-            stock: 3,
-            iva: 0.06
-        }
-        //retirar construção produto com +i;
-        for (let i = 0; i < 4; i++) {
-            produtos[i] = { ...produto, codigo: produto.codigo + i };
-        }
-        return produtos;
+        servicesProduto.getRelacionados(id, 5)
+            .then(response => {
+                this.setState({ relacionados: response.data });
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
     }
 
     makeProdutosRelacionados = (rows) => {
-        let produtos = this.getProdutos();
-        produtos.forEach(produto => {
+        this.state.relacionados.forEach(produto => {
             rows.push(
-                <Produto produto={produto} />
+                <Produto key={produto.codigo} produto={produto} />
             );
         });
     }
 
-
+    comprar = () => {
+        servicesCarrinho.addCarrinho(this.state.produto.codigo, this.state.value)
+            .then(response => {
+                this.props.carrinhoStore.setCarrinho(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+    }
 
     render() {
         let rows = [];
@@ -112,7 +118,7 @@ class DetalhesProduto extends Component {
                                     size={6} />
                             </Col>
                             <Col md="4">
-                                <Button color="success" className="btn-block">
+                                <Button color="success" className="btn-block" onClick={this.comprar}>
                                     Adicionar <span className="hideComponent"> ao carrinho</span>
                                 </Button>
 
@@ -140,4 +146,7 @@ class DetalhesProduto extends Component {
     }
 }
 
-export default DetalhesProduto;
+export default compose(
+    inject('carrinhoStore'),
+    observer
+)(DetalhesProduto);

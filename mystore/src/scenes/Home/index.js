@@ -2,18 +2,24 @@ import React, { Component } from 'react';
 import { Carousel } from 'react-responsive-carousel';
 import { Container, Row, CardDeck } from 'reactstrap';
 import 'react-responsive-carousel/lib/styles/carousel.min.css';
-import { inject, observer } from 'mobx-react';
-import { compose } from 'recompose';
 
 import Produto from '../../components/Produto';
 import * as services from '../../services/produtos';
 
 class Home extends Component {
 
+    constructor(props){
+        super(props);
+        this.state = {
+            novidades : [],
+            maisVendidos: [],
+        }
+    }
+
     componentWillMount() {
         services.getNovidades(5)
             .then(response => {
-                this.props.produtosStore.setNovidades(response.data);
+                this.setState({novidades : response.data});
             })
             .catch(error => {
                 if (error.response) {
@@ -25,7 +31,7 @@ class Home extends Component {
             });
         services.getMaisVendidos(5)
             .then(response => {
-                this.props.produtosStore.setMaisVendidos(response.data);
+                this.setState({maisVendidos: response.data});
             })
             .catch(error => {
                 if (error.response) {
@@ -38,7 +44,7 @@ class Home extends Component {
     }
 
     makeNovidades = (rows) => {
-        this.props.produtosStore.novidades
+        this.state.novidades
             .forEach(produto => {
                 rows.push(
                     <Produto key={produto.codigo} produto={produto} />
@@ -47,7 +53,7 @@ class Home extends Component {
     }
 
     makeMaisVendidos = (rows) => {
-        this.props.produtosStore.maisVendidos
+        this.state.maisVendidos
             .forEach(produto => {
                 rows.push(
                     <Produto key={produto.codigo} produto={produto} />
@@ -89,7 +95,4 @@ class Home extends Component {
     }
 }
 
-export default compose(
-    inject('produtosStore'),
-    observer
-)(Home);
+export default Home;

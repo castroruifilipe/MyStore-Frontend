@@ -10,9 +10,12 @@ import { compose } from 'recompose';
 import { withRouter } from 'react-router-dom';
 import { Link } from 'react-router-dom';
 
+import { formatterPrice } from '../../constants/formatters';
 import SearchBar from './components/SearchBar';
 import * as routes from '../../constants/routes';
-import * as services from '../../services/categorias';
+import * as servicesCategorias from '../../services/categorias';
+import * as servicesCarrinho from '../../services/carrinho';
+
 import './style.css';
 
 class NavBar extends Component {
@@ -27,9 +30,21 @@ class NavBar extends Component {
     }
 
     componentWillMount() {
-        services.getCategorias()
+        servicesCategorias.getCategorias()
             .then(response => {
                 this.setState({ categorias: response.data });
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+        servicesCarrinho.getCarrinho()
+            .then(response => {
+                this.props.carrinhoStore.setCarrinho(response.data);
             })
             .catch(error => {
                 if (error.response) {
@@ -59,24 +74,24 @@ class NavBar extends Component {
     }
 
     makeRowsShoppingCart = (rows) => {
-        for (let i = 0; i < 3; i++) {
+        this.props.carrinhoStore.carrinho.linhasCarrinho.forEach((linha) => {
             rows.push(
-                <Card key={i} className="mb-2">
-                    <div class="d-flex align-items-center bg-light">
+                <Card key={linha.produto.codigo} className="mb-2">
+                    <div className="d-flex align-items-center bg-light">
                         <div>
                             <Image src="https://i.imgur.com/IpEsYSH.jpg" height={60} width={60} />
                         </div>
                         <div className="col p-2 d-flex justify-content-between" style={{ minWidth: '190px' }}>
                             <div>
-                                <span className="d-block">Descrição do produto</span>
-                                <span className="text-success">20€</span>
+                                <span className="d-block">{linha.produto.nome}</span>
+                                <span className="text-success">{formatterPrice.format(linha.produto.precoBase)}</span>
                             </div>
                             <Button size="sm" color="danger" style={{ height: '30px' }} className="ml-1">X</Button>
                         </div>
                     </div>
                 </Card>
             );
-        }
+        });
     }
 
     makeCategoriasRows = (rows) => {
@@ -92,9 +107,10 @@ class NavBar extends Component {
     render() {
         let rowsShoppingCart = [];
         let categoriasRows = [];
-        this.makeRowsShoppingCart(rowsShoppingCart);
+        if (this.props.carrinhoStore.carrinho.linhasCarrinho) {
+            this.makeRowsShoppingCart(rowsShoppingCart);
+        }
         this.makeCategoriasRows(categoriasRows);
-
         let navItemConta = (
             <Nav className="ml-auto" navbar>
                 <NavItem>
@@ -185,6 +201,6 @@ class NavBar extends Component {
 
 export default compose(
     withRouter,
-    inject('sessionStore'),
+    inject('sessionStore', 'carrinhoStore'),
     observer
 )(NavBar);

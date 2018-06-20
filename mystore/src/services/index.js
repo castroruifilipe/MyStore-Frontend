@@ -3,6 +3,7 @@ const urlUtilizadores = baseURL + "/utilizadores";
 const urlProdutos = baseURL + "/produtos";
 const urlCategorias = baseURL + "/categorias";
 const urlEncomendas = baseURL + "/encomendas";
+const urlCarrinho = baseURL + "/carrinho";
 
 
 export {
@@ -10,4 +11,5 @@ export {
     urlProdutos,
     urlCategorias,
     urlEncomendas,
+    urlCarrinho
 }

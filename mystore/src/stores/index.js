@@ -1,7 +1,7 @@
 import { configure } from 'mobx';
 
 import SessionStore from './sessionStore';
-import ProdutosStore from './produtosStore';
+import CarrinhoStore from './carrinhoStore';
 
 
 configure({ enforceActions: true });
@@ -10,7 +10,7 @@ class RootStore {
 
     constructor() {
         this.sessionStore = new SessionStore(this);
-        this.produtosStore = new ProdutosStore(this);
+        this.carrinhoStore = new CarrinhoStore(this);
     }
 
 }

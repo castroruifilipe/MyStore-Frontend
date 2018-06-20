@@ -14,6 +14,9 @@ export const getMaisVendidos = (quantidade) =>
 export const getPromocoes = (quantidade) =>
     axios.get(`${urlProdutos}/promocoes/${quantidade}`);
 
+export const getRelacionados = (codigo,quantidade) => 
+    axios.get(`${urlProdutos}/relacionados/${quantidade}`,{params: {codigo}})
+
 export const getProdutos = (categoria, pagina, size) =>
     axios.get(`${urlProdutos}/categoria`, { params: { pagina, size, categoria } });
 

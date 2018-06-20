@@ -36,7 +36,6 @@ class Encomendas extends Component {
             .then(response => {
                 let data = [];
                 response.data.forEach(v => {
-                    console.log(v);
                     data.push({
                         numero: v.id,
                         data: v.data,

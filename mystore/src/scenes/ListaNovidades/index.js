@@ -16,7 +16,7 @@ class ListaNovidades extends Component {
     componentWillMount() {
         services.getNovidades(20)
             .then(response => {
-                this.setState({ produtos: response.data});
+                this.setState({ produtos: response.data });
             })
             .catch(error => {
                 console.error(error);
@@ -46,15 +46,23 @@ class ListaNovidades extends Component {
         let rows = [];
         this.makeNovidades(rows);
 
+        let text = <h6>Não existem novidades a mostrar.</h6>
+        if (rows.length !== 0) {
+            text =
+                <CardDeck>
+                    {rows}
+                </CardDeck>
+        }
+
         return (
             <div>
                 <Container >
                     <Row className="mt-5">
                         <h4>Novidades</h4>
                     </Row>
-                    <CardDeck>
-                        {rows}
-                    </CardDeck>
+                    <Row className="mt-4">
+                        {text}
+                    </Row>
                 </Container>
             </div>
         );

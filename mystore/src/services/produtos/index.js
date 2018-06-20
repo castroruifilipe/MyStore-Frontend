@@ -2,7 +2,7 @@ import axios from 'axios';
 
 import { urlProdutos } from '../../services';
 
-export const getProduto = (id) => 
+export const getProduto = (id) =>
     axios.get(`${urlProdutos}/${id}`);
 
 export const getNovidades = (quantidade) =>
@@ -10,6 +10,9 @@ export const getNovidades = (quantidade) =>
 
 export const getMaisVendidos = (quantidade) =>
     axios.get(`${urlProdutos}/maisVendidos/${quantidade}`);
+
+export const getPromocoes = (quantidade) =>
+    axios.get(`${urlProdutos}/promocoes/${quantidade}`);
 
 export const getProdutos = (categoria, pagina, size) =>
     axios.get(`${urlProdutos}/categoria/${categoria}`, { params: { pagina, size } });

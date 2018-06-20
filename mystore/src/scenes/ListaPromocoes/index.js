@@ -14,9 +14,9 @@ class ListaPromocoes extends Component {
     }
 
     componentWillMount() {
-        services.getNovidades(20)
+        services.getPromocoes(20)
             .then(response => {
-                this.setState({ produtos: response.data});
+                this.setState({ produtos: response.data });
             })
             .catch(error => {
                 console.error(error);
@@ -45,16 +45,22 @@ class ListaPromocoes extends Component {
     render() {
         let rows = [];
         this.makeNovidades(rows);
-
+        let text = <h6>Não existem promoções a mostrar.</h6>
+        if (rows.length !== 0) {
+            text =
+                <CardDeck>
+                    {rows}
+                </CardDeck>
+        }
         return (
             <div>
-                <Container >
+                <Container style={{ minHeight: "60vh" }}>
                     <Row className="mt-5">
                         <h4>Promoções</h4>
                     </Row>
-                    <CardDeck>
-                        {rows}
-                    </CardDeck>
+                    <Row className="mt-4">
+                        {text}
+                    </Row>
                 </Container>
             </div>
         );

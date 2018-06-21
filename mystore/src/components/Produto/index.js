@@ -45,8 +45,6 @@ class Produto extends Component {
 
     render() {
         let produto = this.props.produto;
-        // let splitString = produto.descricao.split( /\s*\.\s*/);
-        // let descricao =  splitString[0] + ". " + splitString[1] + "...";
         let descricao = produto.descricao.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…");
         return (
             <Card key={produto.codigo} className="mb-3">

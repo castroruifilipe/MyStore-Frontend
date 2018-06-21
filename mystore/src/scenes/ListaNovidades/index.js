@@ -47,7 +47,7 @@ class ListaNovidades extends Component {
         let rows = [];
         let text = <h6>Não existem novidades a mostrar.</h6>
         if (this.state.produtos === undefined) {
-            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={"5"}/>
+            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={5}/>
         } else if (this.state.produtos.length !== 0) {
             this.makeNovidades(rows);
             text =

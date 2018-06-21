@@ -18,6 +18,7 @@ import './App.css';
 import ListaProdutos from './scenes/ListaProdutos';
 import Procura from './scenes/Procura';
 import DetalhesEncomenda from './scenes/DetalhesEncomenda';
+import DetalhesCarrinho from './scenes/DetalhesCarrinho';
 
 class App extends Component {
 
@@ -40,6 +41,7 @@ class App extends Component {
 							<Route exact path={routes.ENCOMENDA+ ':numero'} component={DetalhesEncomenda}/>
 							<Route path={routes.PROCURA + ':categoria/:string'} component={Procura}/>
 							<Route path={routes.PROCURA + ':string'} component={Procura}/>
+							<Route path={routes.CARRINHO} component={DetalhesCarrinho}/>
 						</Switch>
 						<Footer />
 					</div>

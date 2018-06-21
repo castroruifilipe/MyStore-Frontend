@@ -9,3 +9,4 @@ export const CONTA = '/utilizador';
 export const NOVIDADES = '/novidades';
 export const PROMOCOES = '/promocoes';
 export const PROCURA = '/procura/';
+export const CARRINHO = '/carrinho/';

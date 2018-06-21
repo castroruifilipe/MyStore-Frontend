@@ -73,6 +73,22 @@ class NavBar extends Component {
         this.props.history.push(routes.HOME);
     }
 
+    remover = (codigo) => {
+        console.log(codigo);
+        servicesCarrinho.removeLinha(codigo)
+            .then(response => {
+                this.props.carrinhoStore.setCarrinho(response.data);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+    }
+
     makeRowsShoppingCart = (rows) => {
         this.props.carrinhoStore.carrinho.linhasCarrinho.forEach((linha) => {
             rows.push(
@@ -84,9 +100,12 @@ class NavBar extends Component {
                         <div className="col p-2 d-flex justify-content-between" style={{ minWidth: '190px' }}>
                             <div>
                                 <span className="d-block">{linha.produto.nome}</span>
-                                <span className="text-success">{formatterPrice.format(linha.produto.precoBase)}</span>
+                                <div className="d-flex justify-content-between">
+                                    <span className="text-success">{formatterPrice.format(linha.produto.precoBase)}</span>
+                                    <span>{linha.quantidade} un.</span>
+                                </div>
                             </div>
-                            <Button size="sm" color="danger" style={{ height: '30px' }} className="ml-1">X</Button>
+                            <Button size="sm" color="danger" style={{ height: '30px' }} onClick={(e) => {this.remover(linha.produto.codigo, e)}} className="ml-1">X</Button>
                         </div>
                     </div>
                 </Card>

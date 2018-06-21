@@ -5,6 +5,7 @@ import { CardDeck } from 'reactstrap';
 import FaTruck from 'react-icons/lib/fa/truck';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
+import { formatterPrice } from '../../constants/formatters';
 
 import Produto from '../../components/Produto';
 import * as servicesProduto from '../../services/produtos';
@@ -79,6 +80,9 @@ class DetalhesProduto extends Component {
         servicesCarrinho.addCarrinho(this.state.produto.codigo, this.state.value)
             .then(response => {
                 this.props.carrinhoStore.setCarrinho(response.data);
+                this.setState({
+                    value: 1,
+                });
             })
             .catch(error => {
                 if (error.response) {
@@ -89,6 +93,13 @@ class DetalhesProduto extends Component {
                 }
             });
     }
+
+    onChange = (valueAsNumber, valueAsString, input) => {
+        this.setState({
+            value: valueAsNumber,
+        })
+    }
+
 
     render() {
         let rows = [];
@@ -108,7 +119,7 @@ class DetalhesProduto extends Component {
                         </div>
                         <Row className="pt-5">
                             <Col md="2" >
-                                <h5 className="centerLine">{this.state.produto.precoBase}€</h5>
+                                <h5 className="centerLine">{formatterPrice.format(this.state.produto.precoBase)}</h5>
                             </Col>
                             <Col xs="2">
                                 <NumericInput className="form-control"

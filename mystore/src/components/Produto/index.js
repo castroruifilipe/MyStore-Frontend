@@ -4,6 +4,7 @@ import NumericInput from 'react-numeric-input';
 import { Link } from 'react-router-dom';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
+import { formatterPrice } from '../../constants/formatters';
 
 import * as services from '../../services/carrinho';
 import * as routes from '../../constants/routes';
@@ -45,14 +46,25 @@ class Produto extends Component {
 
     render() {
         let produto = this.props.produto;
-        let descricao = produto.descricao.replace(/(([^\s]+\s\s*){20})(.*)/,"$1…");
+        let descricao = produto.descricao.replace(/(([^\s]+\s\s*){20})(.*)/, "$1…");
+        let price;
+        if (produto.precoPromocional !== 0) {
+            price =
+                <Badge pill color="success" style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+                    <small className="strikethrough">{formatterPrice.format(produto.precoBase)}</small><br />
+                    {formatterPrice.format(produto.precoPromocional)}
+                </Badge>
+        } else {
+            price =
+                <Badge pill color="success" style={{ backgroundColor: 'rgba(0, 0, 0, 0.4)' }}>
+                    {formatterPrice.format(produto.precoBase)}
+                </Badge>
+        }
         return (
             <Card key={produto.codigo} className="mb-3">
                 <div className="position-absolute" style={{ right: '5px', top: '5px' }} >
                     <h5>
-                        <Badge pill color="success" style={{ backgroundColor: 'rgba(0, 0, 0, 0.3)' }}>
-                            {produto.precoBase} €
-                        </Badge>
+                        {price}
                     </h5>
                 </div>
 

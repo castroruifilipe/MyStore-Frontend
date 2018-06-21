@@ -1,0 +1,19 @@
+.close {
+    color: rgb(253, 0, 0)!important; 
+    opacity: 1;
+}
+
+.numeric {
+    max-width: 70px;
+    height: 28px;
+    padding: 0 12px;
+}
+
+.centerElem {
+    display: flex;
+    justify-content: center;
+}
+
+.hide {
+    display: none;
+}

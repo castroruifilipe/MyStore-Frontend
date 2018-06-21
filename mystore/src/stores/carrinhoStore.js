@@ -12,6 +12,14 @@ class CarrinhoStore {
         this.carrinho = carrinho;
     }
 
+    @action setQuantidade = (codigoProduto, quantidade) => {
+        this.carrinho.linhasCarrinho.forEach(linha => {
+            if (linha.produto.codigo === codigoProduto) {
+                linha.quantidade = quantidade;
+                return;
+            }
+        })
+    }
    
 }
 

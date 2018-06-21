@@ -74,7 +74,6 @@ class NavBar extends Component {
     }
 
     remover = (codigo) => {
-        console.log(codigo);
         servicesCarrinho.removeLinha(codigo)
             .then(response => {
                 this.props.carrinhoStore.setCarrinho(response.data);
@@ -101,11 +100,11 @@ class NavBar extends Component {
                             <div>
                                 <span className="d-block">{linha.produto.nome}</span>
                                 <div className="d-flex justify-content-between">
-                                    <span className="text-success">{formatterPrice.format(linha.produto.precoBase)}</span>
+                                    <span className="text-success">{formatterPrice.format(linha.subTotal)}</span>
                                     <span>{linha.quantidade} un.</span>
                                 </div>
                             </div>
-                            <Button size="sm" color="danger" style={{ height: '30px' }} onClick={(e) => {this.remover(linha.produto.codigo, e)}} className="ml-1">X</Button>
+                            <Button size="sm" color="danger" style={{ height: '30px' }} onClick={(e) => { this.remover(linha.produto.codigo, e) }} className="ml-1">X</Button>
                         </div>
                     </div>
                 </Card>
@@ -126,6 +125,7 @@ class NavBar extends Component {
     render() {
         let rowsShoppingCart = [];
         let categoriasRows = [];
+        let carrinhoText = <h6>Não possui produtos no seu carrinho!</h6>;
         if (this.props.carrinhoStore.carrinho.linhasCarrinho) {
             this.makeRowsShoppingCart(rowsShoppingCart);
         }
@@ -205,11 +205,11 @@ class NavBar extends Component {
                 <Popover placement="bottom" isOpen={this.state.popoverOpen} target="shoppingCart" toggle={this.togglePopOver}>
                     <PopoverHeader className="d-flex justify-content-between">
                         <span>Carrinho</span>
-                        <span className="text-success">20€00</span>
+                        <span className="text-success pl-4">{formatterPrice.format(this.props.carrinhoStore.carrinho.total)}</span>
                     </PopoverHeader>
                     <PopoverBody>
-                        {rowsShoppingCart}
-                        <Button size="sm" color="success" block className="mt-4">Checkout</Button>
+                        {rowsShoppingCart.length === 0 ? carrinhoText : rowsShoppingCart}
+                        <Button size="sm" color="success" block className="mt-4" tag={Link} to={routes.CARRINHO}>Ver carrinho</Button>
                     </PopoverBody>
                 </Popover>
             </div>

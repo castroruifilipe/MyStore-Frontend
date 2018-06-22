@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Row, Col, Container, Table } from 'reactstrap';
+import { Row, Col, Container, Table, Button } from 'reactstrap';
 import { inject, observer } from 'mobx-react';
 import { toJS } from 'mobx';
 import { compose } from 'recompose';
@@ -165,6 +165,27 @@ class DetalhesCarrinho extends Component {
                         }
                     </Col>
                 </Row>
+                {
+                    (!this.state.modoEdicao && carrinho.linhasCarrinho.length !== 0) ?
+                        <Row className="p-4">
+                            <Col>
+                                <div className="float-right p-3" style={{ boxShadow: '0 0 4px 1px rgba(0, 0, 0, 0.3)', width: "250px" }}>
+                                    <div className="p-2">
+                                        <strong>Ilíquido </strong> <span className="float-right">{formatterPrice.format(200)}</span><br />
+                                    </div>
+                                    <div className="px-2">
+                                        <strong>IVA </strong> <span className="float-right">{formatterPrice.format(200)}</span><br />
+                                    </div>
+                                    <div className="p-2">
+                                        <strong>Total </strong>  <span className="float-right">{formatterPrice.format(200)}</span><br />
+                                    </div>
+                                    <Button className="btn btn-success btn-block my-2">Checkout</Button>
+                                </div>
+                            </Col>
+                        </Row>
+
+                        : ""
+                }
             </Container>
         );
 

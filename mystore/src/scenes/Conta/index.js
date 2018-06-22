@@ -10,19 +10,23 @@ import EditarDados from './components/EditarDados';
 
 class Conta extends Component {
 
+    INITIAL_STATE = {
+        nome: undefined,
+        email: undefined,
+        telemovel: undefined,
+        contribuinte: undefined,
+        rua: undefined,
+        localidade: undefined,
+        codigoPostal: undefined,
+    }
+
     constructor(props) {
         super(props);
         this.state = {
+            ...this.INITIAL_STATE,
             modoEdicao: false,
             showAlert: false,
             modalPass: false,
-            nome: undefined,
-            email: undefined,
-            telemovel: undefined,
-            contribuinte: undefined,
-            rua: undefined,
-            localidade: undefined,
-            codigoPostal: undefined,
             mensagem: "",
         };
     }
@@ -32,7 +36,7 @@ class Conta extends Component {
     }
 
     cancelar = () => {
-        this.setState({ modoEdicao: false })
+        this.setState({ modoEdicao: false, ...this.INITIAL_STATE })
     }
 
     onChange = (event) => {
@@ -105,7 +109,7 @@ class Conta extends Component {
             codigoPostal,
         } = "";
 
-        if (morada !== undefined && morada!== null ) {
+        if (morada !== undefined && morada !== null) {
             rua = morada.rua;
             localidade = morada.localidade;
             codigoPostal = morada.codigoPostal;

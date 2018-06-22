@@ -1,18 +1,53 @@
 import React, { Component } from 'react';
-import { Row, Col, Container, Table, Input } from 'reactstrap';
+import { Row, Col, Container, Table } from 'reactstrap';
 import { inject, observer } from 'mobx-react';
-import { observe } from 'mobx';
+import { toJS } from 'mobx';
 import { compose } from 'recompose';
+import PencilIcon from 'react-icons/lib/fa/edit';
 import { formatterPrice } from '../../constants/formatters';
+import EditarCarrinho from './EditarCarrinho';
 
 import * as services from '../../services/carrinho';
 import './style.css';
 
 class DetalhesCarrinho extends Component {
 
-    remover = (codigo) => {
-        services.removeLinha(codigo)
+    constructor(props) {
+        super(props);
+        this.state = {
+            modoEdicao: false,
+            quantidades: {},
+        };
+    }
+
+    editar = () => {
+        this.setState({ modoEdicao: true })
+    }
+
+    guardar = () => {
+        services.updateCarrinho(this.state.quantidades)
             .then(response => {
+                this.props.carrinhoStore.setCarrinho(response.data);
+                this.setState({ modoEdicao: !this.state.modoEdicao });
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+    }
+
+    cancelar = () => {
+        this.setState({ modoEdicao: false, quantidades: {} })
+    }
+
+    limpar = () => {
+        services.limpar()
+            .then(response => {
+                console.log(response.data);
                 this.props.carrinhoStore.setCarrinho(response.data);
             })
             .catch(error => {
@@ -25,10 +60,11 @@ class DetalhesCarrinho extends Component {
             });
     }
 
-    onChangeQtd = (codigo, event) => {
-        let x = event.target.value;
-        console.log(codigo + ": " + x)
-        this.props.carrinhoStore.setQuantidade(codigo, x);
+
+    onChangeQuantidade = (codigo, quantidade) => {
+        this.setState({
+            quantidades: { ...this.state.quantidades, [codigo]: quantidade }
+        });
     }
 
 
@@ -42,19 +78,11 @@ class DetalhesCarrinho extends Component {
                 <tr key={linha.produto.codigo}>
                     <td className="pl-3" >{linha.produto.codigo}</td>
                     <td>{linha.produto.nome}</td>
-                    <td className="centerElem">
-                        <Input type="number" name="number" className="numeric" placeholder="qnt"
-                            value={linha.quantidade} onChange={(e) => { this.onChangeQtd(linha.produto.codigo, e) }} />
-                    </td>
+                    <td className="centerElem">{linha.quantidade} </td>
                     <td className="text-center">{formatterPrice.format(linha.produto.precoBase)}</td>
                     <td className="text-center">{formatterPrice.format(linha.produto.precoBase * linha.quantidade)}</td>
                     <td className="text-center">{formatterPrice.format(desconto)}</td>
                     <td className="text-center">{formatterPrice.format(linha.subTotal)}</td>
-                    <td className="centerElem hidden">
-                        <button type="button" className="close" aria-label="Close" onClick={(e) => { this.remover(linha.produto.codigo, e) }}>
-                            <span aria-hidden="true">&times;</span>
-                        </button>
-                    </td>
                 </tr>
             );
         });
@@ -64,7 +92,7 @@ class DetalhesCarrinho extends Component {
     render() {
         let rows = [];
         let carrinho = this.props.carrinhoStore.carrinho;
-        let text = <h6>Não possui produtos no seu carrinho!</h6>
+        let text = <h5>Não possui produtos no seu carrinho!</h5>
         if (carrinho.linhasCarrinho === undefined) {
             return null;
         } else if (carrinho.linhasCarrinho.length !== 0) {
@@ -80,13 +108,27 @@ class DetalhesCarrinho extends Component {
                             <th className="text-center">Preco</th>
                             <th className="text-center">Desconto</th>
                             <th className="text-center">Sub-Total</th>
-                            <th className="text-center"></th>
                         </tr>
                     </thead>
                     <tbody>
                         {rows}
                     </tbody>
                 </Table>
+        }
+
+        let botoes = "";
+        if (carrinho.linhasCarrinho.length !== 0) {
+            botoes =
+                <div>
+                    <button type="button" className="btn btn-primary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.editar}>
+                        <PencilIcon className="mr-1" />
+                        Editar carrinho
+                    </button>
+                    <button type="button" className="btn btn-danger block inline-md" style={{ width: '180px' }} onClick={this.limpar}>
+                        <PencilIcon className="mr-1" />
+                        Limpar carrinho
+                    </button>
+                </div>
         }
         return (
             <Container className="pt-5" style={{ minHeight: '60vh' }}>
@@ -95,12 +137,34 @@ class DetalhesCarrinho extends Component {
                         <h1>Carrinho de Compras</h1>
                     </Col>
                 </Row>
-                <Row className="pt-4">
-                    <Col className="ml-2 ">
-                        {text}
+                <Row>
+                    <Col md="9">
+                        {
+                            this.state.modoEdicao ?
+                                <div>
+                                    <button type="button" className="btn btn-success mr-2 block inline-md" style={{ width: '180px' }} onClick={this.guardar}>
+                                        <PencilIcon className="mr-1" />
+                                        Guardar
+                                    </button>
+                                    <button type="button" className="btn btn-secondary mr-2 block inline-md" style={{ width: '180px' }} onClick={this.cancelar}>
+                                        Cancelar
+                                    </button>
+                                </div>
+                                :
+                                botoes
+                        }
                     </Col>
                 </Row>
-
+                <Row className="pt-4">
+                    <Col className="ml-2 ">
+                        {
+                            this.state.modoEdicao ?
+                                <EditarCarrinho carrinho={toJS(this.props.carrinhoStore.carrinho)} onChangeQnt={this.onChangeQuantidade} />
+                                :
+                                text
+                        }
+                    </Col>
+                </Row>
             </Container>
         );
 

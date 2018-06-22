@@ -104,6 +104,16 @@ class DetalhesProduto extends Component {
     render() {
         let rows = [];
         this.makeProdutosRelacionados(rows);
+        let price;
+        if (this.state.produto.precoPromocional !== 0) {
+            price =
+            <div>
+                <small className="strikethrough">{formatterPrice.format(this.state.produto.precoBase)}</small>
+                <strong> {formatterPrice.format(this.state.produto.precoPromocional)}</strong>
+            </div>
+        } else {
+            price = <strong>{formatterPrice.format(this.state.produto.precoBase)}</strong>
+        }
         return (
             <Container fluid className="custom-container">
                 <Row className="pt-5">
@@ -119,7 +129,7 @@ class DetalhesProduto extends Component {
                         </div>
                         <Row className="pt-5">
                             <Col md="2" >
-                                <h5 className="centerLine">{formatterPrice.format(this.state.produto.precoBase)}</h5>
+                                <h5 className="centerLine">{price}</h5>
                             </Col>
                             <Col xs="2">
                                 <NumericInput className="form-control"

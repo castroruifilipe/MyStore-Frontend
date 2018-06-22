@@ -205,11 +205,11 @@ class NavBar extends Component {
                 <Popover placement="bottom" isOpen={this.state.popoverOpen} target="shoppingCart" toggle={this.togglePopOver}>
                     <PopoverHeader className="d-flex justify-content-between">
                         <span>Carrinho</span>
-                        <span className="text-success pl-4">{formatterPrice.format(this.props.carrinhoStore.carrinho.total)}</span>
+                        <span className="text-success pl-4">{formatterPrice.format(this.props.carrinhoStore.carrinho.total || 0)}</span>
                     </PopoverHeader>
                     <PopoverBody>
                         {rowsShoppingCart.length === 0 ? carrinhoText : rowsShoppingCart}
-                        <Button size="sm" color="success" block className="mt-4" tag={Link} to={routes.CARRINHO}>Ver carrinho</Button>
+                        {rowsShoppingCart.length !== 0 && <Button size="sm" color="success" block className="mt-4" tag={Link} to={routes.CARRINHO}>Ver carrinho</Button>}
                     </PopoverBody>
                 </Popover>
             </div>

@@ -1,201 +1,224 @@
 import React, { Component } from 'react';
-import { TabContent, TabPane, Nav, NavItem, NavLink, Row, Col, Container, Button, Input, FormGroup, Label } from 'reactstrap';
-import classnames from 'classnames';
-import { formatterPrice } from '../../constants/formatters';
+import { TabContent, TabPane, Row, Col, Container, Button, Progress } from 'reactstrap';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
+import { observe } from 'mobx';
+
+import Entrega from './components/Entrega';
+import Pagamento from './components/Pagamento';
+import Confirmacao from './components/Confirmacao';
+import { formatterPrice } from '../../constants/formatters';
 
 class Checkout extends Component {
 
-    INITIAL_STATE = {
-        nome: "",
-        telemovel: "",
-        contribuinte: "",
-        rua: "",
-        localidade: "",
-        codigoPostal: "",
-    }
-
     constructor(props) {
         super(props);
+        let loadUser, moradaEntrega;
+        let loadCarrinho = this.props.carrinhoStore.carrinho !== {};
+        if (this.props.sessionStore.user.nome) {
+            loadUser = true;
+            moradaEntrega = {
+                nome: this.props.sessionStore.user.nome,
+                rua: this.props.sessionStore.user.morada.rua,
+                codigoPostal: this.props.sessionStore.user.morada.codigoPostal,
+                localidade: this.props.sessionStore.user.morada.localidade,
+            }
+        } else {
+            loadUser = false;
+            moradaEntrega = {
+                nome: '',
+                rua: '',
+                codigoPostal: '',
+                localidade: '',
+            }
+        }
         this.state = {
-            ...this.INITIAL_STATE,
-            entrega: {},
-            metodo: '',
+            loadUser,
+            loadCarrinho,
+            moradaEntrega,
+            metodoPagamento: '',
+            progress: {
+                entrega: 100 / 3,
+                pagamento: 0,
+                confirmacao: 0
+            },
             activeTab: '1',
+            resumo: {
+                subTotal: 0,
+                portes: 0,
+                total: 0,
+            },
         };
     }
 
-    toggle = (tab) => {
-        if (this.state.activeTab !== tab) {
+
+    disposerUser = observe(this.props.sessionStore, "user", (change) => {
+        if (!this.state.loadUser) {
             this.setState({
-                activeTab: tab
+                loadUser: true,
+                moradaEntrega: {
+                    nome: change.newValue.nome,
+                    rua: change.newValue.morada.rua || '',
+                    codigoPostal: change.newValue.morada.codigoPostal || '',
+                    localidade: change.newValue.morada.localidade || '',
+                }
             });
+        }
+    });
+
+    disposerCarrinho = observe(this.props.carrinhoStore, "carrinho", (change) => {
+        if (!this.state.loadCarrinho) {
+            this.setState({ loadCarrinho: true, });
+        }
+    });
+
+
+    next = () => {
+        switch (this.state.activeTab) {
+            case '1':
+                this.setState({
+                    activeTab: '2',
+                    progress: { entrega: 100 / 3, pagamento: 100 / 3, confirmacao: 0 }
+                });
+                break;
+            case '2':
+                this.setState({
+                    activeTab: '3',
+                    progress: { entrega: 100 / 3, pagamento: 100 / 3, confirmacao: 100 / 3 }
+                });
+                break;
+            default:
+                return;
         }
     }
 
-    onChange = (event) => {
-        this.setState({ [event.target.id]: event.target.value })
+    previous = () => {
+        switch (this.state.activeTab) {
+            case '2':
+                this.setState({
+                    activeTab: '1',
+                    progress: { entrega: 100 / 3, pagamento: 0, confirmacao: 0 }
+                });
+                break;
+            case '3':
+                this.setState({
+                    activeTab: '2',
+                    progress: { entrega: 100 / 3, pagamento: 100 / 3, confirmacao: 0 }
+                });
+                break;
+            default:
+                return;
+        }
+    }
+
+    setMoradaEntrega = (event) => {
+        this.setState({
+            moradaEntrega: {
+                ...this.state.moradaEntrega,
+                [event.target.id]: event.target.value,
+            }
+        })
+    }
+
+    setMetodoPagamento = (metodoPagamento) => {
+        this.setState({ metodoPagamento });
     }
 
     render() {
+        if (!this.state.loadUser || !this.state.loadCarrinho) {
+            return null;
+        }
+
         let {
             nome,
-            telemovel,
             rua,
-            localidade,
             codigoPostal,
-        } = this.state;
+            localidade
+        } = this.state.moradaEntrega;
+        let canContinuar = (
+            nome !== '' &&
+            rua !== '' &&
+            codigoPostal !== '' &&
+            localidade !== ''
+        );
 
         return (
-            <Container className="pt-5" style={{ minHeight: '60vh' }}>
+            <Container className="pt-5" style={{ minHeight: '80vh' }}>
                 <Row>
                     <Col>
                         <h1>Checkout</h1>
                     </Col>
                 </Row>
+                <Row className="mt-3 mb-4">
+                    <Col>
+                        <Progress multi style={{ height: '40px', fontSize: '1em' }}>
+                            <Progress bar value={this.state.progress.entrega} animated={this.state.activeTab === '1'}>
+                                {this.state.progress.entrega !== 0 && 'ENTREGA'}
+                            </Progress>
+                            <Progress bar color="success" value={this.state.progress.pagamento} animated={this.state.activeTab === '2'}>
+                                {this.state.progress.pagamento !== 0 && 'PAGAMENTO'}
+                            </Progress>
+                            <Progress bar color="info" value={this.state.progress.confirmacao} animated={this.state.activeTab === '3'}>
+                                {this.state.progress.confirmacao !== 0 && 'CONFIRMAÇÃO'}
+                            </Progress>
+                        </Progress>
+                    </Col>
+                </Row>
                 <Row className="pt-3">
                     <Col>
-                        <Nav tabs>
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '1' })}
-                                    onClick={() => { this.toggle('1'); }}
-                                >
-                                    Entrega
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '2' })}
-                                    onClick={() => { this.toggle('2'); }}
-                                >
-                                    Pagamento
-                                </NavLink>
-                            </NavItem>
-                            <NavItem>
-                                <NavLink
-                                    className={classnames({ active: this.state.activeTab === '3' })}
-                                    onClick={() => { this.toggle('3'); }}
-                                >
-                                    Confirmação
-                                </NavLink>
-                            </NavItem>
-                        </Nav>
                         <TabContent activeTab={this.state.activeTab}>
                             <TabPane tabId="1">
-                                <Row className="pt-4">
-                                    <Col sm="6">
-                                        <h5>Morada de Entrega</h5>
-                                        <Row>
-                                            <Col sm="6">
-                                                <div className="form-label-group">
-                                                    <Input required value={nome} placeholder="Nome" type="text" className="form-control" id="inputNome"
-                                                        onChange={this.onChange} />
-                                                    <label htmlFor="inputNome">Nome</label>
-                                                </div>
-                                            </Col>
-                                            <Col sm="6">
-                                                <div className="form-label-group">
-                                                    <Input required value={telemovel} placeholder="Telemóvel" type="text" className="form-control" id="inputTele"
-                                                        onChange={event => this.setState({ 'entrega.telemovel': event.target.value })} />
-                                                    <label htmlFor="inputTele">Telemovel</label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-                                        <div className="form-label-group">
-                                            <Input required value={rua} placeholder="Rua" type="text" className="form-control" id="inputRua"
-                                                onChange={event => this.setState({ 'entrega.nome': event.target.value })} />
-                                            <label htmlFor="inputRua">Rua</label>
-                                        </div>
-                                        <Row>
-                                            <Col sm="6">
-                                                <div className="form-label-group">
-                                                    <Input required value={codigoPostal} placeholder="Código Postal" type="text" className="form-control" id="inputCodigo"
-                                                        onChange={event => this.setState({ 'entrega.codigoPostal': event.target.value })} />
-                                                    <label htmlFor="inputCodigo">Código Postal</label>
-                                                </div>
-                                            </Col>
-                                            <Col sm="6">
-                                                <div className="form-label-group">
-                                                    <Input required value={localidade} placeholder="Localidade" type="text" className="form-control" id="inputLocalidade"
-                                                        onChange={event => this.setState({ 'entrega.localidade': event.target.value })} />
-                                                    <label htmlFor="inputLocalidade">Localidade</label>
-                                                </div>
-                                            </Col>
-                                        </Row>
-
-                                    </Col>
-                                    <Col sm="6">
-                                        <div className="float-right p-3" style={{ boxShadow: '0 0 4px 1px rgba(0, 0, 0, 0.3)', width: "250px" }}>
-                                            <div className="p-2">
-                                                <strong>Sub-Total </strong> <span className="float-right">{formatterPrice.format(200)}</span><br />
-                                            </div>
-                                            <div className="px-2">
-                                                <strong>Portes </strong> <span className="float-right">{formatterPrice.format(200)}</span><br />
-                                            </div>
-                                            <div className="p-2">
-                                                <strong>Total </strong>  <span className="float-right">{formatterPrice.format(200)}</span><br />
-                                            </div>
-                                            <Button className="btn btn-success btn-block my-2">Continuar</Button>
-                                        </div>
-                                    </Col>
-                                </Row>
+                                <Entrega user={this.props.sessionStore.user} setMoradaEntrega={this.setMoradaEntrega} />
                             </TabPane>
                             <TabPane tabId="2">
-                                <Row className="pt-4">
-                                    <Col sm="6">
-                                        <h5>Método de Pagamento</h5>
-                                        <Row>
-                                            <Col>
-                                                <FormGroup tag="fieldset">
-                                                    <FormGroup check  className="py-2">
-                                                        <Label check>
-                                                            <Input type="radio" name="radio1" onChange={event => this.setState({ 'metodo': event.target.value })}/>{' '}
-                                                            Multibanco
-                                                        </Label>
-                                                    </FormGroup>
-                                                    <FormGroup check  className="py-2">
-                                                        <Label check>
-                                                            <Input type="radio" name="radio1" />{' '}
-                                                            Paypal
-                                                        </Label>
-                                                    </FormGroup>
-                                                    <FormGroup check className="py-2">
-                                                        <Label check>
-                                                            <Input type="radio" name="radio1" />{' '}
-                                                            MB WAY
-                                                        </Label>
-                                                    </FormGroup>
-                                                    <FormGroup check className="py-2">
-                                                        <Label check>
-                                                            <Input type="radio" name="radio1" />{' '}
-                                                            Pagamento no ato de levantamento
-                                                        </Label>
-                                                    </FormGroup>
-                                                </FormGroup>
-                                            </Col>
-                                        </Row>
-
-                                    </Col>
-                                    <Col sm="6">
-                                        <div className="float-right p-3" style={{ boxShadow: '0 0 4px 1px rgba(0, 0, 0, 0.3)', width: "250px" }}>
-                                            <div className="p-2">
-                                                <strong>Sub-Total </strong> <span className="float-right">{formatterPrice.format(200)}</span><br />
-                                            </div>
-                                            <div className="px-2">
-                                                <strong>Portes </strong> <span className="float-right">{formatterPrice.format(200)}</span><br />
-                                            </div>
-                                            <div className="p-2">
-                                                <strong>Total </strong>  <span className="float-right">{formatterPrice.format(200)}</span><br />
-                                            </div>
-                                            <Button className="btn btn-success btn-block my-2">Continuar</Button>
-                                        </div>
-                                    </Col>
-                                </Row>
+                                <Pagamento setMetodoPagamento={this.setMetodoPagamento} />
+                            </TabPane>
+                            <TabPane tabId="3">
+                                <Confirmacao carrinho={this.props.carrinhoStore.carrinho} />
                             </TabPane>
                         </TabContent>
                     </Col>
+                    {this.state.activeTab !== '3' &&
+
+                        <div className="float-right p-4 mr-3" style={{ boxShadow: '0 0 4px 1px rgba(0, 0, 0, 0.3)', width: "250px"}}>
+                            <div>
+                                <h5>Resumo</h5>
+
+                                <div className="py-1 d-flex justify-content-between">
+                                    <strong>Sub-Total</strong>
+                                    <span>{formatterPrice.format(this.state.resumo.subTotal)}</span>
+                                </div>
+                                <div className="py-1 d-flex justify-content-between">
+                                    <strong>Portes</strong>
+                                    <span>{formatterPrice.format(this.state.resumo.portes)}</span>
+                                </div>
+                                <div className="py-1 d-flex justify-content-between">
+                                    <strong>Total</strong>
+                                    <span>{formatterPrice.format(this.state.resumo.total)}</span>
+                                </div>
+                            </div>
+
+                            {this.state.activeTab !== '1' &&
+                                <div className="pt-3">
+                                    <h5>Entrega</h5>
+
+                                    <span>{this.state.moradaEntrega.nome}</span><br />
+                                    <small>{this.state.moradaEntrega.rua}</small><br />
+                                    <small>{this.state.moradaEntrega.codigoPostal + ' ' + this.state.moradaEntrega.localidade}</small>
+                                </div>
+                            }
+
+                            <Button block color='success' className="mt-3" onClick={this.next} disabled={!canContinuar}>
+                                Continuar
+                            </Button>
+                            {this.state.activeTab !== '1' &&
+                                <Button block color='secondary' onClick={this.previous} size="sm">
+                                    Voltar
+                                </Button>
+                            }
+                        </div>
+
+                    }
                 </Row>
             </Container>
         );

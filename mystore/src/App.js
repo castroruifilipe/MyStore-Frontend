@@ -19,6 +19,7 @@ import ListaProdutos from './scenes/ListaProdutos';
 import Procura from './scenes/Procura';
 import DetalhesEncomenda from './scenes/DetalhesEncomenda';
 import DetalhesCarrinho from './scenes/DetalhesCarrinho';
+import Checkout from './scenes/Checkout';
 
 class App extends Component {
 
@@ -42,6 +43,7 @@ class App extends Component {
 							<Route path={routes.PROCURA + ':categoria/:string'} component={Procura}/>
 							<Route path={routes.PROCURA + ':string'} component={Procura}/>
 							<Route path={routes.CARRINHO} component={DetalhesCarrinho}/>
+							<Route path={routes.CHECKOUT} component={Checkout}/>
 						</Switch>
 						<Footer />
 					</div>

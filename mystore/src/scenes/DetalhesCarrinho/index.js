@@ -6,8 +6,10 @@ import { compose } from 'recompose';
 import PencilIcon from 'react-icons/lib/fa/edit';
 import { formatterPrice } from '../../constants/formatters';
 import EditarCarrinho from './EditarCarrinho';
+import { Link } from 'react-router-dom';
 
 import * as services from '../../services/carrinho';
+import * as routes from '../../constants/routes';
 import './style.css';
 
 class DetalhesCarrinho extends Component {
@@ -179,7 +181,7 @@ class DetalhesCarrinho extends Component {
                                     <div className="p-2">
                                         <strong>Total </strong>  <span className="float-right">{formatterPrice.format(200)}</span><br />
                                     </div>
-                                    <Button className="btn btn-success btn-block my-2">Checkout</Button>
+                                    <Button className="btn btn-success btn-block my-2" tag={Link} to={ (this.props.sessionStore.role) ? routes.CHECKOUT : routes.LOGIN}>Checkout</Button>
                                 </div>
                             </Col>
                         </Row>
@@ -195,6 +197,6 @@ class DetalhesCarrinho extends Component {
 }
 
 export default compose(
-    inject('carrinhoStore'),
+    inject('carrinhoStore', 'sessionStore'),
     observer
 )(DetalhesCarrinho);

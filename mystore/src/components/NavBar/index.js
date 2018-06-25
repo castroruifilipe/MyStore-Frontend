@@ -140,7 +140,7 @@ class NavBar extends Component {
                 </NavItem>
             </Nav>
         );
-        if (this.props.sessionStore.accessToken) {
+        if (this.props.sessionStore.role === "CLIENTE") {
             navItemConta = (
                 <Nav className="ml-auto" navbar>
                     <UncontrolledDropdown nav inNavbar>
@@ -150,6 +150,28 @@ class NavBar extends Component {
                         <DropdownMenu right>
                             <DropdownItem tag={Link} to={routes.ENCOMENDAS} >
                                 Encomendas
+                            </DropdownItem>
+                            <DropdownItem tag={Link} to={routes.CONTA}>
+                                Meus dados
+                            </DropdownItem>
+                            <DropdownItem divider />
+                            <DropdownItem onClick={this.signout}>
+                                Logout
+                            </DropdownItem>
+                        </DropdownMenu>
+                    </UncontrolledDropdown>
+                </Nav>
+            );
+        } else if (this.props.sessionStore.role === "FUNCIONARIO") {
+            navItemConta = (
+                <Nav className="ml-auto" navbar>
+                    <UncontrolledDropdown nav inNavbar>
+                        <DropdownToggle nav caret>
+                            Minha conta
+                        </DropdownToggle>
+                        <DropdownMenu right>
+                            <DropdownItem tag={Link} to={routes.GESTOR_HOME} >
+                                Gestão da loja
                             </DropdownItem>
                             <DropdownItem tag={Link} to={routes.CONTA}>
                                 Meus dados

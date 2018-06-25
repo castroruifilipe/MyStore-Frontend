@@ -10,7 +10,7 @@ class Pagamento extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            metodo: 0
+            metodo: '',
         };
     }
 
@@ -29,25 +29,25 @@ class Pagamento extends Component {
                             <FormGroup tag="fieldset" required>
                                 <FormGroup check className="py-2">
                                     <Label check>
-                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('multibanco') }} />
+                                        <Input type="radio" defaultChecked name="metodo" onChange={event => { this.onChange('MULTIBANCO') }} />
                                         {' '}<img src={multibanco_logo} alt="Multibanco" />
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check className="py-2">
                                     <Label check>
-                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('paypal') }} />
+                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('PAYPAL') }} />
                                         {' '}<img src={paypal_logo} alt="Paypal" />
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check className="py-2">
                                     <Label check>
-                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('mbway') }} />
+                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('MBWAY') }} />
                                         {' '}<img src={mbway_logo} alt="MB Way" />
                                     </Label>
                                 </FormGroup>
                                 <FormGroup check className="py-2">
                                     <Label check>
-                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('cobranca') }} />
+                                        <Input type="radio" name="metodo" onChange={event => { this.onChange('COBRANCA') }} />
                                         {' '}Pagamento no ato da entrega
                                 </Label>
                                 </FormGroup>

@@ -12,7 +12,7 @@ export const getMaisVendidos = (quantidade) =>
     axios.get(`${urlProdutos}/maisVendidos/${quantidade}`);
 
 export const getPromocoes = (quantidade) =>
-    axios.get(`${urlProdutos}/promocoes/${quantidade}`);
+    axios.get(`${urlProdutos}/emPromocao/${quantidade}`);
 
 export const getRelacionados = (codigo,quantidade) => 
     axios.get(`${urlProdutos}/relacionados/${quantidade}`,{params: {codigo}})

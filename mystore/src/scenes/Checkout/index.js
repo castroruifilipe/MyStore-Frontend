@@ -3,25 +3,28 @@ import { TabContent, TabPane, Row, Col, Container, Button, Progress } from 'reac
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 import { observe } from 'mobx';
+import { withRouter } from 'react-router-dom';
 
 import Entrega from './components/Entrega';
 import Pagamento from './components/Pagamento';
 import Confirmacao from './components/Confirmacao';
 import { formatterPrice } from '../../constants/formatters';
+import * as servicesEncomenda from '../../services/encomendas';
+import * as servicesCarrinho from '../../services/carrinho';
+import * as routes from '../../constants/routes';
 
 class Checkout extends Component {
 
     constructor(props) {
         super(props);
         let loadUser, moradaEntrega;
-        let loadCarrinho = this.props.carrinhoStore.carrinho !== {};
         if (this.props.sessionStore.user.nome) {
             loadUser = true;
             moradaEntrega = {
                 nome: this.props.sessionStore.user.nome,
-                rua: this.props.sessionStore.user.morada.rua,
-                codigoPostal: this.props.sessionStore.user.morada.codigoPostal,
-                localidade: this.props.sessionStore.user.morada.localidade,
+                rua: this.props.sessionStore.user.morada.rua || '',
+                codigoPostal: this.props.sessionStore.user.morada.codigoPostal || '',
+                localidade: this.props.sessionStore.user.morada.localidade || '',
             }
         } else {
             loadUser = false;
@@ -32,22 +35,34 @@ class Checkout extends Component {
                 localidade: '',
             }
         }
+        let loadCarrinho, resumo;
+        if (this.props.carrinhoStore.carrinho.total) {
+            loadCarrinho = true;
+            resumo = {
+                subTotal: this.props.carrinhoStore.carrinho.total,
+                portes: 5.45,
+                total: this.props.carrinhoStore.carrinho.total + 5.45,
+            }
+        } else {
+            loadCarrinho = false;
+            resumo = {
+                subTotal: '',
+                portes: '',
+                total: '',
+            }
+        }
         this.state = {
             loadUser,
             loadCarrinho,
+            resumo,
             moradaEntrega,
-            metodoPagamento: '',
+            metodoPagamento: 'MULTIBANCO',
             progress: {
                 entrega: 100 / 3,
                 pagamento: 0,
                 confirmacao: 0
             },
             activeTab: '1',
-            resumo: {
-                subTotal: 0,
-                portes: 0,
-                total: 0,
-            },
         };
     }
 
@@ -68,7 +83,14 @@ class Checkout extends Component {
 
     disposerCarrinho = observe(this.props.carrinhoStore, "carrinho", (change) => {
         if (!this.state.loadCarrinho) {
-            this.setState({ loadCarrinho: true, });
+            this.setState({
+                loadCarrinho: true,
+                resumo: {
+                    subTotal: change.newValue.total,
+                    portes: 5.45,
+                    total: change.newValue.total + 5.45,
+                }
+            });
         }
     });
 
@@ -109,6 +131,19 @@ class Checkout extends Component {
             default:
                 return;
         }
+    }
+
+    confirmar = () => {
+        servicesEncomenda.checkout(this.state.moradaEntrega, this.state.metodoPagamento, this.props.sessionStore.accessToken)
+            .then(response => servicesCarrinho.getCarrinho())
+            .then(response => {
+                console.log(response.data);
+                this.props.carrinhoStore.setCarrinho(response.data);
+                this.props.history.push(routes.ENCOMENDAS)
+            })
+            .catch(error => {
+                console.error(error.response)
+            });
     }
 
     setMoradaEntrega = (event) => {
@@ -174,26 +209,28 @@ class Checkout extends Component {
                                 <Pagamento setMetodoPagamento={this.setMetodoPagamento} />
                             </TabPane>
                             <TabPane tabId="3">
-                                <Confirmacao carrinho={this.props.carrinhoStore.carrinho} />
+                                <Confirmacao carrinho={this.props.carrinhoStore.carrinho} morada={this.state.moradaEntrega}
+                                    metodo={this.state.metodoPagamento} resumo={this.state.resumo}
+                                    confirmar={this.confirmar} previous={this.previous} />
                             </TabPane>
                         </TabContent>
                     </Col>
                     {this.state.activeTab !== '3' &&
 
-                        <div className="float-right p-4 mr-3" style={{ boxShadow: '0 0 4px 1px rgba(0, 0, 0, 0.3)', width: "250px"}}>
+                        <div className="float-right p-4 mr-3" style={{ boxShadow: '0 0 4px 1px rgba(0, 0, 0, 0.3)', width: "250px" }}>
                             <div>
                                 <h5>Resumo</h5>
 
                                 <div className="py-1 d-flex justify-content-between">
-                                    <strong>Sub-Total</strong>
+                                    <span>Sub-Total</span>
                                     <span>{formatterPrice.format(this.state.resumo.subTotal)}</span>
                                 </div>
                                 <div className="py-1 d-flex justify-content-between">
-                                    <strong>Portes</strong>
+                                    <span>Portes</span>
                                     <span>{formatterPrice.format(this.state.resumo.portes)}</span>
                                 </div>
                                 <div className="py-1 d-flex justify-content-between">
-                                    <strong>Total</strong>
+                                    <span>Total</span>
                                     <span>{formatterPrice.format(this.state.resumo.total)}</span>
                                 </div>
                             </div>
@@ -227,6 +264,7 @@ class Checkout extends Component {
 }
 
 export default compose(
+    withRouter,
     inject('carrinhoStore', 'sessionStore'),
     observer
 )(Checkout);

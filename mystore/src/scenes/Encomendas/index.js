@@ -34,11 +34,12 @@ class Encomendas extends Component {
     componentWillMount() {
         services.getEncomendasCliente(this.props.sessionStore.accessToken)
             .then(response => {
+                console.log(response.data);
                 let data = [];
                 response.data.forEach(v => {
                     data.push({
                         numero: v.id,
-                        data: v.data,
+                        data: v.dataRegisto,
                         total: v.total,
                         estado: v.estado,
                         metodo: v.metodoPagamento,
@@ -79,7 +80,7 @@ class Encomendas extends Component {
         let html;
 
         if (this.state.encomendas.length === 0) {
-            html = <h2>Ainda não realizou nenhuma encomenda!</h2>
+            html = <div className="pt-3"><h3>Ainda não realizou nenhuma encomenda!</h3></div>
         } else {
             html =
                 <BootstrapTable version='4' data={this.state.encomendas} pagination >
@@ -94,6 +95,7 @@ class Encomendas extends Component {
 
         return (
             <Container className="pt-4" style={{ minHeight: '50vh' }}>
+                <h1>Encomendas</h1>
                 {html}
             </Container>
         );

@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Row, Col, Table } from 'reactstrap';
+import { Row, Col, Table, Button } from 'reactstrap';
 
 import { formatterPrice } from '../../../../constants/formatters';
+import metodoPagEnum from '../../../../constants/metodoPagEnum';
 
 class Confirmacao extends Component {
 
@@ -27,8 +28,6 @@ class Confirmacao extends Component {
     }
 
     render() {
-        console.log(this.props.carrinho);
-        let carrinho = this.props.carrinho;
         let rows = [];
         this.makeRows(rows);
 
@@ -53,6 +52,40 @@ class Confirmacao extends Component {
                                 {rows}
                             </tbody>
                         </Table>
+                    </Col>
+                </Row>
+
+                <Row className="mt-3 pl-3">
+                    <Col md="4">
+                        <h6><strong>Morada de Entrega</strong></h6>
+                        <span>{this.props.morada.nome}</span><br />
+                        <span>{this.props.morada.rua}</span><br />
+                        <span>{this.props.morada.codigoPostal} {this.props.morada.localidade}</span>
+                    </Col>
+                    <Col md="4">
+                        <h6><strong>Método de Pagamento</strong></h6>
+                        <span> {metodoPagEnum[this.props.metodo]}</span><br />
+                    </Col>
+                    <Col md="3">
+                        <h6><strong>Resumo</strong></h6>
+                        <div className="py-1 d-flex justify-content-between">
+                            <span>Sub-Total</span>
+                            <span>{formatterPrice.format(this.props.resumo.subTotal)}</span>
+                        </div>
+                        <div className="py-1 d-flex justify-content-between">
+                            <span>Portes</span>
+                            <span>{formatterPrice.format(this.props.resumo.portes)}</span>
+                        </div>
+                        <div className="py-1 d-flex justify-content-between">
+                            <span>Total</span>
+                            <span>{formatterPrice.format(this.props.resumo.total)}</span>
+                        </div>
+                        <Button block color='success' className="mt-3" onClick={this.props.confirmar}>
+                            Confirmar
+                        </Button>
+                        <Button block color='secondary' size="sm" onClick={this.props.previous}>
+                            Voltar
+                        </Button>
                     </Col>
                 </Row>
             </div>

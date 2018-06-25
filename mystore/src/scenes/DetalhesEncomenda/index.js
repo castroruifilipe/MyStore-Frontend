@@ -23,18 +23,18 @@ class DetalhesEncomenda extends Component {
         services.getEncomenda(this.props.match.params.numero, this.props.sessionStore.accessToken)
             .then(response => {
                 let data = response.data;
+                console.log(data);
                 this.setState({
                     encomenda: {
                         numero: data.id,
-                        trackingID: data.trackingID,
-                        data: data.data,
-                        moradaEnvio: data.moradaEnvio,
-                        moradaFaturacao: data.moradaFaturacao,
-                        subTotal: data.total,
+                        data: data.dataRegisto,
+                        moradaEntrega: data.moradaEntrega,
+                        subTotal: data.total - data.portes,
                         portes: data.portes,
-                        total: data.total + data.portes,
-                        metodo: metodoPagEnum[data.metodoPagamento],
-                        estado: estadoEnum[data.estado],
+                        total: data.total,
+                        metodo: data.metodoPagamento,
+                        estado: data.estado,
+                        dataLimitePagamento: data.dataLimitePagamento,
                         dataPagamento: (data.dataPagamento || ""),
                         linhasEncomenda: data.linhasEncomenda,
                     }
@@ -59,8 +59,9 @@ class DetalhesEncomenda extends Component {
                         <td>{element.produto.nome}</td>
                         <td>{element.quantidade}</td>
                         <td>{formatterPrice.format(element.precoUnitario)}</td>
-                        <td>{formatterPrice.format(element.valorDesconto)}</td>
-                        <td>{formatterPrice.format(element.valorDesconto + element.precoUnitario)}</td>
+                        <td>{formatterPrice.format(element.precoUnitario*element.quantidade)}</td>
+                        <td>{formatterPrice.format(element.valorDesconto*element.quantidade)}</td>
+                        <td>{formatterPrice.format((element.precoUnitario - element.valorDesconto)*element.quantidade)}</td>
                     </tr>
                 );
             });
@@ -72,6 +73,22 @@ class DetalhesEncomenda extends Component {
         if (!encomenda) {
             return null;
         }
+
+        let pagamento;
+        if (this.state.encomenda.estado === 'AGUARDA_PAGAMENTO') {
+            pagamento =
+                <div>
+                    <p className="colorHeader"><strong>Data limite de pagamento</strong></p>
+                    <span>{this.state.encomenda.dataLimitePagamento}</span>
+                </div>
+        } else  if (this.state.encomenda.estado !== 'CANCELADA') {
+            pagamento =
+                <div>
+                    <p className="colorHeader"><strong>Data de pagamento</strong></p>
+                    <span>{this.state.encomenda.dataPagamento}</span>
+                </div>
+        }
+
 
         let produtos = [];
         this.makeProdutos(produtos);
@@ -85,25 +102,16 @@ class DetalhesEncomenda extends Component {
                         <h6>Encomenda nº {encomenda.numero}</h6>
                     </Col>
                     <Col md="4">
-                        <span>Tracking ID: {encomenda.trackingID}</span>
-                    </Col>
-                    <Col md="4">
-                        <span>Data: {encomenda.data}</span>
+                        <span>Data de registo: {encomenda.data}</span>
                     </Col>
                 </Row>
 
                 <Row className="pt-4">
                     <Col md="4">
                         <p className="colorHeader"><strong>Morada de Envio</strong></p>
-                        <span>{encomenda.moradaEnvio.rua}</span><br />
-                        <span>{encomenda.moradaEnvio.localidade}</span><br />
-                        <span>{encomenda.moradaEnvio.codigoPostal}</span>
-                    </Col>
-                    <Col md="4">
-                        <p className="colorHeader"><strong>Morada de Faturação</strong></p>
-                        <span>{encomenda.moradaFaturacao.rua}</span><br />
-                        <span>{encomenda.moradaFaturacao.localidade}</span><br />
-                        <span>{encomenda.moradaFaturacao.codigoPostal}</span>
+                        <span>{encomenda.moradaEntrega.rua}</span><br />
+                        <span>{encomenda.moradaEntrega.localidade}</span><br />
+                        <span>{encomenda.moradaEntrega.codigoPostal}</span>
                     </Col>
                     <Col md="4">
                         <p className="colorHeader"><strong>Resumo</strong></p>
@@ -116,15 +124,14 @@ class DetalhesEncomenda extends Component {
                 <Row className="pt-4">
                     <Col md="4">
                         <p className="colorHeader"><strong>Método de pagamento</strong></p>
-                        <span>{this.state.encomenda.metodo}</span>
+                        <span>{metodoPagEnum[this.state.encomenda.metodo]}</span>
                     </Col>
                     <Col md="4">
                         <p className="colorHeader"><strong>Estado</strong></p>
-                        <span>{this.state.encomenda.estado}</span>
+                        <span>{estadoEnum[this.state.encomenda.estado]}</span>
                     </Col>
                     <Col md="4">
-                        <p className="colorHeader"><strong>Data de Pagamento</strong></p>
-                        <span>{this.state.encomenda.dataPagamento}</span>
+                        {pagamento}
                     </Col>
                 </Row>
 
@@ -136,6 +143,7 @@ class DetalhesEncomenda extends Component {
                                 <th>Designação</th>
                                 <th>Quantidade</th>
                                 <th>Preco Unitário</th>
+                                <th>Preco</th>
                                 <th>Desconto</th>
                                 <th>Sub-Total</th>
                             </tr>

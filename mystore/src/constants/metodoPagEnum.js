@@ -1,8 +1,9 @@
 const metodoPagEnum = {
-    CARTAO_CREDITO: "Cartão crédito",
+
     MULTIBANCO: "Multibanco",
     PAYPAL: "Paypal",
-    TRANSFERENCIA: "Transferencia",
+    MBWAY: "MBWay",
+    COBRANCA: "Envio à cobrança",
 }
 
 export default metodoPagEnum;

@@ -8,4 +8,10 @@ export const getEncomenda = (id, token) =>
 
 export const getEncomendasCliente = (token) =>
     axios.get(`${urlEncomendas}/cliente`,
-    { headers: { 'Authorization': 'Bearer ' + token } });
+        { headers: { 'Authorization': 'Bearer ' + token } });
+
+export const checkout = (moradaEntrega, metodoPagamento, token) =>
+    axios.post(`${urlEncomendas}/checkout`, { moradaEntrega, metodoPagamento }, {
+        headers: { 'Authorization': 'Bearer ' + token },
+        withCredentials: true
+    });

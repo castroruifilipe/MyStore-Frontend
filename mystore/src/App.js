@@ -13,13 +13,15 @@ import Novidades from './scenes/ListaNovidades';
 import Promocoes from './scenes/ListaPromocoes';
 import Encomendas from './scenes/Encomendas';
 import Footer from './components/Footer'
-import * as routes from './constants/routes';
-import './App.css';
 import ListaProdutos from './scenes/ListaProdutos';
 import Procura from './scenes/Procura';
 import DetalhesEncomenda from './scenes/DetalhesEncomenda';
 import DetalhesCarrinho from './scenes/DetalhesCarrinho';
 import Checkout from './scenes/Checkout';
+import GestorApp from './GestorApp';
+
+import * as routes from './constants/routes';
+import './App.css';
 
 class App extends Component {
 
@@ -44,6 +46,7 @@ class App extends Component {
 							<Route path={routes.PROCURA + ':string'} component={Procura}/>
 							<Route path={routes.CARRINHO} component={DetalhesCarrinho}/>
 							<Route path={routes.CHECKOUT} component={Checkout}/>
+							<Route path={routes.GESTOR_AUTH} component={GestorApp}/>
 						</Switch>
 						<Footer />
 					</div>

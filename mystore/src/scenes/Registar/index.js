@@ -64,7 +64,7 @@ class Registar extends Component {
         return (
             <Container fluid>
                 <Row style={{ minHeight: '90vh' }}>
-                    <Col md={{ size: 6, offset: 4 }}>
+                    <Col md={{ size: 6, offset: 4 }} xs={{size: 8, offset: 2 }}>
                         <h3 className="font-weight-normal mb-4" style={{ paddingTop: '120px' }}>Criar conta</h3>
 
                         <Form className="form-sign" onSubmit={this.onSubmit}>

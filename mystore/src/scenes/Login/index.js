@@ -55,7 +55,7 @@ class Login extends Component {
 		return (
 			<Container fluid >
 				<Row style={{ minHeight: '90vh' }}>
-					<Col md={{ size: 6, offset: 4 }}>
+					<Col md={{ size: 6, offset: 4 }} xs={{size: 8, offset: 2 }}>
 						<h3 className="font-weight-normal mt-5 mb-3" style={{ paddingTop: '90px' }}>Login</h3>
 
 						<Form className="form-sign" onSubmit={this.onSubmit}>

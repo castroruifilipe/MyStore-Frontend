@@ -5,8 +5,8 @@ import { compose } from 'recompose';
 import PencilIcon from 'react-icons/lib/fa/edit';
 
 import * as services from '../../services/utilizadores';
-import AlterarPassword from './components/AlterarPassword';
-import EditarDados from './components/EditarDados';
+import AlterarPassword from './scenes/AlterarPassword';
+import EditarDados from './scenes/EditarDados';
 
 class Conta extends Component {
 

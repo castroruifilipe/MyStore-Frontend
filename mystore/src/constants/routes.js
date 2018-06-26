@@ -14,10 +14,6 @@ export const ENCOMENDA = '/cliente/encomendas/';
 export const CONTA = '/cliente';
 
 export const GESTOR = '/gestor';
-
-
-
-export const GESTOR_AUTH = '/gestor';
 export const GESTOR_HOME = '/gestor/home';
 export const GESTAO_CLIENTES = '/gestor/clientes';
 export const GESTAO_ENCOMENDAS = '/gestor/encomendas';

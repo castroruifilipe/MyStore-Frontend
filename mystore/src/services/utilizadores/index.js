@@ -17,8 +17,13 @@ export const editarDados = (dados, token) =>
         { headers: { 'Authorization': 'Bearer ' + token } }
     );
 
-
 export const alterarPassword = (oldPassword, newPassword, token) =>
     axios.put(`${urlUtilizadores}/alterarPassword`, { oldPassword, newPassword },
         { headers: { 'Authorization': 'Bearer ' + token } }
     );
+
+export const getClientes = (token) =>
+    axios.get(`${urlUtilizadores}/clientes`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+export const getCliente = (id, token) =>
+    axios.get(`${urlUtilizadores}/cliente/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })

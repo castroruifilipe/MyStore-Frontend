@@ -18,7 +18,7 @@ class DetalhesProduto extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            value: 0,
+            value: 1,
             error: null,
             produto: {},
             relacionados: [],
@@ -133,7 +133,7 @@ class DetalhesProduto extends Component {
                             </Col>
                             <Col xs="2">
                                 <NumericInput className="form-control"
-                                    min={0} max={this.state.produto.stock} precision={0}
+                                    min={1} max={this.state.produto.stock} precision={0}
                                     value={this.state.value}
                                     onChange={this.onChange}
                                     size={6} />

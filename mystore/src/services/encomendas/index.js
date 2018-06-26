@@ -9,6 +9,10 @@ export const getEncomenda = (id, token) =>
     axios.get(`${urlEncomendas}/${id}`,
         { headers: { 'Authorization': 'Bearer ' + token } });
 
+export const getEncomendas = (token) =>
+    axios.get(`${urlEncomendas}`,
+        { headers: { 'Authorization': 'Bearer ' + token } });
+
 export const getEncomendasCliente = (token) =>
     axios.get(`${urlEncomendas}/cliente`,
         { headers: { 'Authorization': 'Bearer ' + token } });

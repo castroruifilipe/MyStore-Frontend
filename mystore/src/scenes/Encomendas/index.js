@@ -23,18 +23,9 @@ class Encomendas extends Component {
         }
     }
 
-    enumFormatter = (cell, row, enumObject) => {
-        return enumObject[cell];
-    }
-
-    priceFormatter = (cell, row) =>{
-        return formatterPrice.format(cell);
-    }
-
     componentWillMount() {
         services.getEncomendasCliente(this.props.sessionStore.accessToken)
             .then(response => {
-                console.log(response.data);
                 let data = [];
                 response.data.forEach(v => {
                     data.push({
@@ -58,6 +49,7 @@ class Encomendas extends Component {
             });
     }
 
+
     getCaret = (direction) => {
         if (direction === 'asc') {
             return (
@@ -70,6 +62,14 @@ class Encomendas extends Component {
             )
         }
         return (<TiArrowUnsorted />);
+    }
+
+    enumFormatter = (cell, row, enumObject) => {
+        return enumObject[cell];
+    }
+
+    priceFormatter = (cell, row) =>{
+        return formatterPrice.format(cell);
     }
 
     buttonFormatter = (cell, row) => {

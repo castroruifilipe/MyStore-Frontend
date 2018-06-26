@@ -3,14 +3,19 @@ export const LOGIN = '/login';
 export const REGISTAR = '/registar';
 export const PRODUTO = '/produto/';
 export const LISTA_PRODUTOS = '/produtos/';
-export const ENCOMENDAS = '/clienge/encomendas';
-export const ENCOMENDA = '/cliente/encomendas/';
-export const CONTA = '/cliente';
 export const NOVIDADES = '/novidades';
 export const PROMOCOES = '/promocoes';
 export const PROCURA = '/procura/';
 export const CARRINHO = '/carrinho/';
 export const CHECKOUT = '/checkout/';
+
+export const ENCOMENDAS = '/cliente/encomendas';
+export const ENCOMENDA = '/cliente/encomendas/';
+export const CONTA = '/cliente';
+
+export const GESTOR = '/gestor';
+
+
 
 export const GESTOR_AUTH = '/gestor';
 export const GESTOR_HOME = '/gestor/home';

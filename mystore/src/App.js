@@ -22,6 +22,7 @@ import GestorApp from './GestorApp';
 
 import * as routes from './constants/routes';
 import './App.css';
+import Gestor from './scenes/Gestor';
 
 class App extends Component {
 
@@ -37,16 +38,20 @@ class App extends Component {
 							<Route exact path={routes.REGISTAR} component={Registar} />
 							<Route path={routes.PRODUTO + ':id'} component={DetalhesProduto} />
 							<Route path={routes.LISTA_PRODUTOS + ':categoria'} component={ListaProdutos} />
-							<Route exact path={routes.CONTA} component={Conta}/>
-							<Route exact path={routes.NOVIDADES} component={Novidades}/>
-							<Route exact path={routes.PROMOCOES} component={Promocoes}/>
-							<Route exact path={routes.ENCOMENDAS} component={Encomendas}/>
-							<Route exact path={routes.ENCOMENDA+ ':numero'} component={DetalhesEncomenda}/>
-							<Route path={routes.PROCURA + ':categoria/:string'} component={Procura}/>
-							<Route path={routes.PROCURA + ':string'} component={Procura}/>
-							<Route path={routes.CARRINHO} component={DetalhesCarrinho}/>
-							<Route path={routes.CHECKOUT} component={Checkout}/>
-							<Route path={routes.GESTOR_AUTH} component={GestorApp}/>
+							<Route exact path={routes.CONTA} component={Conta} />
+							<Route exact path={routes.NOVIDADES} component={Novidades} />
+							<Route exact path={routes.PROMOCOES} component={Promocoes} />
+							<Route exact path={routes.ENCOMENDAS} component={Encomendas} />
+							<Route exact path={routes.ENCOMENDA + ':numero'} component={DetalhesEncomenda} />
+							<Route path={routes.PROCURA + ':categoria/:string'} component={Procura} />
+							<Route path={routes.PROCURA + ':string'} component={Procura} />
+							<Route exact path={routes.CARRINHO} component={DetalhesCarrinho} />
+							<Route exact path={routes.CHECKOUT} component={Checkout} />
+
+							<Route path={routes.GESTOR} component={Gestor}/>
+
+
+							{/* <Route path={routes.GESTOR_AUTH} component={GestorApp} /> */}
 						</Switch>
 						<Footer />
 					</div>

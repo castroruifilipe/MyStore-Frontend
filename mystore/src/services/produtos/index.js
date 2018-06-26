@@ -11,11 +11,14 @@ export const getNovidades = (quantidade) =>
 export const getMaisVendidos = (quantidade) =>
     axios.get(`${urlProdutos}/maisVendidos/${quantidade}`);
 
+export const getMaisVendidosDetail = (quantidade) =>
+    axios.get(`${urlProdutos}/maisVendidosDetail/${quantidade}`);
+
 export const getPromocoes = (quantidade) =>
     axios.get(`${urlProdutos}/emPromocao/${quantidade}`);
 
-export const getRelacionados = (codigo,quantidade) => 
-    axios.get(`${urlProdutos}/relacionados/${quantidade}`,{params: {codigo}})
+export const getRelacionados = (codigo, quantidade) =>
+    axios.get(`${urlProdutos}/relacionados/${quantidade}`, { params: { codigo } })
 
 export const getProdutos = (categoria, pagina, size) =>
     axios.get(`${urlProdutos}/categoria`, { params: { pagina, size, categoria } });

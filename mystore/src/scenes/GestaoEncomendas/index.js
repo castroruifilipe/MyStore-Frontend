@@ -28,7 +28,7 @@ class GestaoEncomendas extends Component {
                 response.data.forEach(v => {
                     data.push({
                         numero: v.id,
-                        data: v.dataRegisto,
+                        data: new Date(v.dataRegisto).toLocaleString(),
                         total: v.total,
                         estado: v.estado,
                         metodo: v.metodoPagamento,
@@ -86,11 +86,11 @@ class GestaoEncomendas extends Component {
                     <Row className="mt-3">
                         <Col className="p-0">
                             <BootstrapTable version='4' data={this.state.encomendas} pagination >
-                                <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader'>Nº Encomenda</TableHeaderColumn>
-                                <TableHeaderColumn dataField='data' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>
-                                <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader">Total</TableHeaderColumn>
-                                <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} formatExtraData={metodoPagEnum} className="customHeader">Método pagamento</TableHeaderColumn>
-                                <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} formatExtraData={estadoEnum} className="customHeader">Estado</TableHeaderColumn>
+                                <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader' dataAlign="center">Nº Encomenda</TableHeaderColumn>
+                                <TableHeaderColumn dataField='data' dataSort={true} caretRender={this.getCaret} className="customHeader" dataAlign="center">Data</TableHeaderColumn>
+                                <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader" dataAlign="center">Total</TableHeaderColumn>
+                                <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} formatExtraData={metodoPagEnum} className="customHeader" dataAlign="center">Método pagamento</TableHeaderColumn>
+                                <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} formatExtraData={estadoEnum} className="customHeader" dataAlign="center">Estado</TableHeaderColumn>
                                 <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
                             </BootstrapTable>
                         </Col>

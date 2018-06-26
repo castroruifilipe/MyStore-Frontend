@@ -2,6 +2,8 @@ import React, { Component } from 'react';
 import { Row, Col, Input, Button } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
 
 import * as services from '../../../../services/utilizadores';
 import * as routes from '../../../../constants/routes';
@@ -27,7 +29,7 @@ class ConsultarCliente extends Component {
     }
 
     componentWillMount() {
-        services.getCliente(this.props.match.params.id)
+        services.getCliente(this.props.match.params.id, this.props.sessionStore.accessToken)
             .then(response => {
                 console.log(response);
                 let data = [];
@@ -129,4 +131,7 @@ class ConsultarCliente extends Component {
     }
 }
 
-export default ConsultarCliente;
+export default compose(
+    inject('sessionStore'),
+    observer
+)(ConsultarCliente);

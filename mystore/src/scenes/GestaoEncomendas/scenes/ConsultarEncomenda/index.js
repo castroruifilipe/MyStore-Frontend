@@ -25,7 +25,7 @@ class ConsultarEncomenda extends Component {
                 this.setState({
                     encomenda: {
                         numero: data.id,
-                        data: data.dataRegisto,
+                        data: new Date(data.dataRegisto).toLocaleString(),
                         moradaEntrega: data.moradaEntrega,
                         subTotal: data.total - data.portes,
                         portes: data.portes,
@@ -33,7 +33,7 @@ class ConsultarEncomenda extends Component {
                         metodo: data.metodoPagamento,
                         estado: data.estado,
                         dataLimitePagamento: data.dataLimitePagamento,
-                        dataPagamento: (data.dataPagamento || ""),
+                        dataPagamento: (new Date(data.dataPagamento).toLocaleString() || ""),
                         linhasEncomenda: data.linhasEncomenda,
                     }
                 });

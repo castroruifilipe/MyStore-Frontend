@@ -27,7 +27,6 @@ class ConsultarCliente extends Component {
     }
 
     componentWillMount() {
-        console.log(this.props.match.params.id);
         services.getCliente(this.props.match.params.id)
             .then(response => {
                 console.log(response);
@@ -113,7 +112,7 @@ class ConsultarCliente extends Component {
                         </Col>
                     </Row>
                     <Row>
-                        <Col className="pl  -0">
+                        <Col className="pl-0">
                             <BootstrapTable version='4' data={this.state.encomendas} pagination >
                                 <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader'>Nº Encomenda</TableHeaderColumn>
                                 <TableHeaderColumn dataField='data' width='10%' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>

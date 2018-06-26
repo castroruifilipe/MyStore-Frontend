@@ -3,12 +3,14 @@ import { Row, Button, Col } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/lib/ti';
 import { Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
 
 import * as routes from '../../constants/routes';
 import * as services from '../../services/encomendas';
 import metodoPagEnum from '../../constants/metodoPagEnum';
 import estadoEnum from '../../constants/estadoEnum';
-import {formatterPrice} from '../../constants/formatters';
+import { formatterPrice } from '../../constants/formatters';
 
 class GestaoEncomendas extends Component {
 
@@ -20,7 +22,7 @@ class GestaoEncomendas extends Component {
     }
 
     componentWillMount() {
-        services.getEncomendasCliente()
+        services.getEncomendas(this.props.sessionStore.accessToken)
             .then(response => {
                 let data = [];
                 response.data.forEach(v => {
@@ -49,7 +51,7 @@ class GestaoEncomendas extends Component {
         return enumObject[cell];
     }
 
-    priceFormatter = (cell, row) =>{
+    priceFormatter = (cell, row) => {
         return formatterPrice.format(cell);
     }
 
@@ -82,14 +84,16 @@ class GestaoEncomendas extends Component {
                         </Col>
                     </Row>
                     <Row className="mt-3">
-                        <BootstrapTable version='4' data={this.state.encomendas} pagination >
-                            <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader'>Nº Encomenda</TableHeaderColumn>
-                            <TableHeaderColumn dataField='data' width='10%' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>
-                            <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader">Total</TableHeaderColumn>
-                            <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} formatExtraData={metodoPagEnum} className="customHeader">Método pagamento</TableHeaderColumn>
-                            <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} formatExtraData={estadoEnum} className="customHeader">Estado</TableHeaderColumn>
-                            <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
-                        </BootstrapTable>
+                        <Col className="p-0">
+                            <BootstrapTable version='4' data={this.state.encomendas} pagination >
+                                <TableHeaderColumn isKey dataField='numero' filter={{ type: 'TextFilter' }} className='customHeader'>Nº Encomenda</TableHeaderColumn>
+                                <TableHeaderColumn dataField='data' dataSort={true} caretRender={this.getCaret} className="customHeader">Data</TableHeaderColumn>
+                                <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader">Total</TableHeaderColumn>
+                                <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} formatExtraData={metodoPagEnum} className="customHeader">Método pagamento</TableHeaderColumn>
+                                <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} formatExtraData={estadoEnum} className="customHeader">Estado</TableHeaderColumn>
+                                <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
+                            </BootstrapTable>
+                        </Col>
                     </Row>
                 </Col>
             </Row>
@@ -98,5 +102,7 @@ class GestaoEncomendas extends Component {
     }
 }
 
-export default GestaoEncomendas;
-
+export default compose(
+    inject('sessionStore'),
+    observer
+)(GestaoEncomendas);

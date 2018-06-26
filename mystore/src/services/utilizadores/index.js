@@ -26,4 +26,4 @@ export const getClientes = (token) =>
     axios.get(`${urlUtilizadores}/clientes`, { headers: { 'Authorization': 'Bearer ' + token } })
 
 export const getCliente = (id, token) =>
-    axios.get(`${urlUtilizadores}/cliente/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+    axios.get(`${urlUtilizadores}/clientes/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })

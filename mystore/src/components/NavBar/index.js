@@ -170,9 +170,6 @@ class NavBar extends Component {
                             Minha conta
                         </DropdownToggle>
                         <DropdownMenu right>
-                            <DropdownItem tag={Link} to={routes.GESTOR_HOME} >
-                                Gestão da loja
-                            </DropdownItem>
                             <DropdownItem tag={Link} to={routes.CONTA}>
                                 Meus dados
                             </DropdownItem>
@@ -182,6 +179,9 @@ class NavBar extends Component {
                             </DropdownItem>
                         </DropdownMenu>
                     </UncontrolledDropdown>
+                    <NavItem>
+                        <NavLink tag={Link} to={routes.GESTOR_HOME}>Gestão de loja</NavLink>
+                    </NavItem>
                 </Nav>
             );
         }
@@ -216,24 +216,33 @@ class NavBar extends Component {
 
                         {navItemConta}
                     </Collapse>
-                    <Nav className="ml-3 mr-2" navbar>
-                        <NavItem id="shoppingCart" onClick={this.togglePopOver}>
-                            <IoAndroidCart size="30" className="pt-2" />
-                            <Badge color="success" pill style={{ marginLeft: '-9px' }}>{rowsShoppingCart.length}</Badge>
-                        </NavItem>
-                    </Nav>
-                    <NavbarToggler onClick={this.toggleNavBar} />
+                    {
+                        (this.props.sessionStore.role === "CLIENTE")
+                            ?
+                            <div>
+                                <Nav className="ml-3 mr-2" navbar>
+                                    <NavItem id="shoppingCart" onClick={this.togglePopOver}>
+                                        <IoAndroidCart size="30" className="pt-2" />
+                                        <Badge color="success" pill style={{ marginLeft: '-9px' }}>{rowsShoppingCart.length}</Badge>
+                                    </NavItem>
+                                </Nav>
+                                <NavbarToggler onClick={this.toggleNavBar} />
+
+                                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="shoppingCart" toggle={this.togglePopOver}>
+                                    <PopoverHeader className="d-flex justify-content-between">
+                                        <span>Carrinho</span>
+                                        <span className="text-success pl-4">{formatterPrice.format(this.props.carrinhoStore.carrinho.total || 0)}</span>
+                                    </PopoverHeader>
+                                    <PopoverBody>
+                                        {rowsShoppingCart.length === 0 ? carrinhoText : rowsShoppingCart}
+                                        {rowsShoppingCart.length !== 0 && <Button size="sm" color="success" block className="mt-4" tag={Link} to={routes.CARRINHO}>Ver carrinho</Button>}
+                                    </PopoverBody>
+                                </Popover>
+                            </div>
+                            :
+                            ""
+                    }
                 </Navbar>
-                <Popover placement="bottom" isOpen={this.state.popoverOpen} target="shoppingCart" toggle={this.togglePopOver}>
-                    <PopoverHeader className="d-flex justify-content-between">
-                        <span>Carrinho</span>
-                        <span className="text-success pl-4">{formatterPrice.format(this.props.carrinhoStore.carrinho.total || 0)}</span>
-                    </PopoverHeader>
-                    <PopoverBody>
-                        {rowsShoppingCart.length === 0 ? carrinhoText : rowsShoppingCart}
-                        {rowsShoppingCart.length !== 0 && <Button size="sm" color="success" block className="mt-4" tag={Link} to={routes.CARRINHO}>Ver carrinho</Button>}
-                    </PopoverBody>
-                </Popover>
             </div>
 
         );

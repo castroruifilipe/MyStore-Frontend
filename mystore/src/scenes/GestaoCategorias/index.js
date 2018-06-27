@@ -87,7 +87,7 @@ class GestaoCategorias extends Component {
                     <Col className="p-0">
                         <BootstrapTable version='4' data={this.state.categorias} pagination >
                             <TableHeaderColumn isKey dataField='id' dataSort caretRender={this.getCaret} width="15%" filter={{ type: 'TextFilter' }} className='customHeader' dataAlign="center">Código</TableHeaderColumn>
-                            <TableHeaderColumn dataField='descricao' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Descrição</TableHeaderColumn>
+                            <TableHeaderColumn dataField='descricao' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader">Descrição</TableHeaderColumn>
                             <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} width='15%' className="customHeader"></TableHeaderColumn>
                         </BootstrapTable>
                     </Col>

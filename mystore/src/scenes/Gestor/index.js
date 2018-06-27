@@ -13,6 +13,8 @@ import ConsultarEncomenda from '../GestaoEncomendas/scenes/ConsultarEncomenda';
 import GestaoProdutos from '../GestaoProdutos';
 import ConsultarProduto from '../GestaoProdutos/scenes/ConsultarProduto';
 import GestaoCategorias from '../GestaoCategorias';
+import GestaoPromocoes from '../GestaoPromocoes';
+import ConsultarPromocao from '../GestaoPromocoes/scenes/ConsultarPromocao';
 
 class Gestor extends Component {
 
@@ -31,6 +33,8 @@ class Gestor extends Component {
                         <Route exact path={routes.GESTAO_ENCOMENDAS + ':id'} component={ConsultarEncomenda} />
                         <Route exact path={routes.GESTAO_PRODUTOS} component={GestaoProdutos} />
                         <Route exact path={routes.GESTAO_PRODUTOS + ':codigo'} component={ConsultarProduto} />
+                        <Route exact path={routes.GESTAO_PROMOCOES} component={GestaoPromocoes} />
+                        <Route exact path={routes.GESTAO_PROMOCOES + '/:id'} component={ConsultarPromocao} />
                         <Route exact path={routes.GESTAO_CATEGORIAS} component={GestaoCategorias} />
                     </Col>
                 </Row>

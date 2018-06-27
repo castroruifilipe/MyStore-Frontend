@@ -75,13 +75,13 @@ class ConsultarEncomenda extends Component {
         if (this.state.encomenda.estado === 'AGUARDA_PAGAMENTO') {
             pagamento =
                 <div>
-                    <p className="colorHeader"><strong>Data limite de pagamento</strong></p>
+                    <p className="headerColor"><strong>Data limite de pagamento</strong></p>
                     <span>{this.state.encomenda.dataLimitePagamento}</span>
                 </div>
         } else if (this.state.encomenda.estado !== 'CANCELADA') {
             pagamento =
                 <div>
-                    <p className="colorHeader"><strong>Data de pagamento</strong></p>
+                    <p className="headerColor"><strong>Data de pagamento</strong></p>
                     <span>{this.state.encomenda.dataPagamento}</span>
                 </div>
         }
@@ -106,13 +106,13 @@ class ConsultarEncomenda extends Component {
 
                     <Row className="pt-4">
                         <Col md="4">
-                            <p className="colorHeader"><strong>Morada de Envio</strong></p>
+                            <p className="headerColor"><strong>Morada de Envio</strong></p>
                             <span>{encomenda.moradaEntrega.rua}</span><br />
                             <span>{encomenda.moradaEntrega.localidade}</span><br />
                             <span>{encomenda.moradaEntrega.codigoPostal}</span>
                         </Col>
                         <Col md="4">
-                            <p className="colorHeader"><strong>Resumo</strong></p>
+                            <p className="headerColor"><strong>Resumo</strong></p>
                             <span><strong>Sub-Total: </strong>{formatterPrice.format(encomenda.subTotal)}</span><br />
                             <span><strong>Portes: </strong>{formatterPrice.format(encomenda.portes)}</span><br />
                             <span><strong>Total: </strong>{formatterPrice.format(encomenda.total)}</span>
@@ -121,11 +121,11 @@ class ConsultarEncomenda extends Component {
 
                     <Row className="pt-4">
                         <Col md="4">
-                            <p className="colorHeader"><strong>Método de pagamento</strong></p>
+                            <p className="headerColor"><strong>Método de pagamento</strong></p>
                             <span>{metodoPagEnum[this.state.encomenda.metodo]}</span>
                         </Col>
                         <Col md="4">
-                            <p className="colorHeader"><strong>Estado</strong></p>
+                            <p className="headerColor"><strong>Estado</strong></p>
                             <span>{estadoEnum[this.state.encomenda.estado]}</span>
                         </Col>
                         <Col md="4">

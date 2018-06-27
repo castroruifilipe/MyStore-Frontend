@@ -11,7 +11,6 @@ import * as routes from '../../../../constants/routes';
 import metodoPagEnum from '../../../../constants/metodoPagEnum';
 import estadoEnum from '../../../../constants/estadoEnum';
 import { formatterPrice } from '../../../../constants/formatters';
-import './style.css';
 
 class ConsultarCliente extends Component {
 
@@ -97,7 +96,7 @@ class ConsultarCliente extends Component {
                     </Row>
                     <Row className="mt-3">
                         <Col className="pl-0">
-                            <h5 className="textColor">Dados pessoais</h5>
+                            <h5 className="headerColor">Dados pessoais</h5>
                             <div className="form-label-group">
                                 <Input value={nome} disabled placeholder="Nome" type="text" className="form-control" id="nome" onChange={this.onChange} />
                                 <label htmlFor="nome">Nome</label>
@@ -116,7 +115,7 @@ class ConsultarCliente extends Component {
                             </div>
                         </Col>
                         <Col>
-                            <h5 className="textColor">Endereço</h5>
+                            <h5 className="headerColor">Endereço</h5>
                             <div className="form-label-group">
                                 <Input value={rua} disabled placeholder="Rua" type="text" className="form-control" id="rua" onChange={this.onChange} />
                                 <label htmlFor="rua">Rua</label>
@@ -133,7 +132,7 @@ class ConsultarCliente extends Component {
                     </Row>
                     <Row className="mt-2">
                         <Col className="p-0">
-                            <h5 className="textColor">Encomendas</h5>
+                            <h5 className="headerColor">Encomendas</h5>
                         </Col>
                     </Row>
                     <Row>

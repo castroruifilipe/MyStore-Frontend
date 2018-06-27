@@ -33,7 +33,6 @@ class ConsultarCliente extends Component {
     componentWillMount() {
         services.getCliente(this.props.match.params.id, this.props.sessionStore.accessToken)
             .then(response => {
-                console.log(response);
                 let data = [];
                 response.data.encomendas.forEach(v => {
                     data.push({

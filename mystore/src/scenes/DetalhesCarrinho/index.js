@@ -49,7 +49,6 @@ class DetalhesCarrinho extends Component {
     limpar = () => {
         services.limpar()
             .then(response => {
-                console.log(response.data);
                 this.props.carrinhoStore.setCarrinho(response.data);
             })
             .catch(error => {

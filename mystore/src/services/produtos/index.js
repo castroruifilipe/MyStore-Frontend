@@ -5,6 +5,9 @@ import { urlProdutos } from '../../services';
 export const getProduto = (id) =>
     axios.get(`${urlProdutos}/${id}`);
 
+export const getAllProdutos = () => 
+    axios.get(`${urlProdutos}`)
+
 export const getNovidades = (quantidade) =>
     axios.get(`${urlProdutos}/novidades/${quantidade}`);
 

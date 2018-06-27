@@ -21,7 +21,6 @@ class ConsultarEncomenda extends Component {
         services.getEncomenda(this.props.match.params.id, this.props.sessionStore.accessToken)
             .then(response => {
                 let data = response.data;
-                console.log(data);
                 this.setState({
                     encomenda: {
                         numero: data.id,

@@ -23,7 +23,6 @@ class DetalhesEncomenda extends Component {
         services.getEncomenda(this.props.match.params.numero, this.props.sessionStore.accessToken)
             .then(response => {
                 let data = response.data;
-                console.log(data);
                 this.setState({
                     encomenda: {
                         numero: data.id,

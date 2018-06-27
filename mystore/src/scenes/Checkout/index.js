@@ -137,7 +137,6 @@ class Checkout extends Component {
         servicesEncomenda.checkout(this.state.moradaEntrega, this.state.metodoPagamento, this.props.sessionStore.accessToken)
             .then(response => servicesCarrinho.getCarrinho())
             .then(response => {
-                console.log(response.data);
                 this.props.carrinhoStore.setCarrinho(response.data);
                 this.props.history.push(routes.ENCOMENDAS)
             })

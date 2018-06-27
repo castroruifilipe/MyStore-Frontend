@@ -20,7 +20,7 @@ class Gestor extends Component {
                     <Col md="3">
                         <SideMenu />
                     </Col>
-                    <Col md="9" className="mt-4">
+                    <Col md="9" className="mt-5">
                         <Route exact path={routes.GESTOR_HOME} component={GestorHome} />
                         <Route exact path={routes.GESTAO_CLIENTES} component={GestaoClientes} />
                         <Route exact path={routes.GESTAO_CLIENTES + ':id'} component={ConsultarCliente} />

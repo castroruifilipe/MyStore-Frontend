@@ -27,7 +27,7 @@ class DetalhesEncomenda extends Component {
                 this.setState({
                     encomenda: {
                         numero: data.id,
-                        data: data.dataRegisto,
+                        data: new Date(data.dataRegisto).toLocaleString(),
                         moradaEntrega: data.moradaEntrega,
                         subTotal: data.total - data.portes,
                         portes: data.portes,

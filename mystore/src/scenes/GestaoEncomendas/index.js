@@ -80,7 +80,7 @@ class GestaoEncomendas extends Component {
                 <Col >
                     <Row>
                         <Col className="p-0">
-                            <h4>Gestão de Clientes</h4>
+                            <h4>Gestão de Encomendas</h4>
                         </Col>
                     </Row>
                     <Row className="mt-3">

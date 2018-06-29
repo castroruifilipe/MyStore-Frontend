@@ -1,5 +1,7 @@
 import React, { Component } from 'react';
 import { Row, Col, Button } from 'reactstrap';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
 import PencilIcon from 'react-icons/lib/fa/edit';
 
 import * as services from '../../../../services/produtos';
@@ -53,7 +55,34 @@ class ConsultarProduto extends Component {
     }
 
     guardar = () => {
-        alert("aquii");
+        const dados = {};
+        if (this.state.nome) {
+            dados['nome'] = this.state.nome;
+        }
+        if (this.state.telemovel !== undefined) {
+            dados['categoria'] = this.state.categoria;
+        }
+        if (this.state.contribuinte !== undefined) {
+            dados['stock'] = this.state.stock;
+        }
+        if (this.state.rua !== undefined) {
+            dados['descricao'] = this.state.descricao;
+        }
+        if (this.state.localidade !== undefined) {
+            dados['precoBase'] = this.state.precoBase;
+        }
+        services.editarProduto(dados, this.props.sessionStore.accessToken)
+            .then(response => {
+                 console.log("success");
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
     }
 
     editar = () => {
@@ -169,4 +198,7 @@ class ConsultarProduto extends Component {
 
 }
 
-export default ConsultarProduto;
+export default compose(
+    inject('sessionStore'),
+    observer
+)(ConsultarProduto);

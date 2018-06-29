@@ -5,7 +5,7 @@ import { urlProdutos } from '../../services';
 export const getProduto = (id) =>
     axios.get(`${urlProdutos}/${id}`);
 
-export const getAllProdutos = () => 
+export const getAllProdutos = () =>
     axios.get(`${urlProdutos}`)
 
 export const getNovidades = (quantidade) =>
@@ -31,3 +31,18 @@ export const getProdutosProcuraCategoria = (categoria, value) =>
 
 export const getProdutosProcura = (value) =>
     axios.get(`${urlProdutos}/search`, { params: { value } })
+
+export const editarProduto = (dados, token) =>
+    axios.put(`${urlProdutos}/editar`, dados,
+        { headers: { 'Authorization': 'Bearer ' + token } }
+    );
+
+export const criarProduto = (dados, token) =>
+    axios.post(`${urlProdutos}/criar`, dados,
+        { headers: { 'Authorization': 'Bearer ' + token } }
+    );
+
+export const removerProduto = (codigo, token) =>
+    axios.delete(`${urlProdutos}/apagar`, codigo,
+        { headers: { 'Authorization': 'Bearer ' + token } }
+    );

@@ -217,8 +217,9 @@ class NavBar extends Component {
                         {navItemConta}
                     </Collapse>
                     {
-                        (this.props.sessionStore.role === "CLIENTE")
-                            ?
+                        (this.props.sessionStore.role === "FUNCIONARIO")
+                            ? ""
+                            :
                             <div>
                                 <Nav className="ml-3 mr-2" navbar>
                                     <NavItem id="shoppingCart" onClick={this.togglePopOver}>
@@ -239,8 +240,6 @@ class NavBar extends Component {
                                     </PopoverBody>
                                 </Popover>
                             </div>
-                            :
-                            ""
                     }
                 </Navbar>
             </div>

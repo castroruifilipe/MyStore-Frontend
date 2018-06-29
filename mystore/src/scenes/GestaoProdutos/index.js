@@ -79,6 +79,9 @@ class GestaoProdutos extends Component {
                         <Col className="p-0">
                             <h4>Gestão de Produtos</h4>
                         </Col>
+                        <Col className="p-0" align="right">
+                        <Button color="primary"  tag={Link} to={routes.GESTAO_PRODUTOS + '/criar'}>Novo produto</Button>
+                    </Col>
                     </Row>
                     <Row className="mt-3">
                         <Col className="p-0">

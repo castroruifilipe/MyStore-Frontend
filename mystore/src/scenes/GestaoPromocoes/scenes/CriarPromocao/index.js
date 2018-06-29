@@ -1,11 +1,14 @@
 import React, { Component } from 'react';
-import { Row, Col, Input, Button, FormGroup, Label } from 'reactstrap';
+import { Row, Col, Input, Button, FormGroup, Label, } from 'reactstrap';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/lib/ti';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
+import { Link } from 'react-router-dom';
 
 import * as servicesCategorias from '../../../../services/categorias';
 import * as servicesProdutos from '../../../../services/produtos';
-import { formatterPercent, formatterPrice } from '../../../../constants/formatters'
+import * as servicesPromocoes from '../../../../services/promocoes';
+import { formatterPrice } from '../../../../constants/formatters';
+import * as routes from '../../../../constants/routes';
 
 
 
@@ -14,7 +17,7 @@ class CriarPromocao extends Component {
     constructor(props) {
         super(props);
         this.state = {
-            desconto: '',
+            desconto: 0,
             descricao: '',
             dataInicio: '',
             dataFim: '',
@@ -112,8 +115,33 @@ class CriarPromocao extends Component {
         return (<TiArrowUnsorted />);
     }
 
-
-
+    guardar = () => {
+        let promo;
+        if (this.state.tipo === 'categoria') {
+            promo = this.state.categoria;
+        } else {
+            promo = this.state.produtos;
+        }
+        let dados = {
+            descricao: this.state.descricao,
+            desconto: this.state.desconto,
+            dataInicio: this.state.dataInicio,
+            dataFim: this.state.dataFim,
+            promo,
+        };
+        servicesPromocoes.criarPromocao(dados, this.props.sessionStore.accessToken)
+            .then(response => {
+                this.props.history.push(routes.GESTAO_PROMOCOES);
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+    }
 
     render() {
         if (!this.state.listCategorias || !this.state.listProdutos) {
@@ -125,9 +153,14 @@ class CriarPromocao extends Component {
             descricao,
             dataInicio,
             dataFim,
-            produtos,
             categoria,
         } = this.state;
+
+        const isInvalid =
+            descricao === "" ||
+            dataInicio === "" || dataFim === "" ||
+            desconto === "" || isNaN(parseFloat(desconto)) || !isFinite(desconto) || desconto <= 0;
+
         return (
             <Row className="ml-0">
                 <Col>
@@ -136,11 +169,11 @@ class CriarPromocao extends Component {
                             <h3 className='headerColor'>Criar Promoção</h3>
                         </Col>
                         <Col align="right">
-                            <Button color="danger" className="mr-2 block inline-md" style={{ width: '180px' }} onClick={this.apagar}>
-                                Cancelar
-                            </Button>
-                            <Button color="success" className="mr-2 block inline-md" style={{ width: '180px' }} onClick={this.apagar}>
+                            <Button color="success" className="mr-2 block inline-md" disabled={isInvalid} style={{ width: '180px' }} onClick={this.guardar}>
                                 Guardar
+                            </Button>
+                            <Button className="mr-2 block inline-md" style={{ width: '180px' }} tag={Link} to={routes.GESTAO_PROMOCOES}>
+                                Cancelar
                             </Button>
                         </Col>
                     </Row>
@@ -151,17 +184,17 @@ class CriarPromocao extends Component {
                                 <label htmlFor="descricao">Descrição</label>
                             </div>
                             <div className="form-label-group">
-                                <Input value={desconto} placeholder="Desconto" type="text" className="form-control" id="desconto" onChange={this.onChange} />
-                                <label htmlFor="desconto">Desconto</label>
+                                <Input value={desconto} placeholder="Desconto" type="number" min="0" max="100" className="form-control" id="desconto" onChange={this.onChange} />
+                                <label htmlFor="desconto">Desconto (%)</label>
                             </div>
                         </Col>
                         <Col>
                             <div className="form-label-group">
-                                <Input value={dataInicio} placeholder="Data de início" type="text" className="form-control" id="dataInicio" onChange={this.onChange} />
+                                <Input value={dataInicio} placeholder="Data de início" type="date" className="form-control" id="dataInicio" onChange={this.onChange} />
                                 <label htmlFor="dataInicio">Data de início</label>
                             </div>
                             <div className="form-label-group">
-                                <Input value={dataFim} placeholder="Data de fim" type="text" className="form-control" id="dataFim" onChange={this.onChange} />
+                                <Input value={dataFim} placeholder="Data de fim" type="date" className="form-control" id="dataFim" onChange={this.onChange} />
                                 <label htmlFor="dataFim">Data de fim</label>
                             </div>
                         </Col>

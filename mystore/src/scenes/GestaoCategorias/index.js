@@ -107,7 +107,7 @@ class GestaoCategorias extends Component {
 
                     </ModalBody>
                     <ModalFooter>
-                        <Button color="primary" onClick={this.criarCategoria}>Criar</Button>{' '}
+                        <Button color="primary" onClick={this.criarCategoria} disabled={this.state.descricao === ""}>Criar</Button>{' '}
                         <Button color="secondary" onClick={this.toggleModal}>Cancelar</Button>
                     </ModalFooter>
                 </Modal>

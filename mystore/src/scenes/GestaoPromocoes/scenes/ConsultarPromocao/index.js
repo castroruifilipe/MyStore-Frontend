@@ -71,7 +71,7 @@ class ConsultarPromocao extends Component {
             categoria,
         } = this.state;
 
-        if (id == '') {
+        if (id === '') {
             return null;
         }
 

@@ -2,7 +2,6 @@ import React, { Component } from 'react';
 import { Row, Col, Input, Button, FormGroup, Label } from 'reactstrap';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/lib/ti';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
-import 'react-datepicker/dist/react-datepicker.css';
 
 import * as servicesCategorias from '../../../../services/categorias';
 import * as servicesProdutos from '../../../../services/produtos';

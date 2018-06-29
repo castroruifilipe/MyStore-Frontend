@@ -1,10 +1,10 @@
 import React, { Component } from 'react';
-import { Row, Button, Col, Container, Alert, Modal, ModalBody, ModalHeader, ModalFooter, Form, Input } from 'reactstrap';
+import { Row, Button, Col } from 'reactstrap';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/lib/ti';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
-import { withRouter } from 'react-router-dom';
+import { withRouter, Link } from 'react-router-dom';
 
 import { formatterPercent } from '../../constants/formatters';
 import * as services from '../../services/promocoes';
@@ -53,13 +53,13 @@ class GestaoPromocoes extends Component {
 
     render() {
         return (
-            <Container>
+            <div>
                 <Row>
                     <Col md="6" className="p-0">
                         <h4>Gestão de Promoções</h4>
                     </Col>
                     <Col md="6" className="p-0" align="right">
-                        <Button color="primary">Nova promocao</Button>
+                        <Button color="primary" tag={Link} to={routes.GESTAO_PROMOCOES_CRIAR}>Nova promocao</Button>
                     </Col>
                 </Row>
                 <Row className="mt-3">
@@ -67,15 +67,15 @@ class GestaoPromocoes extends Component {
                         <BootstrapTable version='4' data={this.state.promocoes} pagination >
                             <TableHeaderColumn isKey dataField='id' dataSort caretRender={this.getCaret} width='10%' filter={{ type: 'TextFilter' }} className='customHeader' dataAlign="center">Código</TableHeaderColumn>
                             <TableHeaderColumn dataField='descricao' width='25%' filter={{ type: 'TextFilter' }} className="customHeader">Descrição</TableHeaderColumn>
-                            <TableHeaderColumn dataField='desconto' width='10%' dataFormat={this.percentFormatter} className="customHeader" dataAlign="center">Desconto</TableHeaderColumn>
+                            <TableHeaderColumn dataField='desconto' dataSort caretRender={this.getCaret} width='12%' dataFormat={this.percentFormatter} className="customHeader" dataAlign="center">Desconto</TableHeaderColumn>
                             <TableHeaderColumn dataField='dataInicio' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Data de início</TableHeaderColumn>
                             <TableHeaderColumn dataField='dataFim' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Data de fim</TableHeaderColumn>
-                            <TableHeaderColumn dataField='atual' width='10%' dataFormat={this.booleanFormatter} className="customHeader" dataAlign="center">Em vigor</TableHeaderColumn>
+                            <TableHeaderColumn dataField='atual' dataSort caretRender={this.getCaret} width='10%' dataFormat={this.booleanFormatter} className="customHeader" dataAlign="center">Em vigor</TableHeaderColumn>
                             <TableHeaderColumn dataField='button' width='8%' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
                         </BootstrapTable>
                     </Col>
                 </Row>
-            </Container>
+            </div>
         );
 
     }

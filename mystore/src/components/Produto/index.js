@@ -73,28 +73,36 @@ class Produto extends Component {
                     <CardTitle>{produto.nome}</CardTitle>
                     <CardText>{descricao}</CardText>
                 </CardBody>
-                <CardFooter className="d-flex justify-content-between">
-                    <Button size="sm" tag={Link} to={routes.PRODUTO + produto.codigo}>Ver</Button>
-                    <NumericInput className="form-control"
-                        min={0} max={this.props.produto.stock} precision={0}
-                        value={this.state.value}
-                        onChange={this.onChange}
-                        size={7}
-                        style={{
-                            input: {
-                                height: '30px',
-                                width: '70px'
-                            }
-                        }} />
-                    <Button size="sm" color="success" onClick={this.comprar}>Comprar</Button>
-                </CardFooter>
-            </Card>
+                {
+                    (this.props.sessionStore.role === "FUNCIONARIO")
+                        ?
+                        <CardFooter>
+                            <Button size="sm" tag={Link}  block to={routes.PRODUTO + produto.codigo}>Ver</Button>
+                        </CardFooter>
+                        :
+                        <CardFooter className="d-flex justify-content-between">
+                            <Button size="sm" tag={Link} to={routes.PRODUTO + produto.codigo}>Ver</Button>
+                            <NumericInput className="form-control"
+                                min={0} max={this.props.produto.stock} precision={0}
+                                value={this.state.value}
+                                onChange={this.onChange}
+                                size={7}
+                                style={{
+                                    input: {
+                                        height: '30px',
+                                        width: '70px'
+                                    }
+                                }} />
+                            <Button size="sm" color="success" onClick={this.comprar}>Comprar</Button>
+                        </CardFooter>
+                }
+            </Card >
         );
     }
 
 }
 
 export default compose(
-    inject('carrinhoStore'),
+    inject('carrinhoStore', 'sessionStore'),
     observer
 )(Produto);

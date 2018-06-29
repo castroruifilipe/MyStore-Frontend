@@ -37,7 +37,12 @@ export const editarProduto = (dados, token) =>
         { headers: { 'Authorization': 'Bearer ' + token } }
     );
 
-export const criarProduto = (dados,token) =>
+export const criarProduto = (dados, token) =>
     axios.post(`${urlProdutos}/criar`, dados,
+        { headers: { 'Authorization': 'Bearer ' + token } }
+    );
+
+export const removerProduto = (codigo, token) =>
+    axios.delete(`${urlProdutos}/apagar`, codigo,
         { headers: { 'Authorization': 'Bearer ' + token } }
     );

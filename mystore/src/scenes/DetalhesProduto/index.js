@@ -6,10 +6,12 @@ import FaTruck from 'react-icons/lib/fa/truck';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 import { formatterPrice } from '../../constants/formatters';
+import { Link } from 'react-router-dom';
 
 import Produto from '../../components/Produto';
 import * as servicesProduto from '../../services/produtos';
 import * as servicesCarrinho from '../../services/carrinho';
+import * as routes from '../../constants/routes';
 
 import './style.css';
 
@@ -100,20 +102,68 @@ class DetalhesProduto extends Component {
         })
     }
 
-
     render() {
         let rows = [];
         this.makeProdutosRelacionados(rows);
         let price;
         if (this.state.produto.precoPromocional !== 0) {
             price =
-            <div>
-                <small className="strikethrough">{formatterPrice.format(this.state.produto.precoBase)}</small>
-                <strong> {formatterPrice.format(this.state.produto.precoPromocional)}</strong>
-            </div>
+                <div>
+                    <small className="strikethrough">{formatterPrice.format(this.state.produto.precoBase)}</small>
+                    <strong> {formatterPrice.format(this.state.produto.precoPromocional)}</strong>
+                </div>
         } else {
             price = <strong>{formatterPrice.format(this.state.produto.precoBase)}</strong>
         }
+
+        let text;
+        if (this.props.sessionStore.role !== "FUNCIONARIO") {
+            text =
+                <Row className="pt-5">
+                    <Col md="2" >
+                        <h5 className="centerLine">{price}</h5>
+                    </Col>
+                    <Col xs="2">
+                        <NumericInput className="form-control"
+                            min={1} max={this.state.produto.stock} precision={0}
+                            value={this.state.value}
+                            onChange={this.onChange}
+                            size={6} />
+                    </Col>
+                    <Col md="4">
+                        <Button color="success" className="btn-block" onClick={this.comprar}>
+                            Adicionar <span className="hideComponent"> ao carrinho</span>
+                        </Button>
+
+                    </Col>
+                    <Col md="4">
+                        <FaTruck size="25" className="hideTruck" />
+                        <span className="centerLine pl-2">
+                            Stock: {this.state.produto.stock} unidades
+                        </span>
+                    </Col>
+                </Row>
+        } else {
+            text =
+                <Row className="pt-5">
+                    <Col md="4" align="center" >
+                        <h5 className="centerLine">{price}</h5>
+                    </Col>
+                    <Col md="4" >
+                        <FaTruck size="25" className="hideTruck" />
+                        <span className="centerLine pl-2">
+                            Stock: {this.state.produto.stock} unidades
+                        </span>
+                    </Col>
+                    <Col md="4" >
+                        <Button color="primary" className="btn-block" tag={Link}  block to={routes.GESTAO_PRODUTOS + this.state.produto.codigo}>
+                            Consultar <span className="hideComponent"> produto na loja</span>
+                        </Button>
+                    </Col>
+                </Row>
+        }
+
+
         return (
             <Container fluid className="custom-container">
                 <Row className="pt-5">
@@ -127,30 +177,7 @@ class DetalhesProduto extends Component {
                         <div className="d-inline-block text-justify pt-3">
                             {this.state.produto.descricao}
                         </div>
-                        <Row className="pt-5">
-                            <Col md="2" >
-                                <h5 className="centerLine">{price}</h5>
-                            </Col>
-                            <Col xs="2">
-                                <NumericInput className="form-control"
-                                    min={1} max={this.state.produto.stock} precision={0}
-                                    value={this.state.value}
-                                    onChange={this.onChange}
-                                    size={6} />
-                            </Col>
-                            <Col md="4">
-                                <Button color="success" className="btn-block" onClick={this.comprar}>
-                                    Adicionar <span className="hideComponent"> ao carrinho</span>
-                                </Button>
-
-                            </Col>
-                            <Col md="4">
-                                <FaTruck size="25" className="hideTruck" />
-                                <span className="centerLine pl-2">
-                                    Stock: {this.state.produto.stock} unidades
-                                </span>
-                            </Col>
-                        </Row>
+                        {text}
                     </Col>
                 </Row>
 
@@ -168,6 +195,6 @@ class DetalhesProduto extends Component {
 }
 
 export default compose(
-    inject('carrinhoStore'),
+    inject('carrinhoStore', 'sessionStore'),
     observer
 )(DetalhesProduto);

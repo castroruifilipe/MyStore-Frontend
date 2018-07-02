@@ -145,7 +145,7 @@ class ConsultarProduto extends Component {
                                     <Row className="mt-2">
                                         <Col md="3" align="center">
                                             <div>
-                                            <img src={"data:image/jpeg;base64,"+ this.state.produto.image} alt="Imagem do produto" className="img-fluid" />
+                                            <img src={this.state.produto.imageURL} alt="Imagem do produto" className="img-fluid" />
                                             </div>
                                         </Col>
                                         <Col md="7">

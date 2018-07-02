@@ -1,8 +1,9 @@
 import React, { Component } from 'react';
-import { Row, Col, Table } from 'reactstrap';
+import { Row, Col, Table, Button } from 'reactstrap';
 import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 
+import AlterarEstado from '../AlterarEstado';
 import { formatterPrice } from '../../../../constants/formatters';
 import estadoEnum from '../../../../constants/estadoEnum';
 import metodoPagEnum from '../../../../constants/metodoPagEnum';
@@ -14,7 +15,14 @@ class ConsultarEncomenda extends Component {
         super(props);
         this.state = {
             encomenda: undefined,
+            modal: false,
         }
+    }
+
+    toggle = () => {
+        this.setState({
+            modal: !this.state.modal,
+        });
     }
 
     componentWillMount() {
@@ -86,73 +94,83 @@ class ConsultarEncomenda extends Component {
                 </div>
         }
 
+        let showButton = encomenda.estado==="ENTREGUE" || encomenda.estado==="CANCELADA"
 
         let produtos = [];
         this.makeProdutos(produtos);
         return (
-            <Row>
-                <Col>
-                    <Row className="ml-0">
-                        <h3>Detalhes da Encomenda</h3>
-                    </Row>
-                    <Row>
-                        <Col md="4">
-                            <h6>Encomenda nº {encomenda.numero}</h6>
-                        </Col>
-                        <Col md="4">
-                            <span>Data de registo: {encomenda.data}</span>
-                        </Col>
-                    </Row>
+            <div>
+                <Row>
+                    <Col>
+                        <Row>
+                            <Col md="4">
+                                <h3>Detalhes da Encomenda</h3>
+                            </Col>
+                            <Col align="end">
+                                {!showButton && <Button color='primary' onClick={this.toggle}>Alterar estado</Button>}
+                            </Col>
+                        </Row>
+                        <Row>
+                            <Col md="4">
+                                <h6>Encomenda nº {encomenda.numero}</h6>
+                            </Col>
+                            <Col md="4">
+                                <span>Data de registo: {encomenda.data}</span>
+                            </Col>
+                        </Row>
 
-                    <Row className="pt-4">
-                        <Col md="4">
-                            <p className="headerColor"><strong>Morada de Envio</strong></p>
-                            <span>{encomenda.moradaEntrega.rua}</span><br />
-                            <span>{encomenda.moradaEntrega.localidade}</span><br />
-                            <span>{encomenda.moradaEntrega.codigoPostal}</span>
-                        </Col>
-                        <Col md="4">
-                            <p className="headerColor"><strong>Resumo</strong></p>
-                            <span><strong>Sub-Total: </strong>{formatterPrice.format(encomenda.subTotal)}</span><br />
-                            <span><strong>Portes: </strong>{formatterPrice.format(encomenda.portes)}</span><br />
-                            <span><strong>Total: </strong>{formatterPrice.format(encomenda.total)}</span>
-                        </Col>
-                    </Row>
+                        <Row className="pt-4">
+                            <Col md="4">
+                                <p className="headerColor"><strong>Morada de Envio</strong></p>
+                                <span>{encomenda.moradaEntrega.rua}</span><br />
+                                <span>{encomenda.moradaEntrega.localidade}</span><br />
+                                <span>{encomenda.moradaEntrega.codigoPostal}</span>
+                            </Col>
+                            <Col md="4">
+                                <p className="headerColor"><strong>Resumo</strong></p>
+                                <span><strong>Sub-Total: </strong>{formatterPrice.format(encomenda.subTotal)}</span><br />
+                                <span><strong>Portes: </strong>{formatterPrice.format(encomenda.portes)}</span><br />
+                                <span><strong>Total: </strong>{formatterPrice.format(encomenda.total)}</span>
+                            </Col>
+                        </Row>
 
-                    <Row className="pt-4">
-                        <Col md="4">
-                            <p className="headerColor"><strong>Método de pagamento</strong></p>
-                            <span>{metodoPagEnum[this.state.encomenda.metodo]}</span>
-                        </Col>
-                        <Col md="4">
-                            <p className="headerColor"><strong>Estado</strong></p>
-                            <span>{estadoEnum[this.state.encomenda.estado]}</span>
-                        </Col>
-                        <Col md="4">
-                            {pagamento}
-                        </Col>
-                    </Row>
+                        <Row className="pt-4">
+                            <Col md="4">
+                                <p className="headerColor"><strong>Método de pagamento</strong></p>
+                                <span>{metodoPagEnum[this.state.encomenda.metodo]}</span>
+                            </Col>
+                            <Col md="4">
+                                <p className="headerColor"><strong>Estado</strong></p>
+                                <span>{estadoEnum[this.state.encomenda.estado]}</span>
+                            </Col>
+                            <Col md="4">
+                                {pagamento}
+                            </Col>
+                        </Row>
 
-                    <Row className="pt-5">
-                        <Table className="ml-2">
-                            <thead style={{ backgroundColor: "#efefef" }}>
-                                <tr>
-                                    <th>Código</th>
-                                    <th>Designação</th>
-                                    <th>Quantidade</th>
-                                    <th>Preco Unitário</th>
-                                    <th>Preco</th>
-                                    <th>Desconto</th>
-                                    <th>Sub-Total</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                {produtos}
-                            </tbody>
-                        </Table>
-                    </Row>
-                </Col>
-            </Row>
+                        <Row className="pt-5">
+                            <Table className="ml-2">
+                                <thead style={{ backgroundColor: "#efefef" }}>
+                                    <tr>
+                                        <th>Código</th>
+                                        <th>Designação</th>
+                                        <th>Quantidade</th>
+                                        <th>Preco Unitário</th>
+                                        <th>Preco</th>
+                                        <th>Desconto</th>
+                                        <th>Sub-Total</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {produtos}
+                                </tbody>
+                            </Table>
+                        </Row>
+                    </Col>
+                </Row>
+                <AlterarEstado modal={this.state.modal} encomenda={this.state.encomenda} toggle={this.toggle}
+                    atualizar={(estado) => { this.setState({ encomenda: { ...this.state.encomenda, estado } }) }} />
+            </div>
         );
     }
 

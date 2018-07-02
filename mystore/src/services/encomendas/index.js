@@ -22,3 +22,9 @@ export const checkout = (moradaEntrega, metodoPagamento, token) =>
         headers: { 'Authorization': 'Bearer ' + token },
         withCredentials: true
     });
+
+export const alterarEstado = (id, estado, token) =>
+    axios.put(`${urlEncomendas}/alterarEstado`, { id, estado }, {
+        headers: { 'Authorization': 'Bearer ' + token },
+    }
+    );

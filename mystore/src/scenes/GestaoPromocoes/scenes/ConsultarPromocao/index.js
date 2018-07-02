@@ -6,6 +6,7 @@ import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/lib/ti';
 
 import * as services from '../../../../services/promocoes';
+import * as routes from '../../../../constants/routes';
 import { formatterPercent, formatterPrice } from '../../../../constants/formatters';
 
 class ConsultarPromocao extends Component {
@@ -37,6 +38,14 @@ class ConsultarPromocao extends Component {
                     produtos,
                     categoria: response.data.categoria,
                 });
+            })
+            .catch(error => console.error(error.response));
+    }
+
+    apagar = () => {
+        services.apagar(this.state.id, this.props.sessionStore.accessToken)
+            .then(response => {
+                this.props.history.push(routes.GESTAO_PROMOCOES)
             })
             .catch(error => console.error(error.response));
     }

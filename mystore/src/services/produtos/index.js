@@ -33,8 +33,9 @@ export const getProdutosProcura = (value) =>
     axios.get(`${urlProdutos}/search`, { params: { value } })
 
 export const editarProduto = (dados, token) =>
-    axios.put(`${urlProdutos}/editar`, dados,
-        { headers: { 'Authorization': 'Bearer ' + token } }
+    axios.put(`${urlProdutos}/editar`, dados, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    }
     );
 
 export const criarProduto = (dados, token) =>

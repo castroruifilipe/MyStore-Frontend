@@ -1,6 +1,8 @@
 import React, { Component } from 'react';
 import { Row, Col, Button } from 'reactstrap';
 import PencilIcon from 'react-icons/lib/fa/edit';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
 
 import * as services from '../../../../services/produtos';
 import { formatterPrice } from '../../../../constants/formatters';
@@ -9,18 +11,19 @@ import ApagarProduto from '../ApagarProduto';
 
 class ConsultarProduto extends Component {
 
+    INITIAL_STATE = {
+        nome: undefined,
+        categoria: undefined,
+        stock: undefined,
+        descricao: undefined,
+        precoBase: undefined,
+    }
+
     constructor(props) {
         super(props);
         this.state = {
-            codigo: undefined,
-            nome: undefined,
-            categoria: undefined,
-            stock: undefined,
-            descricao: undefined,
-            precoBase: undefined,
-            valorDesconto: undefined,
-            precoFinal: undefined,
-            estatisticasVendas: {},
+            ...this.INITIAL_STATE,
+            produto: undefined,
             modoEdicao: false,
             modal: false,
         }
@@ -28,61 +31,32 @@ class ConsultarProduto extends Component {
 
     componentWillMount() {
         services.getProduto(this.props.match.params.codigo)
-            .then(response => {
-                let data = response.data;
-                this.setState({
-                    codigo: data.codigo,
-                    nome: data.nome,
-                    categoria: data.categoria,
-                    stock: data.stock,
-                    descricao: data.descricao,
-                    precoBase: data.precoBase,
-                    desconto: data.valorDesconto,
-                    precoFinal: data.precoFinal,
-                    estatisticasVendas: {
-                        ...data.estatisticasVendas
-                    },
-                })
-            })
-            .catch(error => {
-                if (error.response) {
-                    console.log(error.response);
-                    this.setState({ error: error.response.data.message });
-                } else {
-                    console.error(error);
-                }
-            });
+            .then(response => this.setState({ produto: response.data }))
+            .catch(error => console.error(error.response));
     }
 
     guardar = () => {
-        const dados = {};
+        const dados = {
+            codigo: this.state.produto.codigo,
+        };
         if (this.state.nome) {
             dados['nome'] = this.state.nome;
         }
-        if (this.state.telemovel !== undefined) {
+        if (this.state.categoria !== undefined) {
             dados['categoria'] = this.state.categoria;
         }
-        if (this.state.contribuinte !== undefined) {
+        if (this.state.stock !== undefined) {
             dados['stock'] = this.state.stock;
         }
-        if (this.state.rua !== undefined) {
+        if (this.state.descricao !== undefined) {
             dados['descricao'] = this.state.descricao;
         }
-        if (this.state.localidade !== undefined) {
+        if (this.state.precoBase !== undefined) {
             dados['precoBase'] = this.state.precoBase;
         }
         services.editarProduto(dados, this.props.sessionStore.accessToken)
-            .then(response => {
-                console.log("success");
-            })
-            .catch(error => {
-                if (error.response) {
-                    console.log(error.response);
-                    this.setState({ error: error.response.data.message });
-                } else {
-                    console.error(error);
-                }
-            });
+            .then(response => this.setState({ produto: response.data, modoEdicao: false }))
+            .catch(error => console.log(error.response));
     }
 
     editar = () => {
@@ -99,7 +73,14 @@ class ConsultarProduto extends Component {
         });
     }
 
+    onChange = (event) => {
+        this.setState({ [event.target.id]: event.target.value });
+    }
+
     render() {
+        if (!this.state.produto) {
+            return null;
+        }
         let {
             codigo,
             nome,
@@ -107,13 +88,11 @@ class ConsultarProduto extends Component {
             stock,
             descricao,
             precoBase,
-            desconto,
+            valorDesconto,
             precoFinal,
             estatisticasVendas
-        } = this.state;
-        if (codigo === undefined) {
-            return null;
-        }
+        } = this.state.produto;
+
         return (
             <div>
                 <Row className="ml-0">
@@ -151,7 +130,7 @@ class ConsultarProduto extends Component {
                         </Row>
                         {
                             this.state.modoEdicao ?
-                                <EditarProduto produto={this.state} onChange={this.onChange} />
+                                <EditarProduto produto={this.state.produto} onChange={this.onChange} />
                                 :
                                 <div>
                                     <Row className="mt-3">
@@ -180,7 +159,7 @@ class ConsultarProduto extends Component {
                                             <span><strong>Preço Base:</strong> {formatterPrice.format(precoBase)}</span> <br />
                                         </Col>
                                         <Col>
-                                            <span><strong>Desconto:</strong> {desconto === 0 ? 'Sem promoções associadas' : formatterPrice.format(desconto)}</span> <br />
+                                            <span><strong>Desconto:</strong> {valorDesconto === 0 ? 'Sem promoções associadas' : formatterPrice.format(valorDesconto)}</span> <br />
                                         </Col>
                                         <Col>
                                             <span><strong>Preço Final:</strong> {formatterPrice.format(precoFinal)}</span>
@@ -205,11 +184,15 @@ class ConsultarProduto extends Component {
                                 </div>}
                     </Col>
                 </Row>
-                <ApagarProduto modal={this.state.modal} produto={this.state.codigo} toggle={this.toggle} />
+                <ApagarProduto modal={this.state.modal} produto={this.state.produto.codigo} toggle={this.toggle} />
             </div>
         );
     }
 
 }
 
-export default ConsultarProduto;
+
+export default compose(
+    inject('sessionStore'),
+    observer
+)(ConsultarProduto);

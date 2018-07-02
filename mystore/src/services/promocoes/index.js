@@ -14,3 +14,9 @@ export const criarPromocao = (dados, token) =>
     axios.post(`${urlPromocoes}/criar`, dados,
         { headers: { 'Authorization': 'Bearer ' + token } }
     );
+
+export const apagar = (id, token) =>
+    axios.delete(`${urlPromocoes}/apagar`, {
+        params: { id },
+        headers: { 'Authorization': 'Bearer ' + token }
+    });

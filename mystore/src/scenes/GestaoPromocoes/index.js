@@ -16,6 +16,10 @@ class GestaoPromocoes extends Component {
         super(props);
         this.state = {
             promocoes: [],
+            options: {
+                'false': 'Não',
+                'true': 'Sim',
+            }
         }
     }
 
@@ -47,8 +51,8 @@ class GestaoPromocoes extends Component {
         return formatterPercent.format(cell);
     }
 
-    booleanFormatter = (cell, row) => {
-        return cell ? 'Sim' : 'Não';
+    booleanFormatter = (cell, row, enumObject) => {
+        return enumObject[cell];
     }
 
     render() {
@@ -70,7 +74,8 @@ class GestaoPromocoes extends Component {
                             <TableHeaderColumn dataField='desconto' dataSort caretRender={this.getCaret} width='12%' dataFormat={this.percentFormatter} className="customHeader" dataAlign="center">Desconto</TableHeaderColumn>
                             <TableHeaderColumn dataField='dataInicio' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Data de início</TableHeaderColumn>
                             <TableHeaderColumn dataField='dataFim' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Data de fim</TableHeaderColumn>
-                            <TableHeaderColumn dataField='atual' dataSort caretRender={this.getCaret} width='10%' dataFormat={this.booleanFormatter} className="customHeader" dataAlign="center">Em vigor</TableHeaderColumn>
+                            <TableHeaderColumn dataField='atual' dataFormat={this.booleanFormatter} filterFormatted filter={{ type: 'SelectFilter', options: this.state.options }}
+                                formatExtraData={this.state.options} width='10%' className="customHeader" dataAlign="center">Em vigor</TableHeaderColumn>
                             <TableHeaderColumn dataField='button' width='8%' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
                         </BootstrapTable>
                     </Col>

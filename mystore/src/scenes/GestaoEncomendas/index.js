@@ -87,10 +87,12 @@ class GestaoEncomendas extends Component {
                         <Col className="p-0">
                             <BootstrapTable version='4' data={this.state.encomendas} pagination >
                                 <TableHeaderColumn isKey dataField='numero' dataSort={true} caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className='customHeader' dataAlign="center">Nº Encomenda</TableHeaderColumn>
-                                <TableHeaderColumn dataField='data' dataSort={true} caretRender={this.getCaret} className="customHeader" dataAlign="center">Data</TableHeaderColumn>
-                                <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader" dataAlign="center">Total</TableHeaderColumn>
-                                <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} formatExtraData={metodoPagEnum} className="customHeader" dataAlign="center">Método pagamento</TableHeaderColumn>
-                                <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} formatExtraData={estadoEnum} className="customHeader" dataAlign="center" dataSort>Estado</TableHeaderColumn>
+                                <TableHeaderColumn dataField='data' dataSort={true} caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign="center">Data</TableHeaderColumn>
+                                <TableHeaderColumn dataField='total' dataFormat={this.priceFormatter} width='10%' className="customHeader" dataAlign="center" dataSort caretRender={this.getCaret}>Total</TableHeaderColumn>
+                                <TableHeaderColumn dataField='metodo' dataFormat={this.enumFormatter} filterFormatted filter={{ type: 'SelectFilter', options: metodoPagEnum }}
+                                    formatExtraData={metodoPagEnum} className="customHeader" dataAlign="center" >Método pagamento</TableHeaderColumn>
+                                <TableHeaderColumn dataField='estado' dataFormat={this.enumFormatter} filterFormatted filter={{ type: 'SelectFilter', options: estadoEnum }}
+                                    formatExtraData={estadoEnum} className="customHeader" dataAlign="center" >Estado</TableHeaderColumn>
                                 <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader"></TableHeaderColumn>
                             </BootstrapTable>
                         </Col>

@@ -7,7 +7,8 @@ import { inject, observer } from 'mobx-react';
 import { compose } from 'recompose';
 
 import * as routes from '../../constants/routes';
-import * as services from '../../services/produtos';
+import * as servicesProdutos from '../../services/produtos';
+import * as servicesCategorias from '../../services/categorias';
 import { formatterPrice } from '../../constants/formatters';
 
 class GestaoProdutos extends Component {
@@ -16,18 +17,19 @@ class GestaoProdutos extends Component {
         super(props);
         this.state = {
             produtos: [],
+            categorias: {},
         }
     }
 
     componentWillMount() {
-        services.getAllProdutos()
+        servicesProdutos.getAllProdutos()
             .then(response => {
                 let data = [];
                 response.data.forEach(p => {
                     data.push({
                         codigo: p.codigo,
                         nome: p.nome,
-                        categoria: p.categoria.descricao,
+                        categoria: p.categoria.id,
                         base: p.precoBase,
                         promo: p.precoPromocional,
                         stock: p.stock,
@@ -35,6 +37,22 @@ class GestaoProdutos extends Component {
                 }
                 );
                 this.setState({ produtos: data });
+            })
+            .catch(error => {
+                if (error.response) {
+                    console.log(error.response);
+                    this.setState({ error: error.response.data.message });
+                } else {
+                    console.error(error);
+                }
+            });
+        servicesCategorias.getCategorias()
+            .then(response => {
+                let categorias = {};
+                response.data.forEach(c => categorias[c.id] = c.descricao)
+                this.setState({
+                    categorias: categorias,
+                });
             })
             .catch(error => {
                 if (error.response) {
@@ -70,6 +88,10 @@ class GestaoProdutos extends Component {
         return <Button size="sm" tag={Link} to={routes.GESTAO_PRODUTOS + row.codigo}>Ver produto</Button>
     }
 
+    enumFormatter = (cell, row, enumObject) => {
+        return enumObject[cell];
+    }
+
     render() {
 
         return (
@@ -80,15 +102,18 @@ class GestaoProdutos extends Component {
                             <h4>Gestão de Produtos</h4>
                         </Col>
                         <Col className="p-0" align="right">
-                        <Button color="primary"  tag={Link} to={routes.GESTAO_PRODUTOS + '/criar'}>Novo produto</Button>
-                    </Col>
+                            <Button color="primary" tag={Link} to={routes.GESTAO_PRODUTOS + '/criar'}>Novo produto</Button>
+                        </Col>
                     </Row>
                     <Row className="mt-3">
                         <Col className="p-0">
                             <BootstrapTable version='4' data={this.state.produtos} pagination >
                                 <TableHeaderColumn isKey dataField='codigo' dataSort={true} caretRender={this.getCaret} width="10%" filter={{ type: 'TextFilter' }} className='customHeader' dataAlign="center">Código</TableHeaderColumn>
                                 <TableHeaderColumn dataField='nome' dataSort={true} caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign="center">Nome</TableHeaderColumn>
-                                <TableHeaderColumn dataField='categoria' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Categoria</TableHeaderColumn>
+                                
+                                <TableHeaderColumn dataField='categoria' dataFormat={this.enumFormatter} filterFormatted 
+                                filter={{ type: 'SelectFilter', options: this.state.categorias, condition: 'eq' }} formatExtraData={this.state.categorias} className="customHeader" dataAlign="center">Categoria</TableHeaderColumn>
+                                
                                 <TableHeaderColumn dataField='base' dataFormat={this.priceFormatter} dataSort caretRender={this.getCaret} width='12%' className="customHeader" dataAlign="center">Preco Base</TableHeaderColumn>
                                 <TableHeaderColumn dataField='promo' dataFormat={this.priceFormatter} dataSort caretRender={this.getCaret} width='12%' className="customHeader" dataAlign="center">Promoção</TableHeaderColumn>
                                 <TableHeaderColumn dataField='stock' className="customHeader" dataAlign="center" dataSort caretRender={this.getCaret} zwidth='10%'>Stock</TableHeaderColumn>

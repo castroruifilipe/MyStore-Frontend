@@ -46,7 +46,9 @@ class Produto extends Component {
 
     render() {
         let produto = this.props.produto;
-        let descricao = produto.descricao.replace(/(([^\s]+\s\s*){20})(.*)/, "$1…");
+        //let descricao = produto.descricao.replace(/(([^\s]+\s\s*){15})(.*)/, "$1…");
+        let descricao = produto.descricao.substring(0,90)+'...';
+
         let price;
         if (produto.precoPromocional !== 0) {
             price =
@@ -69,7 +71,7 @@ class Produto extends Component {
                 </div>
 
                 <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
-                <CardBody>
+                <CardBody style={{ height: '180px'}}>
                     <CardTitle>{produto.nome}</CardTitle>
                     <CardText>{descricao}</CardText>
                 </CardBody>
@@ -77,7 +79,7 @@ class Produto extends Component {
                     (this.props.sessionStore.role === "FUNCIONARIO")
                         ?
                         <CardFooter>
-                            <Button size="sm" tag={Link}  block to={routes.PRODUTO + produto.codigo}>Ver</Button>
+                            <Button size="sm" tag={Link} block to={routes.PRODUTO + produto.codigo}>Ver</Button>
                         </CardFooter>
                         :
                         <CardFooter className="d-flex justify-content-between">

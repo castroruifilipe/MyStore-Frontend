@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, CardDeck, Col } from 'reactstrap';
+import { Container, Row, Col, CardColumns} from 'reactstrap';
 import InfiniteScroll from 'react-infinite-scroller';
 
 import * as services from '../../services/produtos';
@@ -93,9 +93,9 @@ class ListaProdutos extends Component {
                             loadMore={this.loadMoreProdutos}
                             hasMore={this.state.moreProdutos}
                             loader={loader}>
-                            <CardDeck>
+                            <CardColumns>
                                 {rows}
-                            </CardDeck>
+                            </CardColumns>
                         </InfiniteScroll>
                     </Row>
                 </Container>

@@ -31,8 +31,8 @@ class DetalhesEncomenda extends Component {
                         total: data.total,
                         metodo: data.metodoPagamento,
                         estado: data.estado,
-                        dataLimitePagamento: data.dataLimitePagamento,
-                        dataPagamento: (data.dataPagamento || ""),
+                        dataLimitePagamento: new Date(data.dataLimitePagamento).toLocaleString(),
+                        dataPagamento: (new Date(data.dataPagamento).toLocaleString() || ""),
                         linhasEncomenda: data.linhasEncomenda,
                     }
                 });

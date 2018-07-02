@@ -70,7 +70,7 @@ class Home extends Component {
                 <Carousel transitionTime={1000} emulateTouch useKeyboardArrows infiniteLoop autoPlay showThumbs={false} showStatus={false} dynamicHeight>
                     <img src="https://images-na.ssl-images-amazon.com/images/G/32/kindle/email/2018w22/RecomendadoLeitores/desktophero3000x600._CB478047443_.jpg" alt="Imagem" />
                     <img src="https://images-na.ssl-images-amazon.com/images/G/32/HomeandKitchen/2018/esp_decoracao/desktophero3000x600._CB495950061_.jpg" alt="Imagem" />
-                    <img src="https://images-na.ssl-images-amazon.com/images/G/32/br-events/2018/diadosnamorados/gw/desktophero3000x600._CB477519975_.jpg" alt="Imagem" />
+                    <img src="https://images-na.ssl-images-amazon.com/images/G/32/br-books/2018/Junho/edsem_record/desktophero3000x600._CB475746997_.jpg" alt="Imagem" />
                 </Carousel>
                 <Container fluid className="custom-container">
                     <Row className="mt-5">

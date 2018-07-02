@@ -169,7 +169,7 @@ class DetalhesProduto extends Component {
                 <Row className="pt-5">
                     <Col md="4" align="center">
                         <div>
-                            <img src="https://i.imgur.com/t7DTziH.jpg" alt="Imagem do produto" className="img-fluid" />
+                            <img src={this.state.produto.imageURL} alt="Imagem do produto" className="img-fluid" />
                         </div>
                     </Col>
                     <Col md="8" >

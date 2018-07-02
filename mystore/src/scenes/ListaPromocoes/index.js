@@ -47,7 +47,7 @@ class ListaPromocoes extends Component {
         let rows = [];
         let text = <h6>Não existem promoções a mostrar.</h6>
         if (this.state.produtos === undefined) {
-            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={"5"} />
+            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={5} />
         } else if (this.state.produtos.length !== 0) {
             this.makeNovidades(rows);
             text =
@@ -56,16 +56,14 @@ class ListaPromocoes extends Component {
                 </CardDeck>
         }
         return (
-            <div>
-                <Container style={{ minHeight: "60vh" }}>
-                    <Row className="mt-5">
-                        <h4>Promoções</h4>
-                    </Row>
-                    <Row className="mt-4">
-                        {text}
-                    </Row>
-                </Container>
-            </div>
+            <Container style={{ minHeight: "60vh" }}>
+                <Row className="mt-5">
+                    <h4>Promoções</h4>
+                </Row>
+                <Row className="mt-4">
+                    {text}
+                </Row>
+            </Container>
         );
     }
 }

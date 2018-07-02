@@ -70,7 +70,7 @@ class Produto extends Component {
                     </h5>
                 </div>
 
-                <CardImg top width="100%" src="https://i.imgur.com/IpEsYSH.jpg" alt="Card image cap" />
+                <CardImg top width="100%" src={produto.imageURL} alt="Card image cap" />
                 <CardBody style={{ height: '180px'}}>
                     <CardTitle>{produto.nome}</CardTitle>
                     <CardText>{descricao}</CardText>

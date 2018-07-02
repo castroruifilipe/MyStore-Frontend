@@ -26,11 +26,11 @@ export const getRelacionados = (codigo, quantidade) =>
 export const getProdutos = (categoria, pagina, size) =>
     axios.get(`${urlProdutos}/categoria`, { params: { pagina, size, categoria } });
 
-export const getProdutosProcuraCategoria = (categoria, value) =>
-    axios.get(`${urlProdutos}/search/categoria`, { params: { value, categoria } })
+export const getProdutosProcuraCategoria = (categoria, value, pagina, size) =>
+    axios.get(`${urlProdutos}/search/categoria`, { params: { value, categoria, pagina, size } })
 
-export const getProdutosProcura = (value) =>
-    axios.get(`${urlProdutos}/search`, { params: { value } })
+export const getProdutosProcura = (value, pagina, size) =>
+    axios.get(`${urlProdutos}/search`, { params: { value, pagina, size } })
 
 export const editarProduto = (dados, token) =>
     axios.put(`${urlProdutos}/editar`, dados, {

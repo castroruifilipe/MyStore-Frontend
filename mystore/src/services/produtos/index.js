@@ -43,6 +43,7 @@ export const criarProduto = (dados, token) =>
     );
 
 export const removerProduto = (codigo, token) =>
-    axios.delete(`${urlProdutos}/apagar`, codigo,
-        { headers: { 'Authorization': 'Bearer ' + token } }
-    );
+    axios.delete(`${urlProdutos}/apagar`, {
+        params: { codigo },
+        headers: { 'Authorization': 'Bearer ' + token }
+    });

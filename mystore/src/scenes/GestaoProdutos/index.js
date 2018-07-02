@@ -87,11 +87,11 @@ class GestaoProdutos extends Component {
                         <Col className="p-0">
                             <BootstrapTable version='4' data={this.state.produtos} pagination >
                                 <TableHeaderColumn isKey dataField='codigo' dataSort={true} caretRender={this.getCaret} width="10%" filter={{ type: 'TextFilter' }} className='customHeader' dataAlign="center">Código</TableHeaderColumn>
-                                <TableHeaderColumn dataField='nome' dataSort={true} caretRender={this.getCaret} className="customHeader" dataAlign="center">Nome</TableHeaderColumn>
-                                <TableHeaderColumn dataField='categoria' className="customHeader" dataAlign="center">Categoria</TableHeaderColumn>
-                                <TableHeaderColumn dataField='base' dataFormat={this.priceFormatter} width='12%' className="customHeader" dataAlign="center">Preco Base</TableHeaderColumn>
-                                <TableHeaderColumn dataField='promo' dataFormat={this.priceFormatter} width='12%' className="customHeader" dataAlign="center">Promoção</TableHeaderColumn>
-                                <TableHeaderColumn dataField='stock' className="customHeader" dataAlign="center" width='10%'>Stock</TableHeaderColumn>
+                                <TableHeaderColumn dataField='nome' dataSort={true} caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign="center">Nome</TableHeaderColumn>
+                                <TableHeaderColumn dataField='categoria' dataSort caretRender={this.getCaret} className="customHeader" dataAlign="center">Categoria</TableHeaderColumn>
+                                <TableHeaderColumn dataField='base' dataFormat={this.priceFormatter} dataSort caretRender={this.getCaret} width='12%' className="customHeader" dataAlign="center">Preco Base</TableHeaderColumn>
+                                <TableHeaderColumn dataField='promo' dataFormat={this.priceFormatter} dataSort caretRender={this.getCaret} width='12%' className="customHeader" dataAlign="center">Promoção</TableHeaderColumn>
+                                <TableHeaderColumn dataField='stock' className="customHeader" dataAlign="center" dataSort caretRender={this.getCaret} zwidth='10%'>Stock</TableHeaderColumn>
                                 <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} width='12%' className="customHeader"></TableHeaderColumn>
                             </BootstrapTable>
                         </Col>

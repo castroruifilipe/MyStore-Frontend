@@ -3,6 +3,9 @@ import { Row, Col, Input, Button, FormGroup, Label, } from 'reactstrap';
 import { TiArrowSortedDown, TiArrowSortedUp, TiArrowUnsorted } from 'react-icons/lib/ti';
 import { BootstrapTable, TableHeaderColumn } from 'react-bootstrap-table';
 import { Link } from 'react-router-dom';
+import { inject, observer } from 'mobx-react';
+import { compose } from 'recompose';
+import { withRouter } from 'react-router-dom';
 
 import * as servicesCategorias from '../../../../services/categorias';
 import * as servicesProdutos from '../../../../services/produtos';
@@ -44,7 +47,7 @@ class CriarPromocao extends Component {
                 response.data.forEach(c =>
                     data.push({ key: c.id, descricao: c.descricao })
                 );
-                this.setState({ listCategorias: data });
+                this.setState({ listCategorias: data, categoria : data[0].descricao });
             })
             .catch(error => console.error(error.response));
         servicesProdutos.getAllProdutos()
@@ -116,19 +119,17 @@ class CriarPromocao extends Component {
     }
 
     guardar = () => {
-        let promo;
-        if (this.state.tipo === 'categoria') {
-            promo = this.state.categoria;
-        } else {
-            promo = this.state.produtos;
-        }
         let dados = {
             descricao: this.state.descricao,
-            desconto: this.state.desconto,
+            desconto: (this.state.desconto/100).toString(),
             dataInicio: this.state.dataInicio,
             dataFim: this.state.dataFim,
-            promo,
         };
+        if (this.state.tipo === 'categoria') {
+            dados['categoria'] = this.state.categoria;
+        } else {
+            dados['produtos'] = this.state.produtos;
+        }
         servicesPromocoes.criarPromocao(dados, this.props.sessionStore.accessToken)
             .then(response => {
                 this.props.history.push(routes.GESTAO_PROMOCOES);
@@ -159,6 +160,7 @@ class CriarPromocao extends Component {
         const isInvalid =
             descricao === "" ||
             dataInicio === "" || dataFim === "" ||
+            dataFim <= dataInicio ||
             desconto === "" || isNaN(parseFloat(desconto)) || !isFinite(desconto) || desconto <= 0;
 
         return (
@@ -252,4 +254,9 @@ class CriarPromocao extends Component {
 
 }
 
-export default CriarPromocao;
+
+export default compose(
+    withRouter,
+    inject('sessionStore'),
+    observer
+)(CriarPromocao);

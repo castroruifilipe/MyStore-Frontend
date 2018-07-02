@@ -11,7 +11,7 @@ import * as routes from '../../../../constants/routes';
 class ApagarProduto extends Component {
 
     doOperation = () => {
-        services.removerProduto(this.props.propduto, this.props.sessionStore.token)
+        services.removerProduto(this.props.produto, this.props.sessionStore.accessToken)
             .then(response => {
                 this.props.history.push(routes.GESTAO_PRODUTOS);
             })

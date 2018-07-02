@@ -20,7 +20,7 @@ class GestaoPromocoes extends Component {
     }
 
     componentWillMount() {
-        services.getAllPromocoes()
+        services.getAllPromocoes(this.props.sessionStore.accessToken)
             .then(response => this.setState({ promocoes: response.data }))
             .catch(error => console.error(error));
     }

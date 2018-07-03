@@ -47,7 +47,7 @@ class Produto extends Component {
     render() {
         let produto = this.props.produto;
         //let descricao = produto.descricao.replace(/(([^\s]+\s\s*){15})(.*)/, "$1…");
-        let descricao = produto.descricao.substring(0,90)+'...';
+        let descricao = produto.descricao.substring(0,60)+'...';
 
         let price;
         if (produto.precoPromocional !== 0) {

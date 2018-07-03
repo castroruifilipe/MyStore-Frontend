@@ -25,6 +25,10 @@ class ConsultarEncomenda extends Component {
         });
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     componentWillMount() {
         services.getEncomenda(this.props.match.params.id, this.props.sessionStore.accessToken)
             .then(response => {
@@ -94,7 +98,7 @@ class ConsultarEncomenda extends Component {
                 </div>
         }
 
-        let showButton = encomenda.estado==="ENTREGUE" || encomenda.estado==="CANCELADA"
+        let showButton = encomenda.estado === "ENTREGUE" || encomenda.estado === "CANCELADA"
 
         let produtos = [];
         this.makeProdutos(produtos);

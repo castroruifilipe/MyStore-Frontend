@@ -29,6 +29,10 @@ class ConsultarProduto extends Component {
         }
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     componentWillMount() {
         services.getProduto(this.props.match.params.codigo)
             .then(response => this.setState({ produto: response.data }))

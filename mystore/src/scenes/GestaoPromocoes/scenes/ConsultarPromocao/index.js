@@ -24,6 +24,10 @@ class ConsultarPromocao extends Component {
         }
     }
 
+    componentDidMount() {
+        window.scrollTo(0, 0);
+    }
+
     componentWillMount() {
         services.getPromocao(this.props.match.params.id, this.props.sessionStore.accessToken)
             .then(response => {

@@ -2,8 +2,9 @@ import axios from 'axios';
 
 import { urlEncomendas } from '../../services';
 
-export const getUltimas = (quantidade) =>
-    axios.get(`${urlEncomendas}/ultimas/${quantidade}`);
+export const getUltimas = (quantidade,token) =>
+    axios.get(`${urlEncomendas}/ultimas/${quantidade}`,
+        { headers: { 'Authorization': 'Bearer ' + token } });
 
 export const getEncomenda = (id, token) =>
     axios.get(`${urlEncomendas}/${id}`,

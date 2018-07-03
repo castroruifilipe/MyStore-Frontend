@@ -48,10 +48,9 @@ class GestaoFuncionarios extends Component {
     apagarFuncionario = (id) => {
         services.deleteFuncionario(id, this.props.sessionStore.accessToken)
             .then(response => services.getFuncionarios())
-            .then(response => this.setState({ funcionarios: response.data }))
+            .then(response => this.setState({ funcionarios: response.data, showAlert: true  }))
             .catch(error => {
                 console.error(error.response);
-                this.setState({ showAlert: true })
             });
     }
 
@@ -62,8 +61,8 @@ class GestaoFuncionarios extends Component {
     render() {
         return (
             <div>
-                <Alert color="danger" isOpen={this.state.showAlert} toggle={this.toggleAlert} style={{ position: 'fixed', top: '40px', zIndex: '1' }}>
-                    Não foi possível apagar concluir a operação. Verifique se existem produtos com a categoria que tentou apagar.
+                <Alert color="success" isOpen={this.state.showAlert} toggle={this.toggleAlert} style={{ position: 'fixed', top: '40px', zIndex: '1' }}>
+                    Utilizador removido com sucesso!
                 </Alert>
                 <Row>
                     <Col >

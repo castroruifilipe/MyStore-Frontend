@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { BrowserRouter, Switch, Route } from 'react-router-dom';
+import { BrowserRouter, Switch, Route, Link, withRouter } from 'react-router-dom';
+import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 import 'font-awesome/css/font-awesome.min.css';
 
 import withAuthentication from './high-order_components/withAuthentication';
@@ -23,6 +24,36 @@ import * as routes from './constants/routes';
 import './App.css';
 import Gestor from './scenes/Gestor';
 
+const Breadcrumbs = withRouter((props) => {
+	if (props.location.pathname === "/") {
+		return null;
+	}
+	return (
+		<Breadcrumb >
+			<Route path='/:path' component={BreadcrumbsItem} />
+		</Breadcrumb>
+	)
+});
+
+const BreadcrumbsItem = ({ ...rest, match }) => {
+	return (
+		<div style={{ display: 'inline' }}>
+			<BreadcrumbItem active={match.isExact} style={{ display: 'inline' }} >
+				{match.url !== '/gestor'
+					?
+					<Link to={match.url || ''}>
+						{routes.routesToTitle(match.url)}
+					</Link>
+					:
+					routes.routesToTitle(match.url)
+				}
+			</BreadcrumbItem>
+			<span className="text-secondary"> / </span>
+			<Route path={`${match.url}/:path`} component={BreadcrumbsItem} />
+		</div>
+	)
+}
+
 class App extends Component {
 
 	render() {
@@ -31,6 +62,7 @@ class App extends Component {
 				<BrowserRouter >
 					<div>
 						<NavBar />
+						<Breadcrumbs />
 						<Switch>
 							<Route exact path={routes.HOME} component={Home} />
 							<Route exact path={routes.LOGIN} component={Login} />
@@ -46,7 +78,7 @@ class App extends Component {
 							<Route path={routes.PROCURA + ':string'} component={Procura} />
 							<Route exact path={routes.CARRINHO} component={DetalhesCarrinho} />
 							<Route exact path={routes.CHECKOUT} component={Checkout} />
-							<Route path={routes.GESTOR} component={Gestor}/>
+							<Route path={routes.GESTOR} component={Gestor} />
 						</Switch>
 						<Footer />
 					</div>

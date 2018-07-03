@@ -28,7 +28,7 @@ class GestaoClientes extends Component {
     }
 
     buttonFormatter = (cell, row) => {
-        return <Button size="sm" tag={Link} to={routes.GESTAO_CLIENTES + row.id}>Ver cliente</Button>
+        return <Button size="sm" tag={Link} to={routes.GESTAO_CLIENTES + "/" + row.id}>Ver cliente</Button>
     }
 
     getCaret = (direction) => {

@@ -59,7 +59,7 @@ class GestorHome extends Component {
     }
 
     buttonFormatter = (cell, row) => {
-        return <Button size="sm" tag={Link} to={routes.GESTAO_PRODUTOS + row.codigo}>Ver produto</Button>
+        return <Button size="sm" tag={Link} to={routes.GESTAO_PRODUTOS + "/" + row.codigo}>Ver produto</Button>
     }
 
     enumFormatter = (cell, row, enumObject) => {
@@ -85,7 +85,7 @@ class GestorHome extends Component {
     }
 
     buttonFormatterEncomendas = (cell, row) => {
-        return <Button size="sm" tag={Link} to={routes.GESTAO_ENCOMENDAS + row.numero}>Ver encomenda</Button>
+        return <Button size="sm" tag={Link} to={routes.GESTAO_ENCOMENDAS + "/" + row.numero}>Ver encomenda</Button>
     }
 
     render() {

@@ -49,7 +49,7 @@ class ConsultarCliente extends Component {
     }
 
     buttonFormatter = (cell, row) => {
-        return <Button size="sm" tag={Link} to={routes.GESTAO_ENCOMENDAS + row.numero}>Ver encomenda</Button>
+        return <Button size="sm" tag={Link} to={routes.GESTAO_ENCOMENDAS + "/" + row.numero}>Ver encomenda</Button>
     }
 
     enumFormatter = (cell, row, enumObject) => {

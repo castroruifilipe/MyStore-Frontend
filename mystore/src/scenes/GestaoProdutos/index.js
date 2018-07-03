@@ -85,7 +85,7 @@ class GestaoProdutos extends Component {
     }
 
     buttonFormatter = (cell, row) => {
-        return <Button size="sm" tag={Link} to={routes.GESTAO_PRODUTOS + row.codigo}>Ver produto</Button>
+        return <Button size="sm" tag={Link} to={routes.GESTAO_PRODUTOS + "/" + row.codigo}>Ver produto</Button>
     }
 
     enumFormatter = (cell, row, enumObject) => {
@@ -102,7 +102,7 @@ class GestaoProdutos extends Component {
                             <h4>Gestão de Produtos</h4>
                         </Col>
                         <Col className="p-0" align="right">
-                            <Button color="primary" tag={Link} to={routes.GESTAO_PRODUTOS + '/criar'}>Novo produto</Button>
+                            <Button color="primary" tag={Link} to={routes.GESTAO_PRODUTOS_CRIAR}>Novo produto</Button>
                         </Col>
                     </Row>
                     <Row className="mt-3">

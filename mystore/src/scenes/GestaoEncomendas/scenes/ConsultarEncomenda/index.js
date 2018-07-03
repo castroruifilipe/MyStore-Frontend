@@ -36,6 +36,7 @@ class ConsultarEncomenda extends Component {
                 this.setState({
                     encomenda: {
                         numero: data.id,
+                        cliente: data.cliente,
                         data: new Date(data.dataRegisto).toLocaleString(),
                         moradaEntrega: data.moradaEntrega,
                         subTotal: data.total - data.portes,
@@ -107,7 +108,7 @@ class ConsultarEncomenda extends Component {
                 <Row>
                     <Col>
                         <Row>
-                            <Col md="4">
+                            <Col>
                                 <h3>Detalhes da Encomenda</h3>
                             </Col>
                             <Col align="end">
@@ -124,6 +125,12 @@ class ConsultarEncomenda extends Component {
                         </Row>
 
                         <Row className="pt-4">
+                        <Col md="4">
+                                <p className="headerColor"><strong>Cliente</strong></p>
+                                <span>Número: {encomenda.cliente.id}</span><br />
+                                <span>{encomenda.cliente.nome}</span><br />
+                                <span>{encomenda.cliente.email}</span>
+                            </Col>
                             <Col md="4">
                                 <p className="headerColor"><strong>Morada de Envio</strong></p>
                                 <span>{encomenda.moradaEntrega.rua}</span><br />

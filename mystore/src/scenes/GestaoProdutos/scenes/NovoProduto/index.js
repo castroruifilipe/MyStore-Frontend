@@ -10,7 +10,6 @@ import ImageUploader from 'react-images-upload';
 import * as servicesCategorias from '../../../../services/categorias';
 import * as servicesProdutos from '../../../../services/produtos';
 import * as routes from '../../../../constants/routes';
-import productImage from '../../../../constants/image';
 
 class NovoProduto extends Component {
 
@@ -60,27 +59,24 @@ class NovoProduto extends Component {
 
     guardar = async () => {
         let image, format;
-        if (this.state.picture !== '') {
-            let result = await this.getBase64(this.state.picture);
-            let parts = result.split(';base64,');
-            image = parts[1];
-            format = parts[0].split('/')[1];
-        } else {
-            image = productImage;
-            format = 'png';
-        }
         let dados = {
             nome: this.state.nome,
             categoria: this.state.categoria,
             stock: this.state.stock,
             descricao: this.state.descricao,
             precoBase: this.state.precoBase,
-            image,
-            format
         };
+        if (this.state.picture !== '') {
+            let result = await this.getBase64(this.state.picture);
+            let parts = result.split(';base64,');
+            image = parts[1];
+            format = parts[0].split('/')[1];
+            dados = { ...dados, image,format}
+        }
         servicesProdutos.criarProduto(dados, this.props.sessionStore.accessToken)
             .then(response => this.props.history.push(routes.GESTAO_PRODUTOS))
             .catch(error => console.error(error.response));
+
     }
 
     isNumeric = (n) => !isNaN(parseFloat(n)) && isFinite(n)

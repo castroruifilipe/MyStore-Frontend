@@ -55,7 +55,7 @@ class GestaoFuncionarios extends Component {
     }
 
     buttonFormatter = (cell, row) => {
-        return <Button size="sm" color="danger" onClick={(e) => this.apagarFuncionario(row.descricao, e)}>Apagar</Button>
+        return <Button size="sm" disabled={row.numero === 0} color="danger" onClick={(e) => this.apagarFuncionario(row.descricao, e)}>Apagar</Button>
     }
 
     render() {
@@ -77,17 +77,17 @@ class GestaoFuncionarios extends Component {
                         <Row className="mt-3">
                             <Col className="p-0">
                                 <BootstrapTable version='4' pagination data={this.state.funcionarios}>
-                                <TableHeaderColumn isKey dataField='numero' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className='customHeader' dataAlign='center' width="15%">
+                                    <TableHeaderColumn isKey dataField='numero' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className='customHeader' dataAlign='center' width="15%">
                                         Nº funcionário
                                 </TableHeaderColumn>
-                                <TableHeaderColumn dataField='nome' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
+                                    <TableHeaderColumn dataField='nome' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
                                         Nome
                                 </TableHeaderColumn>
-                                <TableHeaderColumn dataField='email' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
+                                    <TableHeaderColumn dataField='email' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
                                         Email
                                 </TableHeaderColumn>
-                                <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader" width="15%">
-                                </TableHeaderColumn>
+                                    <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader" width="15%">
+                                    </TableHeaderColumn>
                                 </BootstrapTable>
                             </Col>
                         </Row>

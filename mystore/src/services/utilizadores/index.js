@@ -27,3 +27,12 @@ export const getClientes = (token) =>
 
 export const getCliente = (id, token) =>
     axios.get(`${urlUtilizadores}/clientes/${id}`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+export const getFuncionarios = (token) =>
+    axios.get(`${urlUtilizadores}/funcionarios`, { headers: { 'Authorization': 'Bearer ' + token } })
+
+export const deleteFuncionario = (id, token) =>
+    axios.delete(`${urlUtilizadores}/funcionarios/apagar`, {
+        params: { id },
+        headers: { 'Authorization': 'Bearer ' + token }
+    });

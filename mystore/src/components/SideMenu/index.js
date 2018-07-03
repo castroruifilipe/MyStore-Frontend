@@ -14,6 +14,9 @@ class SideMenu extends Component {
                 <Nav className="mx-auto mt-5 p-3 side-menu" vertical pills>
                     <h5 className="ml-3 font-weight-bold" onClick={(e) => {this.props.history.push(routes.GESTOR_HOME)}} style={{cursor: 'pointer'}}>Gestão de Loja</h5>
                     <NavItem className="mt-2">
+                        <NavLink tag={Link} to={routes.GESTAO_FUNCIONARIOS}>Gestão de funcionários</NavLink>
+                    </NavItem>
+                    <NavItem>
                         <NavLink tag={Link} to={routes.GESTAO_CLIENTES}>Gestão de clientes</NavLink>
                     </NavItem>
                     <NavItem>

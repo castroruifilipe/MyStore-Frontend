@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, CardColumns} from 'reactstrap';
+import { Container, Row, Col, CardColumns } from 'reactstrap';
 import InfiniteScroll from 'react-infinite-scroller';
+import ScrollUpButton from "react-scroll-up-button";
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
@@ -75,12 +76,10 @@ class ListaProdutos extends Component {
     render() {
         let rows = [];
         this.makeProdutos(rows);
-
         const loader = <div className="loader">Loading ...</div>;
-
         return (
             <div>
-                <Container >
+                <Container style={{ minHeight: '75vh' }} >
                     <Row className="mt-5">
                         <Col className="pl-0">
                             <h4>Lista de Produtos</h4>
@@ -88,14 +87,18 @@ class ListaProdutos extends Component {
                         </Col>
                     </Row>
                     <Row className="mt-3">
+                        <ScrollUpButton />
                         <InfiniteScroll
                             pageStart={0}
                             loadMore={this.loadMoreProdutos}
                             hasMore={this.state.moreProdutos}
                             loader={loader}>
-                            <CardColumns>
-                                {rows}
-                            </CardColumns>
+                            {(this.state.produtos.length === 0)
+                                ? <h4>Não há produtos a apresentar!</h4>
+                                :
+                                <CardColumns>
+                                    {rows}
+                                </CardColumns>}
                         </InfiniteScroll>
                     </Row>
                 </Container>

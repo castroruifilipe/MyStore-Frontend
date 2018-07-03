@@ -18,24 +18,6 @@ class Procura extends Component {
         };
     }
 
-    // componentWillMount() {
-    //     let servico;
-    //     let string = this.props.match.params.string;
-    //     let categoria = this.props.match.params.categoria;
-    //     if (categoria !== undefined) {
-    //         servico = services.getProdutosProcuraCategoria(categoria, string)
-    //     } else {
-    //         servico = services.getProdutosProcura(string)
-    //     }
-    //     servico
-    //         .then(response => {
-    //             this.setState({ produtos: response.data });
-    //         })
-    //         .catch(error => {
-    //             console.error(error);
-    //         })
-    // }
-
     makeProdutos = (rows) => {
         for (let i = 0; i < this.state.produtos.length; i++) {
             rows.push(

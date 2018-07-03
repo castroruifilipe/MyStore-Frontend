@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, CardDeck } from 'reactstrap';
 import ReactLoading from 'react-loading';
+import ScrollUpButton from "react-scroll-up-button";
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
@@ -47,7 +48,7 @@ class ListaNovidades extends Component {
         let rows = [];
         let text = <h6>Não existem novidades a mostrar.</h6>
         if (this.state.produtos === undefined) {
-            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={5}/>
+            text = <ReactLoading type={"bars"} color={"#232f3e"} delay={5} />
         } else if (this.state.produtos.length !== 0) {
             this.makeNovidades(rows);
             text =
@@ -63,6 +64,7 @@ class ListaNovidades extends Component {
                         <h4>Novidades</h4>
                     </Row>
                     <Row className="mt-4">
+                        <ScrollUpButton />
                         {text}
                     </Row>
                 </Container>

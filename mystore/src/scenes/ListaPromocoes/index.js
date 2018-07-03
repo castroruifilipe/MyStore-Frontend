@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, CardDeck } from 'reactstrap';
 import ReactLoading from 'react-loading';
+import ScrollUpButton from "react-scroll-up-button";
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
@@ -61,6 +62,7 @@ class ListaPromocoes extends Component {
                     <h4>Promoções</h4>
                 </Row>
                 <Row className="mt-4">
+                    <ScrollUpButton />
                     {text}
                 </Row>
             </Container>

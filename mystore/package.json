@@ -52,6 +52,7 @@
     "react-numeric-input": "^2.2.3",
     "react-responsive-carousel": "^3.1.39",
     "react-router-dom": "^4.2.2",
+    "react-scroll-up-button": "^1.6.0",
     "reactstrap": "^6.0.1",
     "recompose": "^0.27.1",
     "resolve": "1.6.0",

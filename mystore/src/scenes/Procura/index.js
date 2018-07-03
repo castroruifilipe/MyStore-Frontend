@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Container, Row, Col, CardDeck } from 'reactstrap';
 import InfiniteScroll from 'react-infinite-scroller';
+import ScrollUpButton from "react-scroll-up-button";
 
 import * as services from '../../services/produtos';
 import Produto from '../../components/Produto';
@@ -98,6 +99,7 @@ class Procura extends Component {
 
         return (
             <div>
+                <ScrollUpButton />
                 <Container style={{ minHeight: "60vh" }}>
                     <Row className="mt-5">
                         <Col className="pl-0">

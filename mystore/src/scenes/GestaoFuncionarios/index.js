@@ -48,7 +48,7 @@ class GestaoFuncionarios extends Component {
     apagarFuncionario = (id) => {
         services.deleteFuncionario(id, this.props.sessionStore.accessToken)
             .then(response => services.getFuncionarios())
-            .then(response => this.setState({ funcionarios: response.data, showAlert: true  }))
+            .then(response => this.setState({ funcionarios: response.data, showAlert: true }))
             .catch(error => {
                 console.error(error.response);
             });
@@ -70,24 +70,24 @@ class GestaoFuncionarios extends Component {
                             <Col className="p-0">
                                 <h4>Gestão de Funcionários</h4>
                             </Col>
+                            <Col className="p-0" align="right">
+                                <Button color="primary" tag={Link} to={routes.GESTAO_FUNCIONARIOS + '/criar'}>Novo funcionário</Button>
+                            </Col>
                         </Row>
                         <Row className="mt-3">
                             <Col className="p-0">
                                 <BootstrapTable version='4' pagination data={this.state.funcionarios}>
-                                    <TableHeaderColumn isKey dataField='numero' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className='customHeader' dataAlign='center' width="15%">
+                                <TableHeaderColumn isKey dataField='numero' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className='customHeader' dataAlign='center' width="15%">
                                         Nº funcionário
                                 </TableHeaderColumn>
-                                    <TableHeaderColumn dataField='nome' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
+                                <TableHeaderColumn dataField='nome' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
                                         Nome
                                 </TableHeaderColumn>
-                                    <TableHeaderColumn dataField='email' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
+                                <TableHeaderColumn dataField='email' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center'>
                                         Email
                                 </TableHeaderColumn>
-                                    <TableHeaderColumn dataField='telemovel' dataSort caretRender={this.getCaret} filter={{ type: 'TextFilter' }} className="customHeader" dataAlign='center' width="15%">
-                                        Telemóvel
+                                <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader" width="15%">
                                 </TableHeaderColumn>
-                                    <TableHeaderColumn dataField='button' dataAlign="center" dataFormat={this.buttonFormatter} className="customHeader" width="15%">
-                                    </TableHeaderColumn>
                                 </BootstrapTable>
                             </Col>
                         </Row>

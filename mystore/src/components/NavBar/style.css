@@ -23,6 +23,8 @@
     background-color: rgb(243, 241, 241);
     color: rgb(56, 56, 56);
     border: 0px !important;
+    max-height: 310px;
+    overflow-y: scroll;
 }
 
 .myNavBar .searchBar {
@@ -56,4 +58,9 @@
     .myNavBar .searchBar {
         width: 60vw;
     }
+}
+
+.dropdown-scroll {
+    max-height: 338px;
+    overflow-y: scroll;
 }

@@ -202,7 +202,7 @@ class NavBar extends Component {
                                 <DropdownToggle nav caret>
                                     Categorias
                                 </DropdownToggle>
-                                <DropdownMenu right>
+                                <DropdownMenu className="dropdown-scroll" right>
                                     {categoriasRows}
                                 </DropdownMenu>
                             </UncontrolledDropdown>

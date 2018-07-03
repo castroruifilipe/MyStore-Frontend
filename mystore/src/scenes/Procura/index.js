@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Container, Row, Col, CardDeck } from 'reactstrap';
+import { Container, Row, Col, CardColumns } from 'reactstrap';
 import InfiniteScroll from 'react-infinite-scroller';
 import ScrollUpButton from "react-scroll-up-button";
 
@@ -72,9 +72,9 @@ class Procura extends Component {
         if (this.state.produtos.length !== 0) {
             this.makeProdutos(rows);
             text =
-                <CardDeck>
+                <CardColumns>
                     {rows}
-                </CardDeck>
+                </CardColumns>
         }
         const loader = <div className="loader">Loading ...</div>;
 

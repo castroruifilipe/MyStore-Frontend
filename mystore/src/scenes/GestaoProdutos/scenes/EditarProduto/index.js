@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Row, Col, Input } from 'reactstrap';
+import ImageUploader from 'react-images-upload';
 
 import * as services from '../../../../services/categorias';
 
@@ -14,6 +15,7 @@ class EditarProduto extends Component {
             descricao: this.props.produto.descricao,
             precoBase: this.props.produto.precoBase,
             categorias: [],
+            picture: '',
         }
     }
 
@@ -34,6 +36,13 @@ class EditarProduto extends Component {
                     console.error(error);
                 }
             });
+    }
+
+    onDrop = (pictureFile) => {
+        this.setState({
+            picture: pictureFile[0],
+        });
+        this.props.onChangeImage(pictureFile[0]);
     }
 
     onChange = (event) => {
@@ -77,6 +86,21 @@ class EditarProduto extends Component {
                                 placeholder="Descrição"></textarea>
                         </div>
                     </Col>
+                </Row>
+                <Row>
+                    <Col md='6'>
+                        <ImageUploader
+                            withIcon={true}
+                            withPreview
+                            buttonText='Escolher imagem'
+                            onChange={this.onDrop}
+                            imgExtension={['.jpg', '.gif', '.png', '.jpeg']}
+                            maxFileSize={2000000}
+                            label='Tamanho máximo: 2mb'
+                            fileSizeError="Tamanho do ficheiro demasiado grande."
+                        />
+                    </Col>
+
                 </Row>
             </div>
         );

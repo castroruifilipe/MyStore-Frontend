@@ -17,6 +17,7 @@ class ConsultarProduto extends Component {
         stock: undefined,
         descricao: undefined,
         precoBase: undefined,
+        picture: undefined,
     }
 
     constructor(props) {
@@ -39,7 +40,20 @@ class ConsultarProduto extends Component {
             .catch(error => console.error(error.response));
     }
 
-    guardar = () => {
+    onChangeImage = (picture) => {
+        this.setState({ picture });
+    }
+
+    getBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            let reader = new FileReader();
+            reader.onload = () => resolve(reader.result);
+            reader.onerror = (error) => reject(error);
+            reader.readAsDataURL(file);
+        })
+    }
+
+    guardar = async () => {
         const dados = {
             codigo: this.state.produto.codigo,
         };
@@ -57,6 +71,12 @@ class ConsultarProduto extends Component {
         }
         if (this.state.precoBase !== undefined) {
             dados['precoBase'] = this.state.precoBase;
+        }
+        if (this.state.picture !== undefined) {
+            let result = await this.getBase64(this.state.picture);
+            let parts = result.split(';base64,');
+            dados['image'] = parts[1];
+            dados['format'] = parts[0].split('/')[1];
         }
         services.editarProduto(dados, this.props.sessionStore.accessToken)
             .then(response => this.setState({ produto: response.data, modoEdicao: false }))
@@ -134,7 +154,7 @@ class ConsultarProduto extends Component {
                         </Row>
                         {
                             this.state.modoEdicao ?
-                                <EditarProduto produto={this.state.produto} onChange={this.onChange} />
+                                <EditarProduto produto={this.state.produto} onChange={this.onChange} onChangeImage={this.onChangeImage} />
                                 :
                                 <div>
                                     <Row className="mt-3">
@@ -149,7 +169,7 @@ class ConsultarProduto extends Component {
                                     <Row className="mt-2">
                                         <Col md="3" align="center">
                                             <div>
-                                            <img src={this.state.produto.imageURL} alt="Imagem do produto" className="img-fluid" />
+                                                <img src={this.state.produto.imageURL} alt="Imagem do produto" className="img-fluid" />
                                             </div>
                                         </Col>
                                         <Col md="7">

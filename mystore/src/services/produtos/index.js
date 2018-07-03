@@ -14,8 +14,10 @@ export const getNovidades = (quantidade) =>
 export const getMaisVendidos = (quantidade) =>
     axios.get(`${urlProdutos}/maisVendidos/${quantidade}`);
 
-export const getMaisVendidosDetail = (quantidade) =>
-    axios.get(`${urlProdutos}/maisVendidosDetail/${quantidade}`);
+export const getMaisVendidosDetail = (quantidade, token) =>
+    axios.get(`${urlProdutos}/maisVendidosDetail/${quantidade}`, {
+        headers: { 'Authorization': 'Bearer ' + token }
+    });
 
 export const getPromocoes = (quantidade) =>
     axios.get(`${urlProdutos}/emPromocao/${quantidade}`);
@@ -35,8 +37,7 @@ export const getProdutosProcura = (value, pagina, size) =>
 export const editarProduto = (dados, token) =>
     axios.put(`${urlProdutos}/editar`, dados, {
         headers: { 'Authorization': 'Bearer ' + token }
-    }
-    );
+    });
 
 export const criarProduto = (dados, token) =>
     axios.post(`${urlProdutos}/criar`, dados,

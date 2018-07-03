@@ -24,7 +24,7 @@ class GestorHome extends Component {
     }
 
     componentWillMount() {
-        servicesProdutos.getMaisVendidosDetail(10)
+        servicesProdutos.getMaisVendidosDetail(10, this.props.sessionStore.accessToken)
             .then(response => {
                 let maisVendidos = [];
                 response.data.forEach((a => {

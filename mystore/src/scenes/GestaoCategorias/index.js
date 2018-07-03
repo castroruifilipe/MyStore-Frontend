@@ -71,7 +71,7 @@ class GestaoCategorias extends Component {
 
     render() {
         return (
-            <Container>
+            <div>
                 <Alert color="danger" isOpen={this.state.showAlert} toggle={this.toggleAlert} style={{ position: 'fixed', top: '40px', zIndex: '1' }}>
                     Não foi possível apagar concluir a operação. Verifique se existem produtos com a categoria que tentou apagar.
                 </Alert>
@@ -111,7 +111,7 @@ class GestaoCategorias extends Component {
                         <Button color="secondary" onClick={this.toggleModal}>Cancelar</Button>
                     </ModalFooter>
                 </Modal>
-            </Container>
+            </div>
         );
 
     }

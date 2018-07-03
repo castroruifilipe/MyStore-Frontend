@@ -68,7 +68,6 @@ class Procura extends Component {
 
     render() {
         let rows = [];
-        console.log(this.state);
         let text = <h6>Não foram encontrados resultados para a procura que efetuou.</h6>
         if (this.state.produtos.length !== 0) {
             this.makeProdutos(rows);

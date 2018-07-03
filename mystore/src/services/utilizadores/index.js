@@ -31,6 +31,9 @@ export const getCliente = (id, token) =>
 export const getFuncionarios = (token) =>
     axios.get(`${urlUtilizadores}/funcionarios`, { headers: { 'Authorization': 'Bearer ' + token } })
 
+export const registarFuncionario = (email, password, nome, numero, role) =>
+    axios.post(`${urlUtilizadores}/signup`, { email, password, nome, numero, role });
+
 export const deleteFuncionario = (id, token) =>
     axios.delete(`${urlUtilizadores}/funcionarios/apagar`, {
         params: { id },
